@@ -1,0 +1,248 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="skin">
+      <UniqueIdentifier>{e99c5da8-60e6-41be-9f98-cb86255673fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="skin\include">
+      <UniqueIdentifier>{d3b66719-2272-490d-92e3-1faeacad9622}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="skin\src">
+      <UniqueIdentifier>{9b63045e-b88e-4afb-b693-f12b114542b0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="res\testskin.rc2">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\testskin.ico">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\toolbar1.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="testskin.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="testskinDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Markup.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\MenuBarCtrlSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\CtrlSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\EditCtrlSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\ScrollBarCtrlSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\CheckBoxCtrlSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\ComboboxCtrlSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\DialogBoxSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\GroupBoxCtrlSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\PopupMenuCtrlSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\ProgressBarCtrlskin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\PushButtonCtrlSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\RadioButtonCtrlSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\SliderCtrlSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\SpinCtrlSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\StatusBarCtrlSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\SysHeaderSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\TabCtrlSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\ToolBarCtrlSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\ListBoxCtrlSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\ListCtrlSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\TreeCtrlSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\GlobalUiManager.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\XmlReader.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\CtrlSkinConfig.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\CtrlSkinPackage.hpp">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\ButtonCtrlSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\ComboLBoxCtrlSkin.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\GlobalSkinUtil.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+    <ClInclude Include="code\skin\CtrlWithScrollBar.h">
+      <Filter>skin\include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="testskin.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="testskinDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Markup.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\XmlReader.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\PopupMenuCtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\ButtonCtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\PushButtonCtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\MenuBarCtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\GroupBoxCtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\ProgressBarCtrlskin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\SliderCtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\CtrlSkinConfig.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\GlobalUiManager.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\CheckBoxCtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\ComboboxCtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\DialogBoxSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\EditCtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\RadioButtonCtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\ScrollBarCtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\SpinCtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\StatusBarCtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\SysHeaderSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\TabCtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\ToolBarCtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\ListBoxCtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\ListCtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\TreeCtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\CtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\GlobalSkinUtil.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\ComboLBoxCtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="code\ImageManager.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="testskin.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{852A477A-0578-4462-AAE3-2341013B9EF9}</ProjectGuid>
+    <RootNamespace>testskin</RootNamespace>
+    <Keyword>MFCProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)code;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>D:\Program Files (x86)\Visual Leak Detector\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vld.lib</AdditionalDependencies>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0804</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)code;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0804</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="res\testskin.ico" />
+    <None Include="res\testskin.rc2" />
+    <None Include="res\toolbar1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="code\skin\ButtonCtrlSkin.h" />
+    <ClInclude Include="code\skin\CheckBoxCtrlSkin.h" />
+    <ClInclude Include="code\skin\ComboboxCtrlSkin.h" />
+    <ClInclude Include="code\skin\ComboLBoxCtrlSkin.h" />
+    <ClInclude Include="code\skin\CtrlSkin.h" />
+    <ClInclude Include="code\skin\CtrlSkinConfig.h" />
+    <ClInclude Include="code\skin\CtrlSkinPackage.hpp" />
+    <ClInclude Include="code\skin\CtrlWithScrollBar.h" />
+    <ClInclude Include="code\skin\DialogBoxSkin.h" />
+    <ClInclude Include="code\skin\EditCtrlSkin.h" />
+    <ClInclude Include="code\skin\GlobalSkinUtil.h" />
+    <ClInclude Include="code\skin\GlobalUiManager.h" />
+    <ClInclude Include="code\skin\GroupBoxCtrlSkin.h" />
+    <ClInclude Include="code\skin\ListBoxCtrlSkin.h" />
+    <ClInclude Include="code\skin\ListCtrlSkin.h" />
+    <ClInclude Include="code\skin\MenuBarCtrlSkin.h" />
+    <ClInclude Include="code\skin\PopupMenuCtrlSkin.h" />
+    <ClInclude Include="code\skin\ProgressBarCtrlskin.h" />
+    <ClInclude Include="code\skin\PushButtonCtrlSkin.h" />
+    <ClInclude Include="code\skin\RadioButtonCtrlSkin.h" />
+    <ClInclude Include="code\skin\ScrollBarCtrlSkin.h" />
+    <ClInclude Include="code\skin\SliderCtrlSkin.h" />
+    <ClInclude Include="code\skin\SpinCtrlSkin.h" />
+    <ClInclude Include="code\skin\StatusBarCtrlSkin.h" />
+    <ClInclude Include="code\skin\SysHeaderSkin.h" />
+    <ClInclude Include="code\skin\TabCtrlSkin.h" />
+    <ClInclude Include="code\skin\ToolBarCtrlSkin.h" />
+    <ClInclude Include="code\skin\TreeCtrlSkin.h" />
+    <ClInclude Include="code\skin\XmlReader.h" />
+    <ClInclude Include="Markup.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="testskin.h" />
+    <ClInclude Include="testskinDlg.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="code\ImageManager.cpp" />
+    <ClCompile Include="code\skin\ButtonCtrlSkin.cpp" />
+    <ClCompile Include="code\skin\CheckBoxCtrlSkin.cpp" />
+    <ClCompile Include="code\skin\ComboboxCtrlSkin.cpp" />
+    <ClCompile Include="code\skin\ComboLBoxCtrlSkin.cpp" />
+    <ClCompile Include="code\skin\CtrlSkin.cpp" />
+    <ClCompile Include="code\skin\CtrlSkinConfig.cpp" />
+    <ClCompile Include="code\skin\DialogBoxSkin.cpp" />
+    <ClCompile Include="code\skin\EditCtrlSkin.cpp" />
+    <ClCompile Include="code\skin\GlobalSkinUtil.cpp" />
+    <ClCompile Include="code\skin\GlobalUiManager.cpp" />
+    <ClCompile Include="code\skin\GroupBoxCtrlSkin.cpp" />
+    <ClCompile Include="code\skin\ListBoxCtrlSkin.cpp" />
+    <ClCompile Include="code\skin\ListCtrlSkin.cpp" />
+    <ClCompile Include="code\skin\MenuBarCtrlSkin.cpp" />
+    <ClCompile Include="code\skin\PopupMenuCtrlSkin.cpp" />
+    <ClCompile Include="code\skin\ProgressBarCtrlskin.cpp" />
+    <ClCompile Include="code\skin\PushButtonCtrlSkin.cpp" />
+    <ClCompile Include="code\skin\RadioButtonCtrlSkin.cpp" />
+    <ClCompile Include="code\skin\ScrollBarCtrlSkin.cpp" />
+    <ClCompile Include="code\skin\SliderCtrlSkin.cpp" />
+    <ClCompile Include="code\skin\SpinCtrlSkin.cpp" />
+    <ClCompile Include="code\skin\StatusBarCtrlSkin.cpp" />
+    <ClCompile Include="code\skin\SysHeaderSkin.cpp" />
+    <ClCompile Include="code\skin\TabCtrlSkin.cpp" />
+    <ClCompile Include="code\skin\ToolBarCtrlSkin.cpp" />
+    <ClCompile Include="code\skin\TreeCtrlSkin.cpp" />
+    <ClCompile Include="code\skin\XmlReader.cpp" />
+    <ClCompile Include="Markup.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="testskin.cpp" />
+    <ClCompile Include="testskinDlg.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="testskin.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="testskin.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

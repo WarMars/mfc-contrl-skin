@@ -1,0 +1,456 @@
+// 注意，不要将此文件包含在工程中
+
+#include "CtrlWithScrollBar.h"
+#include "utils.hpp"
+namespace GlobalSkin
+{
+template<typename T>
+CCtrlWithScrollBar<T>::CCtrlWithScrollBar( )
+{
+
+}
+
+template<typename T>
+CCtrlWithScrollBar<T>::~CCtrlWithScrollBar( )
+{
+
+}
+		
+/** 
+* @brief 接管控件皮肤之前
+*/
+template<typename T>
+typename CCtrlWithScrollBar<T>::CParamReference* 
+	CCtrlWithScrollBar<T>::OnPreTakeOverSkin( HWND hWnd )
+{
+	CParamReferencePtr pParam = new CParamReference;
+
+	pParam ->m_pScrollBarParam =  
+		DynamicParam::CreateHwndScrollBarParam( hWnd );
+
+	long lStyle		= GetWindowLong( hWnd, GWL_STYLE );
+	long lExStyle	=GetWindowLong( hWnd,GWL_EXSTYLE);
+	pParam ->m_bBorder = ( 
+		( 0 != (( lStyle) & (WS_THICKFRAME | WS_DLGFRAME | WS_BORDER)) ) ||
+		( 0 != (( lExStyle ) & WS_EX_DLGMODALFRAME) ) );
+	//i2b( lStyle & (WS_THICKFRAME | WS_DLGFRAME | WS_BORDER)) ||
+	//	i2b( lExstyle & WS_EX_DLGMODALFRAME) ||
+	//	!i2b( lStyle & (WS_CHILD | WS_POPUP) ) 
+
+	if( !OnInitSkinParam( hWnd,pParam) )
+	{
+		return NULL;
+	}
+	return pParam.release();
+}
+
+
+/** 
+* @brief 消息处理过程
+*/
+template<typename T>
+LRESULT CCtrlWithScrollBar<T>::OnWndProc(UINT msg,WPARAM wp,LPARAM lp)
+{
+	//TRACE("base:%d(0x%08X)\n",msg,msg );
+	switch( msg )
+	{
+	case WM_NCMOUSEMOVE:
+		OnNcMouseMove( UINT(wp), 
+			CPoint(GET_X_LPARAM(lp),GET_Y_LPARAM(lp) ) );
+		return 0;
+		break;
+	case WM_MOUSEMOVE:
+		OnMouseMove(UINT(wp), 
+			CPoint(GET_X_LPARAM(lp),GET_Y_LPARAM(lp) ) );
+		return 0;
+		break;
+	case WM_NCLBUTTONDOWN:
+		OnNcLButtonDown( UINT(wp), 
+			CPoint(GET_X_LPARAM(lp), GET_Y_LPARAM(lp) ) );
+		return 0;
+		break;
+	case WM_NCLBUTTONDBLCLK:
+		OnNcLButtonDblClk( UINT(wp),
+			CPoint(GET_X_LPARAM(lp), GET_Y_LPARAM(lp) ) );
+		return 0;
+		break;
+	case WM_NCCALCSIZE:
+		OnNcCalcSize(i2b(wp),
+			(NCCALCSIZE_PARAMS*)(lp) );
+		return 0;
+		break;
+	case WM_NCHITTEST:
+		return OnNcHitTest( CPoint( 
+			GET_X_LPARAM(lp), GET_Y_LPARAM(lp) ) );
+		break;
+	case WM_NCPAINT:
+		OnNcPaint(HRGN(wp) );
+		return 0;
+		break;
+	default:
+		break;
+	}
+
+	return OnWndOtherProc( msg,wp,lp );
+}
+
+template<typename T>
+LRESULT CCtrlWithScrollBar<T>::OnWndOtherProc( 
+	UINT nMsg, WPARAM wParam, LPARAM lParam )
+{
+	return OnPreviousWndProc( m_hWnd, nMsg, wParam, lParam );
+}
+
+template<typename T>
+LRESULT CCtrlWithScrollBar<T>::OnNcHitTest( const CPoint& point )
+{
+	if( IsNull() )
+	{
+		return  HTNOWHERE;
+	}
+	return DynamicParam::OnScrollBarHitTest(
+		m_hWnd, 
+		m_pCurParam ->m_pScrollBarParam, point );
+}
+
+template<typename T>
+void CCtrlWithScrollBar<T>::OnNcPaint(HRGN rgn1)
+{
+	if( IsNull() )
+	{
+		return;
+	}
+
+	//OnAutoDefaultWndProc( );
+	//return;
+	CRect rectWindow;
+	GetWindowRect( m_hWnd, &rectWindow );
+
+	CRect rectClient;
+	GetClientRect( m_hWnd, &rectClient);
+	ClientToScreen( m_hWnd, &rectClient);
+	rectClient.OffsetRect(-rectWindow.left,-rectWindow.top);
+	rectWindow.OffsetRect(-rectWindow.left,-rectWindow.top);
+
+	if( m_pCurParam->m_pScrollBarParam->GetHBar().IsVisible( ) )
+	{
+		GetScrollBarCtrlSkin( )
+			.DrawHScrollBar( m_hWnd, m_pCurParam ->m_pScrollBarParam );
+	}
+
+	if( m_pCurParam->m_pScrollBarParam->GetVBar().IsVisible( ) )
+	{
+		GetScrollBarCtrlSkin( )
+			.DrawVScrollBar( m_hWnd, m_pCurParam ->m_pScrollBarParam );
+	}
+	//	if(m_bBorder)
+	//		m_pListBoxSkin->DrawImageBorder(pDC,rtWindow,m_pListBoxSkin->m_imageBorder);
+
+	if( m_pCurParam->m_pScrollBarParam->GetHBar().IsVisible( ) && 
+		m_pCurParam->m_pScrollBarParam->GetVBar().IsVisible( ) )
+	{
+		CRect rtSizing;
+		if( m_pCurParam->m_pScrollBarParam->IsLeftScrollBar() )
+		{
+			rtSizing = CRect(
+				rectClient.right - GetSystemMetrics(SM_CXVSCROLL),
+				rectClient.bottom,
+				rectClient.right,
+				rectClient.bottom + GetSystemMetrics(SM_CYHSCROLL) );
+		}
+		else
+		{
+			rtSizing = CRect(
+				rectClient.right, 
+				rectClient.bottom,
+				rectClient.right + GetSystemMetrics(SM_CXVSCROLL),
+				rectClient.bottom + GetSystemMetrics(SM_CYHSCROLL) );
+		}
+
+		GetScrollBarCtrlSkin( )
+			.DrawSizing( m_hWnd, rtSizing );
+	}
+
+}
+
+template<typename T>
+void CCtrlWithScrollBar<T>::OnNcLButtonDown( UINT nHitTest, const CPoint& point )
+{
+	switch(nHitTest)
+	{
+	case HTHSCROLL:
+		GetScrollBarCtrlSkin( )
+			.TrackScrollBar(m_hWnd,m_pCurParam ->m_pScrollBarParam,SB_HORZ,point);
+		break;
+	case HTVSCROLL:
+		GetScrollBarCtrlSkin( )
+			.TrackScrollBar(m_hWnd,m_pCurParam ->m_pScrollBarParam,SB_VERT,point);
+		break;
+	default:
+		OnAutoDefaultWndProc( );
+		break;
+	}
+}
+/******************************************
+* 函数名 : OnNcLButtonDblClk
+* 功能	 : 非客户区双击鼠标左键 
+*******************************************/
+template<typename T>
+void CCtrlWithScrollBar<T>::OnNcLButtonDblClk( UINT nHitTest, const CPoint& point )
+{
+	if( IsNull() )
+	{
+		return;
+	}
+#if !0
+	if(nHitTest == HTHSCROLL)
+	{
+		GetScrollBarCtrlSkin( )
+			.TrackScrollBar( 
+			m_hWnd, m_pCurParam->m_pScrollBarParam,
+			SB_HORZ,point);
+	}
+	else if(nHitTest == HTVSCROLL)
+	{
+
+		GetScrollBarCtrlSkin( )
+			.TrackScrollBar(
+			m_hWnd, m_pCurParam->m_pScrollBarParam,SB_VERT,point);
+	}
+	else
+#endif
+	{
+		OnAutoDefaultWndProc( );
+	}
+}
+/******************************************
+* 函数名 : OnNcCalcSize
+* 功能	 : 根据窗口大小计算客户区大小 
+*******************************************/
+template<typename T>
+void CCtrlWithScrollBar<T>::OnNcCalcSize( 
+	bool bCalcValidRects, NCCALCSIZE_PARAMS* lpncsp)
+{
+	//TRACE(_T(__FUNCTION__ )   _T("\n") );
+	DynamicParam::OnNcScrollBar(
+		m_hWnd, m_pCurParam ->m_pScrollBarParam,
+		m_pCurParam ->m_bBorder,
+		TRUE ==bCalcValidRects, lpncsp);
+
+}
+
+template<typename T>
+void CCtrlWithScrollBar<T>::OnMouseMove( UINT nFlags , const CPoint& point )
+{
+	if( IsNull() )
+	{
+		return;
+	}
+	OnAutoDefaultWndProc( );
+
+	if( m_pCurParam ->m_pScrollBarParam ->GetHBar().nArrowState1 !=  
+		CPE::SBS_Normal ||
+		m_pCurParam ->m_pScrollBarParam ->GetHBar().nArrowState2 != 
+		CPE::SBS_Normal|| 
+		m_pCurParam ->m_pScrollBarParam ->GetHBar().nThumbState != 
+		CPE::SBS_Normal || 
+		m_pCurParam ->m_pScrollBarParam ->GetVBar().nArrowState1 != 
+		CPE::SBS_Normal || 
+		m_pCurParam ->m_pScrollBarParam ->GetVBar().nArrowState2 != 
+		CPE::SBS_Normal|| 
+		m_pCurParam ->m_pScrollBarParam ->GetVBar().nThumbState != 
+		CPE::SBS_Normal )
+	{
+
+		m_pCurParam ->m_pScrollBarParam ->GetVBar().nArrowState1 =  
+			CPE::SBS_Normal;
+		m_pCurParam ->m_pScrollBarParam ->GetVBar().nArrowState2 = 
+			CPE::SBS_Normal;
+		m_pCurParam ->m_pScrollBarParam ->GetVBar().nThumbState = 
+			CPE::SBS_Normal;
+		if(m_pCurParam ->m_pScrollBarParam ->GetVBar().IsVisible() )
+		{
+
+			GetScrollBarCtrlSkin( )
+				.DrawVScrollBar( m_hWnd, m_pCurParam->m_pScrollBarParam );
+		}
+
+		m_pCurParam ->m_pScrollBarParam ->GetHBar().nArrowState1 =  
+			CPE::SBS_Normal;
+		m_pCurParam ->m_pScrollBarParam ->GetHBar().nArrowState2 = 
+			CPE::SBS_Normal;
+		m_pCurParam ->m_pScrollBarParam ->GetHBar().nThumbState = 
+			CPE::SBS_Normal;
+		if(m_pCurParam ->m_pScrollBarParam ->GetHBar().IsVisible( ) )
+		{
+			GetScrollBarCtrlSkin( )
+				.DrawHScrollBar( m_hWnd, m_pCurParam ->m_pScrollBarParam );
+		}
+	}
+}
+/******************************************
+* 函数名 : OnNcMouseMove
+* 功能	 : 非客户区鼠标移动 
+*******************************************/
+template<typename T>
+void CCtrlWithScrollBar<T>::OnNcMouseMove( UINT nHitTest, const CPoint& ptMove )
+{
+	//TRACE(_T(__FUNCTION__ )   _T("\n") );
+	CPoint point = ptMove;
+	switch(nHitTest)
+	{
+	case HTHSCROLL:
+		{
+			int xoffset = 0, yoffset = 0;
+			CRect rtClient,rtWindow;
+			GetClientRect( m_hWnd, &rtClient);
+			ClientToScreen( m_hWnd, &rtClient);
+			GetWindowRect( m_hWnd, &rtWindow);
+
+			xoffset = rtClient.left - rtWindow.left;
+			yoffset = rtClient.top - rtWindow.top;
+			::ScreenToClient(m_hWnd, &point );
+			point.x += xoffset;
+			point.y += yoffset;
+			;
+			const CPE::ScrollBarHitTest
+				hitTest = GetScrollBarCtrlSkin( )
+				.ScrollHitTest( m_hWnd, SB_HORZ, point,FALSE);
+
+			if( hitTest == CPE::SBHT_TopArrow  )
+			{
+				m_pCurParam ->m_pScrollBarParam ->GetHBar().nArrowState1 =  
+					CPE::SBS_Hover;
+				m_pCurParam ->m_pScrollBarParam ->GetHBar().nArrowState2 = 
+					CPE::SBS_Normal;
+				m_pCurParam ->m_pScrollBarParam ->GetHBar().nThumbState = 
+					CPE::SBS_Normal;
+				GetScrollBarCtrlSkin( )
+					.DrawHScrollBar( m_hWnd, m_pCurParam->m_pScrollBarParam );
+			}
+			else if(hitTest == CPE::SBHT_BottomArrow)
+			{
+				m_pCurParam ->m_pScrollBarParam ->GetHBar().nArrowState1 =  
+					CPE::SBS_Normal;
+				m_pCurParam ->m_pScrollBarParam ->GetHBar().nArrowState2 = 
+					CPE::SBS_Hover;
+				m_pCurParam ->m_pScrollBarParam ->GetHBar().nThumbState = 
+					CPE::SBS_Normal;
+				GetScrollBarCtrlSkin( )
+					.DrawHScrollBar( m_hWnd, m_pCurParam->m_pScrollBarParam );
+			}
+			else if(hitTest == CPE::SBHT_Thumb)
+			{
+				m_pCurParam ->m_pScrollBarParam ->GetHBar().nArrowState1 =  
+					CPE::SBS_Normal;
+				m_pCurParam ->m_pScrollBarParam ->GetHBar().nArrowState2 = 
+					CPE::SBS_Normal;
+				m_pCurParam ->m_pScrollBarParam ->GetHBar().nThumbState = 
+					CPE::SBS_Hover;
+				GetScrollBarCtrlSkin( )
+					.DrawHScrollBar( m_hWnd, m_pCurParam->m_pScrollBarParam );
+			}
+			else
+			{
+				m_pCurParam ->m_pScrollBarParam ->GetHBar().nArrowState1 =  
+					CPE::SBS_Normal;
+				m_pCurParam ->m_pScrollBarParam ->GetHBar().nArrowState2 = 
+					CPE::SBS_Normal;
+				m_pCurParam ->m_pScrollBarParam ->GetHBar().nThumbState = 
+					CPE::SBS_Normal;
+				GetScrollBarCtrlSkin( )
+					.DrawHScrollBar( m_hWnd, m_pCurParam->m_pScrollBarParam );
+			}
+
+			m_pCurParam ->m_pScrollBarParam ->GetVBar().nArrowState1 =  
+				CPE::SBS_Normal;
+			m_pCurParam ->m_pScrollBarParam ->GetVBar().nArrowState2 = 
+				CPE::SBS_Normal;
+			m_pCurParam ->m_pScrollBarParam ->GetVBar().nThumbState = 
+				CPE::SBS_Normal;
+			if( m_pCurParam ->m_pScrollBarParam ->GetVBar().IsVisible() )
+			{
+				GetScrollBarCtrlSkin( )
+					.DrawVScrollBar( m_hWnd, m_pCurParam->m_pScrollBarParam );
+			}
+		}
+		break;
+	case HTVSCROLL:
+		{
+			int xoffset = 0, yoffset = 0;
+			CRect rtClient,rtWindow;
+			GetClientRect( m_hWnd, &rtClient);
+			ClientToScreen( m_hWnd, &rtClient);
+			GetWindowRect( m_hWnd, &rtWindow);
+
+			xoffset = rtClient.left - rtWindow.left;
+			yoffset = rtClient.top - rtWindow.top;
+			::ScreenToClient(m_hWnd, &point );
+			point.x += xoffset;
+			point.y += yoffset;
+			const CPE::ScrollBarHitTest
+				hitTest = GetScrollBarCtrlSkin( )
+				.ScrollHitTest( m_hWnd, SB_VERT,point,FALSE);
+
+			if(hitTest == CPE::SBHT_TopArrow)
+			{
+				m_pCurParam ->m_pScrollBarParam ->GetVBar().nArrowState1 =  
+					CPE::SBS_Normal;
+				m_pCurParam ->m_pScrollBarParam ->GetVBar().nArrowState2 = 
+					CPE::SBS_Normal;
+				m_pCurParam ->m_pScrollBarParam ->GetVBar().nThumbState = 
+					CPE::SBS_Normal;
+				GetScrollBarCtrlSkin( )
+					.DrawVScrollBar( m_hWnd, m_pCurParam->m_pScrollBarParam );
+			}
+			else if(hitTest == CPE::SBHT_BottomArrow)
+			{
+				m_pCurParam ->m_pScrollBarParam ->GetVBar().nArrowState1 =  
+					CPE::SBS_Normal;
+				m_pCurParam ->m_pScrollBarParam ->GetVBar().nArrowState2 = 
+					CPE::SBS_Hover;
+				m_pCurParam ->m_pScrollBarParam ->GetVBar().nThumbState = 
+					CPE::SBS_Normal;
+				GetScrollBarCtrlSkin( )
+					.DrawVScrollBar( m_hWnd, m_pCurParam->m_pScrollBarParam );
+			}
+			else if(hitTest == CPE::SBHT_Thumb)
+			{
+				m_pCurParam ->m_pScrollBarParam ->GetVBar().nArrowState1 =  
+					CPE::SBS_Normal;
+				m_pCurParam ->m_pScrollBarParam ->GetVBar().nArrowState2 = 
+					CPE::SBS_Normal;
+				m_pCurParam ->m_pScrollBarParam ->GetVBar().nThumbState = 
+					CPE::SBS_Hover;
+				GetScrollBarCtrlSkin( )
+					.DrawVScrollBar( m_hWnd, m_pCurParam->m_pScrollBarParam );
+			}
+			else
+			{
+				m_pCurParam ->m_pScrollBarParam ->GetVBar().nArrowState1 =  
+					CPE::SBS_Normal;
+				m_pCurParam ->m_pScrollBarParam ->GetVBar().nArrowState2 = 
+					CPE::SBS_Normal;
+				m_pCurParam ->m_pScrollBarParam ->GetVBar().nThumbState = 
+					CPE::SBS_Normal;
+				GetScrollBarCtrlSkin( )
+					.DrawVScrollBar( m_hWnd, m_pCurParam->m_pScrollBarParam );
+			}
+			m_pCurParam ->m_pScrollBarParam ->GetHBar().nArrowState1 =  
+				CPE::SBS_Normal;
+			m_pCurParam ->m_pScrollBarParam ->GetHBar().nArrowState2 = 
+				CPE::SBS_Normal;
+			m_pCurParam ->m_pScrollBarParam ->GetHBar().nThumbState = 
+				CPE::SBS_Normal;
+			if( m_pCurParam ->m_pScrollBarParam ->GetHBar().IsVisible() )
+			{
+				GetScrollBarCtrlSkin( )
+					.DrawHScrollBar( m_hWnd, m_pCurParam->m_pScrollBarParam );
+			}
+		}
+		break;
+	default:
+		OnAutoDefaultWndProc( );
+	}
+}
+}

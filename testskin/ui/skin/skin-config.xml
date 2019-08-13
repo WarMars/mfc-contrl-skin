@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<control-skins> <!-- 皮肤中的资源配置,如果删除某个控件的配置，则不会有它的皮肤 -->
+	<file rootpath="" /> 		<!-- 配置的根路径 -->
+	<button filename="Button.bmp"> 		<!-- 普通按钮 -->
+		<background>
+			<normal  top=0 left=0 width=143 height=60 />				<!--无操作-->
+			<pressed top=0 left=143 width=143 height=60 /> 				<!--按下 -->
+			<disabled top=0 left=286 width=143 height=60 />				<!--禁用-->
+		</background>
+	</button>
+	<edit filename="edit.bmp" >			<!-- 文本框 -->
+		<border>
+			<background top=0 left=0 width=48 height=48 />				<!-- 边框 -->
+		</border>
+	</edit>
+	<check filename="CheckBox.bmp" >		<!-- 复选框 -->
+		<background top=144 left=0 width=48 height=48 />
+		<button>
+			<checked>
+				<normal top=0 left=0 width=48 height=48 />
+				<hover top=0 left=48 width=48 height=48 />
+				<focused top=0 left=96 width=48 height=48 />
+				<pressed top=0 left=144 width=48 height=48 />
+				<disabled top=0 left=192 width=48 height=48 />
+			</checked>
+			<unchecked>
+				<normal top=96 left=0 width=48 height=48 />
+				<hover top=96 left=48 width=48 height=48 />
+				<focused top=96 left=96 width=48 height=48 />
+				<pressed top=96 left=144 width=48 height=48 />
+				<disabled top=96 left=192 width=48 height=48 />
+			</unchecked>
+			<indetermined>
+				<normal top=48 left=0 width=48 height=48 />
+				<hover top=48 left=48 width=48 height=48 />
+				<focused top=48 left=96 width=48 height=48 />
+				<pressed top=48 left=144 width=48 height=48 />
+				<disabled top=48 left=192 width=48 height=48 />
+			</indetermined>
+		</button>
+	</check>
+	<radio filename="RadioButton.bmp">			<!-- 单选框 -->
+		<background top=96 left=0 width=48 height=48 />
+		<button>
+			<checked>
+				<background>
+					<normal top=0 left=0 width=48 height=48 />
+					<hover top=0 left=48 width=48 height=48 />
+					<pressed top=0 left=96 width=48 height=48 />
+					<focused top=0 left=144 width=48 height=48 />
+					<disabled top=0 left=192 width=48 height=48 />
+				</background>
+			</checked>
+			<unchecked>
+				<background>
+					<normal top=48 left=0 width=48 height=48 />
+					<hover top=48 left=48 width=48 height=48 />
+					<pressed top=48 left=96 width=48 height=48 />
+					<focused top=48 left=144 width=48 height=48 />
+					<disabled top=48 left=192 width=48 height=48 />
+				</background>
+			</unchecked>
+		</button>
+	</radio>
+	<combobox filename="ComboBox.bmp">		<!-- 组合框 -->
+		<border top=48 left=0 width=48 height=48 />				<!--边框-->
+		<down-arrow>			<!--下拉箭头-->
+			<normal  top=0 left=0 width=48 height=48 />			<!--焦点不同状态不同-->
+			<hover  top=0 left=48 width=48 height=48 />
+			<pressed  top=0 left=96 width=48 height=48 />
+			<focused  top=0 left=144 width=48 height=48 />
+			<disabled  top=0 left=192 width=48 height=48 />
+		</down-arrow>
+	</combobox>
+	<listbox filename="">	<!--列表框 -->
+	</listbox>
+	
+	<group filename="GroupBox.bmp">		<!--分组框-->
+		<border>					<!--边框-->
+			<background  top=48 left=0 width=48 height=48 />
+		</border>	
+		<caption>
+			<background top=0 left=0 width=48 height=48 />					<!--标题-->
+		</caption>
+	</group>
+	
+	<list filename="">		<!--listctrl-->
+	</list>
+	
+	<header filename="Header.bmp">	<!--表头-->
+		<background  top=48 left=0 width=48 height=4 />
+		<item>
+			<background>
+				<normal  top=0 left=0 width=48 height=48 />
+				<hover  top=0 left=48 width=48 height=48 />
+				<pressed  top=0 left=96 width=48 height=48 />
+			</background>
+		</item>
+	</header>
+	<statusbar filename="StatusBar.bmp">	<!--状态栏-->
+		<background  top=0 left=0 width=40 height=40 />
+		<item>
+			<background top=40 left=0 width=40 height=40 />
+		</item>
+		
+	</statusbar>
+	
+	<slider filename="SliderBar.bmp">	<!--滑块-->
+		<horizontal>
+			<background top=0 left=0 width=160 height=40 />
+			<line top=40 left=0 width=160 height=20 />
+			<slider top=60 left=0 width=40 height=40 />
+		</horizontal>
+		<vertical>
+			<background top=0 left=0 width=3 height=4 />
+			<line top=0 left=0 width=3 height=4 />
+			<slider top=60 left=40 width=40 height=40 />
+		</vertical>
+	</slider>
+	
+	<scrollbar filename="ScrollBar.bmp">	<!--滚动条-->
+		<horizontal>
+			<arrow>
+				<left>
+					<normal top=144 left=0 width=48 height=48 />
+					<hover top=144 left=48 width=48 height=48 />
+					<pressed top=144 left=96 width=48 height=48 />
+					<disabled top=144 left=144 width=48 height=48 />
+				</left>
+				<right>
+					<normal top=96 left=0 width=48 height=48 />
+					<hover top=96 left=48 width=48 height=48 />
+					<pressed top=96 left=96 width=48 height=48 />
+					<disabled top=96 left=144 width=48 height=48 />
+				</right>
+			</arrow>
+			<background top=288 left=0 width=240 height=14 />
+			<thumb>
+				<normal top=192 left=0 width=48 height=48 />
+				<hover top=192 left=48 width=48 height=48 />
+				<pressed top=192 left=96 width=48 height=48 />
+				<disabled top=192 left=144 width=48 height=48 />
+			</thumb>
+		</horizontal>
+		<vertical>
+			<arrow>
+				<top>
+					<normal top=0 left=0 width=48 height=48 />
+					<hover top=0 left=48 width=48 height=48 />
+					<pressed top=0 left=96 width=48 height=48 />
+					<disabled top=0 left=144 width=48 height=48 />
+				</top>
+				<bottom>
+					<normal top=48 left=0 width=48 height=48 />
+					<hover top=48 left=48 width=48 height=48 />
+					<pressed top=48 left=96 width=48 height=48 />
+					<disabled top=48 left=144 width=48 height=48 />
+				</bottom>
+			</arrow>
+			<background top=0 left=192 width=14 height=240 />
+			<thumb>
+				<normal top=192 left=48 width=48 height=48 />
+				<hover top=192 left=48 width=48 height=48 />
+				<pressed top=192 left=48 width=48 height=48 />
+				<disabled top=192 left=48 width=48 height=48 />
+			</thumb>
+		</vertical>
+		<sizing top=240 left=0 width=48 height=48 />
+	</scrollbar>
+	
+	<spin filename="SpinBox.bmp">	<!--spin控件-->
+		<arrow>
+			<up>
+				<background>
+					<normal  top=0 left=0 width=40 height=40 />
+					<hot  top=0 left=40 width=40 height=40 />
+					<pressed  top=0 left=80 width=40 height=40 />
+					<disabled  top=0 left=120 width=40 height=40 />
+				</background>
+			</up>				
+			<down>				
+				<background>
+					<normal  top=40 left=0 width=40 height=40 />
+					<hot  top=40 left=40 width=40 height=40 />
+					<pressed  top=40 left=80 width=40 height=40 />
+					<disabled  top=40 left=120 width=40 height=40 />
+				</background>
+			</down>
+			<left>				
+				<background>
+					<normal  top=80 left=0 width=40 height=40 />
+					<hot  top=80 left=40 width=40 height=40 />
+					<pressed  top=80 left=80 width=40 height=40 />
+					<disabled  top=80 left=120 width=40 height=40 />
+				</background>
+			</left>
+			<right>				
+				<background>
+					<normal  top=120 left=0 width=40 height=40 />
+					<hot  top=120 left=40 width=40 height=40 />
+					<pressed  top=120 left=80 width=40 height=40 />
+					<disabled  top=120 left=120 width=40 height=40 />
+				</background>
+			</right>
+		</arrow>
+	</spin>
+	<dialog>							<!--对话框 -->
+		<button  filename="DialogBox_TitleButton.bmp">									<!--按钮 -->
+			<close>
+				<normal>
+					<background top=40 left=0 width=20 height=20 />
+				</normal>
+				<hover>
+					<background top=40 left=20 width=20 height=20 />
+				</hover>
+				<pressed>
+					<background top=40 left=40 width=20 height=20 />
+				</pressed>
+				<disabled>
+					<background top=40 left=60 width=20 height=20 />
+				</disabled>
+			</close>
+			<maximum>
+				<normal>
+					<background top=20 left=0 width=20 height=20 />
+				</normal>
+				<hover>
+					<background top=20 left=20 width=20 height=20 />
+				</hover>
+				<pressed>
+					<background top=20 left=40 width=20 height=20 />
+				</pressed>
+				<disabled>
+					<background top=20 left=60 width=20 height=20 />
+				</disabled>
+			</maximum>
+			<minimum>  
+				<normal>
+					<background top=0 left=0 width=20 height=20 />
+				</normal>
+				<hover>
+					<background top=0 left=20 width=20 height=20 />
+				</hover>
+				<pressed>
+					<background top=0 left=40 width=20 height=20 />
+				</pressed>
+				<disabled>
+					<background top=0 left=60 width=20 height=20 />
+				</disabled>
+			</minimum>
+			<restore>
+				<normal>
+					<background top=60 left=0 width=20 height=20 />
+				</normal>
+				<hover>
+					<background top=60 left=20 width=20 height=20 />
+				</hover>
+				<pressed>
+					<background top=60 left=40 width=20 height=20 />
+				</pressed>
+				<disabled>
+					<background top=60 left=60 width=20 height=20 />
+				</disabled>
+			</restore>
+			<help>
+				<normal>
+					<background top=80 left=0 width=20 height=20 />
+				</normal>
+				<hover>
+					<background top=80 left=20 width=20 height=20 />
+				</hover>
+				<pressed>
+					<background top=80 left=40 width=20 height=20 />
+				</pressed>
+				<disabled>
+					<background top=80 left=60 width=20 height=20 />
+				</disabled>
+			</help>
+			<system>
+				<normal>
+					<background top=100 left=0 width=20 height=20 />
+				</normal>
+				<hover>
+					<background top=100 left=20 width=20 height=20 />
+				</hover>
+				<pressed>
+					<background top=100 left=40 width=20 height=20 />
+				</pressed>
+				<disabled>
+					<background top=100 left=60 width=20 height=20 />
+				</disabled>
+			</system>
+		</button>
+		<border filename="DialogBox_Border.bmp">									<!-- 边框 -->
+			<top>
+				<active>							<!--激活-->
+					<background top=0 left=0 width=20 height=20 />
+				</active>
+				<unactive>							<!--未激活-->
+					<background top=20 left=0 width=20 height=20 />
+				</unactive>
+			</top>
+			<left>
+				<active>
+					<background top=0 left=20 width=20 height=20 />
+				</active>
+				<unactive>
+					<background top=20 left=20 width=20 height=20 />
+				</unactive>
+			</left>
+			<bottom>
+				<active>
+					<background top=0 left=80 width=20 height=20 />
+				</active>
+				<unactive>
+					<background top=20 left=80 width=20 height=20 />
+				</unactive>
+			</bottom>
+			<right>
+				<active>
+					<background top=0 left=60 width=20 height=20 />
+				</active>
+				<unactive>
+					<background top=20 left=60 width=20 height=20 />
+				</unactive>
+			</right>
+		</border>
+	</dialog>
+	
+	<menubar filename="MenuBar.bmp">	<!-- 菜单栏 -->
+		<background top=0 left=0 width=3 height=4 />
+		<item>
+			<background>
+				<normal top=0 left=0 width=40 height=20 />
+				<hot top=20 left=0 width=20 height=20 />
+				<pressed top=20 left=20 width=20 height=20 />
+			</background>
+		</item>
+		<text>
+			<color>
+				<normal red=0 green=0 blue=0 />
+				<pressed red=80 green=80 blue=80 />
+				<actived red=120 green=120 blue=120 />
+				<grey red=150 green=150 blue=150 />
+			</color>
+		</text>
+	</menubar>
+	
+	<popupmenu filename="PopupMenu.bmp">	<!-- 弹出菜单 -->
+		<color>
+			<parentbk red=0 green=161 blue=0 />
+			<text>
+				<normal  red=0 green=0 blue=0 />
+				<disabled  red=60 green=60 blue=60 />
+				<focused  red=120 green=120 blue=120 />
+				<seperator  red=150 green=150 blue=150 />
+				<background  red=228 green=211 blue=205 />
+			</text>
+		</color>
+	</popupmenu>
+
+	<toolbar filename="ToolBar.bmp">	<!-- 弹出菜单 -->
+		<background top=40 left=0 width=160 height=40 />
+		<item>
+			<background>
+				<normal top=0 left=0 width=40 height=40 />
+				<hover top=0 left=40 width=40 height=40 />
+				<pressed top=0 left=80 width=40 height=40 />
+				<disabled top=0 left=120 width=40 height=40 />
+			</background>
+		</item>
+	</toolbar>
+	<tab filename="TabCtrl.bmp">	<!-- 弹出菜单 -->
+		<background top=40 left=0 width=3 height=40 />
+		<item>
+			<background>
+				<normal top=0 left=0 width=40 height=40 />
+				<hover top=0 left=40 width=40 height=40 />
+				<pressed top=0 left=120 width=40 height=40 />
+			</background>
+		</item>
+	</tab>
+	<progress filename="ProgressBar.bmp">	<!-- 弹出菜单 -->
+		<horizontal>
+			<background top=0 left=0 width=40 height=40 />
+			<progress top=40 left=0 width=40 height=40 />
+		</horizontal>
+		<vertical>
+			<background top=0 left=0 width=40 height=40 />
+			<progress top=40 left=0 width=40 height=40 />
+		</vertical>
+	</progress>
+</control-skins>
