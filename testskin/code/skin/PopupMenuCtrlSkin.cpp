@@ -325,7 +325,7 @@ LRESULT CPopupMenuCtrlSkin::OnWndProc( UINT nMsg, WPARAM wParam, LPARAM lParam )
 
 			//如果我们有一个父菜单，我们可能需要调整我们的
 			//pos避免客户重绘问题
-			sPopupMenuCtrlParameter* pParent = p ->GetParent();
+			CPopupMenuCtrlParameter* pParent = p ->GetParent();
 			if ( NULL != pParent && !i2b(pWP->flags & SWP_NOMOVE))
 			{
 				//如果在父窗口右侧
@@ -896,112 +896,112 @@ void CPopupMenuCtrlSkin::DrawGradientBkgnd(HDC hdc, LPRECT pRect, LPRECT pClip)
 	}
 }
 
-bool sPopupMenuCtrlParameter::IsAnimatedMenus( ) const
+bool CPopupMenuCtrlParameter::IsAnimatedMenus( ) const
 {
 	return m_bAnimatedMenus;
 }
 
-void sPopupMenuCtrlParameter::SetAnimatedMenus( bool b )
+void CPopupMenuCtrlParameter::SetAnimatedMenus( bool b )
 {
 	m_bAnimatedMenus = b;
 }
 
-bool sPopupMenuCtrlParameter::IsFirstRedraw( ) const
+bool CPopupMenuCtrlParameter::IsFirstRedraw( ) const
 {
 	return m_bFirstRedraw;
 }
 
-void sPopupMenuCtrlParameter::SetFirstRedraw( bool b )
+void CPopupMenuCtrlParameter::SetFirstRedraw( bool b )
 {
 	m_bFirstRedraw = b;
 }
-void sPopupMenuCtrlParameter::SetHMenu( HMENU hMenu )
+void CPopupMenuCtrlParameter::SetHMenu( HMENU hMenu )
 {
 	m_hMenu = hMenu;
 }
 
-HMENU sPopupMenuCtrlParameter::GetHMenu( ) const
+HMENU CPopupMenuCtrlParameter::GetHMenu( ) const
 {
 	return m_hMenu;
 }
 
-void sPopupMenuCtrlParameter::SetSelectedIndex( int nIndex )
+void CPopupMenuCtrlParameter::SetSelectedIndex( int nIndex )
 {
 	m_nSelectedIndex = nIndex;
 }
 
-int  sPopupMenuCtrlParameter::GetSelectedIndex( ) const
+int  CPopupMenuCtrlParameter::GetSelectedIndex( ) const
 {
 	return m_nSelectedIndex;
 }
 
-HWND sPopupMenuCtrlParameter::GetHwnd( ) const
+HWND CPopupMenuCtrlParameter::GetHwnd( ) const
 {
 	return m_hWnd;
 }
 
-void sPopupMenuCtrlParameter::SetHwnd( HWND hWnd )
+void CPopupMenuCtrlParameter::SetHwnd( HWND hWnd )
 {
 	m_hWnd = hWnd;
 }
 
-void sPopupMenuCtrlParameter::SetParent(sPopupMenuCtrlParameter* pParent )
+void CPopupMenuCtrlParameter::SetParent(CPopupMenuCtrlParameter* pParent )
 {
 	m_pParent = pParent;
 }
 
-sPopupMenuCtrlParameter* sPopupMenuCtrlParameter::GetParent( ) const
+CPopupMenuCtrlParameter* CPopupMenuCtrlParameter::GetParent( ) const
 {
 	return m_pParent;
 }
 
-bool sPopupMenuCtrlParameter::IsGradient( ) const
+bool CPopupMenuCtrlParameter::IsGradient( ) const
 {
 	return m_bGradient;
 }
 
-void sPopupMenuCtrlParameter::SetGradient( bool b )
+void CPopupMenuCtrlParameter::SetGradient( bool b )
 {
 	m_bGradient = b;
 }
 
-bool sPopupMenuCtrlParameter::IsFirstShow( ) const
+bool CPopupMenuCtrlParameter::IsFirstShow( ) const
 {
 	return m_bFirstShown;
 }
 
-void sPopupMenuCtrlParameter::SetFirstShow( bool b )
+void CPopupMenuCtrlParameter::SetFirstShow( bool b )
 {
 	m_bFirstShown = b;
 }
 
-COLORREF sPopupMenuCtrlParameter::GetButtonColor( ) const
+COLORREF CPopupMenuCtrlParameter::GetButtonColor( ) const
 {
 	return m_clrBtn;
 }
 
-void sPopupMenuCtrlParameter::SetButtonColor( COLORREF color )
+void CPopupMenuCtrlParameter::SetButtonColor( COLORREF color )
 {
 	m_clrBtn = color;
 }
 
 
-bool sPopupMenuCtrlParameter::HasRoundCorner( ) const
+bool CPopupMenuCtrlParameter::HasRoundCorner( ) const
 {
 	return i2b( m_byStyle & CPE::PMS_RoundCorner );
 }
 
-bool sPopupMenuCtrlParameter::HasSideBar( ) const
+bool CPopupMenuCtrlParameter::HasSideBar( ) const
 {
 	return i2b( m_byStyle & CPE::PMS_SiderBar );
 }
 
-bool sPopupMenuCtrlParameter::IsFlat( ) const
+bool CPopupMenuCtrlParameter::IsFlat( ) const
 {
 	return i2b( m_byStyle & CPE::PMS_Flat );
 }
 
-void sPopupMenuCtrlParameter::SetRoundCorner( bool bAdd )
+void CPopupMenuCtrlParameter::SetRoundCorner( bool bAdd )
 {
 	if( bAdd )
 	{
@@ -1013,7 +1013,7 @@ void sPopupMenuCtrlParameter::SetRoundCorner( bool bAdd )
 	}
 }
 
-void sPopupMenuCtrlParameter::SetSideBar( bool bAdd )
+void CPopupMenuCtrlParameter::SetSideBar( bool bAdd )
 {
 	if( bAdd )
 	{
@@ -1025,7 +1025,7 @@ void sPopupMenuCtrlParameter::SetSideBar( bool bAdd )
 	}
 }
 
-void sPopupMenuCtrlParameter::SetFlat( bool bAdd )
+void CPopupMenuCtrlParameter::SetFlat( bool bAdd )
 {
 	if( bAdd )
 	{
@@ -1037,7 +1037,7 @@ void sPopupMenuCtrlParameter::SetFlat( bool bAdd )
 	}
 }
 
-void sPopupMenuCtrlParameter::SetStyle( BYTE byStyle )
+void CPopupMenuCtrlParameter::SetStyle( BYTE byStyle )
 {
 	m_byStyle = 0;
 }

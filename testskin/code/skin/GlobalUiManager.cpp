@@ -230,7 +230,7 @@ DynamicParam::CMenubarCtrlSkin* CGlobalUiManager::GetMenuBarCtrlSkin( )
 LRESULT CGlobalUiManager::HandleWndProc( HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam )
 {
 	//≤È’“
-	sCtrlParameter* pParam = NULL;
+	CCtrlParameter* pParam = NULL;
 	CCtrlSkin* pSkin = NULL;
 	for( std::vector<CCtrlSkinPtr>::iterator it = m_vectorCtrlSkins.begin();
 		it != m_vectorCtrlSkins.end(); ++it )

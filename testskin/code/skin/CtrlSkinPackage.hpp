@@ -21,7 +21,7 @@ namespace GlobalSkin
 	{
 	protected:
 		typedef CClassReference<T>		CParamReference;
-		typedef RefPtr<CParamReference>	CParamReferencePtr;
+		typedef CRefPtr<CParamReference>	CParamReferencePtr;
 	public:
 		inline CCtrlSkinPackage( ) { }
 
@@ -29,7 +29,7 @@ namespace GlobalSkin
 		 * @override
 		 */
 		inline bool	CheckHwnd( 
-			HWND hWnd, PCTSTR lpszWndClassName, sCtrlParameter*& pParam )
+			HWND hWnd, PCTSTR lpszWndClassName, CCtrlParameter*& pParam )
 		{
 			// 过滤按钮类型
 			if( 0 != _tcsicmp( lpszWndClassName,  GetHwndClassName() ) )
@@ -77,7 +77,7 @@ namespace GlobalSkin
 		/** 
 		 * @override
 		 */
-		inline bool CheckOwner( HWND hWnd, sCtrlParameter*& pParam )
+		inline bool CheckOwner( HWND hWnd, CCtrlParameter*& pParam )
 		{
 			CParamReferencePtr pStatus;
 			if( FindWnd(hWnd,pStatus ) )

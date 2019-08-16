@@ -58,7 +58,7 @@ namespace GlobalSkin
 
 	class CConfigData : public CReferenceObject
 	{
-		friend class RefPtr<CConfigData>;
+		friend class CRefPtr<CConfigData>;
 	public:
 		bool	IsColor( ) const;
 		void    SetIsColor( bool bIsColor );
@@ -82,7 +82,7 @@ namespace GlobalSkin
 	public:
 		virtual bool LoadFile( const XString& strPath ) = 0; 
 		bool GetConfigData(
-			const XPath& strPath,RefPtr<CConfigData>& configData ) const;
+			const XPath& strPath,CRefPtr<CConfigData>& configData ) const;
 #if defined(_WINDEF_) || defined( __wtypes_h__)
 		COLORREF GetRGBColor( const XPath& strPath ) const;
 #endif
@@ -92,7 +92,7 @@ namespace GlobalSkin
 	protected:
 		
 		/* ≈‰÷√ ˝æ› */
-		std::map<XString,RefPtr<CConfigData> >	m_mapConfig;;
+		std::map<XString,CRefPtr<CConfigData> >	m_mapConfig;;
 	};
 }
 

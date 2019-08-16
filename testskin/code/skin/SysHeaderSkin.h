@@ -4,7 +4,7 @@
 
 namespace GlobalSkin
 {
-	struct sSysHeaderParameter: public sCtrlParameter
+	struct CSysHeaderParameter: public CCtrlParameter
 	{
 		/* 标题头按下状态 */
 		enum HeaderItemState
@@ -24,7 +24,7 @@ namespace GlobalSkin
 
 	
 	/* 标题头的皮肤 */
-	class CSysHeaderSkin: public CCtrlSkinPackage<sSysHeaderParameter>
+	class CSysHeaderSkin: public CCtrlSkinPackage<CSysHeaderParameter>
 	{
 	public:
 		CSysHeaderSkin( );
@@ -134,7 +134,7 @@ namespace GlobalSkin
 		 */
 		void DrawItemEntry( HDC hdc, LRESULT nIndex, 
 			const CRect& rectItem,
-			sSysHeaderParameter::HeaderItemState state);
+			CSysHeaderParameter::HeaderItemState state);
 
 		
 		/*!
@@ -150,7 +150,7 @@ namespace GlobalSkin
 		CBitmapRefPtr		m_pBmpBk;
 		
 		/* 子项的背景图 */
-		CBitmapRefPtr		m_pBmpItem[sSysHeaderParameter::HIS_State];
+		CBitmapRefPtr		m_pBmpItem[CSysHeaderParameter::HIS_State];
 	};
 }
 

@@ -28,12 +28,12 @@ bool CDialogBoxSkin::OnInitSkinParam( HWND hWnd, CParamReference* pParam )
 
 	p ->SetSizable( false );
 	p ->SetHasMinButton( false );
-	p ->setHasMaxButton( false );
+	p ->SetHasMaxButton( false );
 	p ->SetHasCloseButton( false );
 	p ->SetMargin(CRect(4,24,4,4) );
 	p ->SetHasMenu( false );
 	p ->SetHasBorder(false);
-	p ->setHasTitle( false );
+	p ->SetHasTitle( false );
 
     return true;
 }
@@ -413,7 +413,7 @@ void CDialogBoxSkin::OnInitDialog( )
 			i2b(lStyle& WS_THICKFRAME) &&
 			( (lStyle & (WS_DLGFRAME|WS_BORDER)) == WS_DLGFRAME) );
 		p ->SetHasMinButton( i2b(lStyle & WS_MINIMIZEBOX) );
-		p ->setHasMaxButton( i2b(lStyle & WS_MAXIMIZEBOX) );
+		p ->SetHasMaxButton( i2b(lStyle & WS_MAXIMIZEBOX) );
 		if( i2b( lStyle ) )
 		{
 			HMENU hMenu = GetSystemMenu( hWnd, FALSE );
@@ -444,7 +444,7 @@ void CDialogBoxSkin::OnInitDialog( )
 			p ->SetHasCloseButton( false );
 		}
 		
-		p ->setHasTitle( i2b( lStyle & WS_CAPTION ) );
+		p ->SetHasTitle( i2b( lStyle & WS_CAPTION ) );
 		p ->SetHasBorder( ( 
 			( 0 != (( lStyle) & (WS_THICKFRAME | 
 			WS_DLGFRAME | WS_BORDER)) ) ||
@@ -594,7 +594,7 @@ void CDialogBoxSkin::OnNcMouseMove( UINT nHitTest, const CPoint& ptLast )
         break;
 	default: //在窗口的其它位置移动鼠标
 	{
-		DynamicParam::CsMenubarCtrlSkinParameterRef*
+		DynamicParam::CMenubarCtrlSkinParameterRef*
 				pMenuBar = p->GetMenuBarParamPtr( );
 		if(p->HasMenu( ) &&(
 					NULL != pMenuBar ->GetHot( ) ||
@@ -637,7 +637,7 @@ void CDialogBoxSkin::OnNcMouseMove( UINT nHitTest, const CPoint& ptLast )
 			bNeedRedraw = false;
 		}
 
-		DynamicParam::sScrollBarBasic& hBar = p ->GetScrollBarParam( )
+		DynamicParam::CScrollBarBasic& hBar = p ->GetScrollBarParam( )
 			->GetHBar();
 		if( hBar.GetLeftArrowState( ) != CPE::SBS_Normal )
 		{
@@ -664,7 +664,7 @@ void CDialogBoxSkin::OnNcMouseMove( UINT nHitTest, const CPoint& ptLast )
 			}
 			bNeedRedraw = false;
 		}
-		DynamicParam::sScrollBarBasic& vBar = p ->GetScrollBarParam( )
+		DynamicParam::CScrollBarBasic& vBar = p ->GetScrollBarParam( )
 			->GetVBar();
 		if( vBar.GetTopArrowState( ) != CPE::SBS_Normal )
 		{
@@ -727,7 +727,7 @@ void CDialogBoxSkin::OnMouseMove(UINT nFlags, const CPoint& point)
     }
 
 	// 水平滚动条
-	DynamicParam::sScrollBarBasic& hBar = p ->GetScrollBarParam( )
+	DynamicParam::CScrollBarBasic& hBar = p ->GetScrollBarParam( )
 		->GetHBar();
     if( hBar.GetLeftArrowState( ) != CPE::SBS_Normal ||
             hBar.GetRightArrowState( ) != CPE::SBS_Normal ||
@@ -744,7 +744,7 @@ void CDialogBoxSkin::OnMouseMove(UINT nFlags, const CPoint& point)
 	}
 
 	// 垂直滚动条
-	DynamicParam::sScrollBarBasic& vBar = p ->GetScrollBarParam( )
+	DynamicParam::CScrollBarBasic& vBar = p ->GetScrollBarParam( )
 		->GetVBar();
     if( vBar.GetLeftArrowState( ) != CPE::SBS_Normal ||
             vBar.GetRightArrowState( ) != CPE::SBS_Normal ||
@@ -1106,7 +1106,7 @@ LRESULT CDialogBoxSkin::OnNcHitTest( const CPoint& point )
 		//TRACE("点击客户区\n");
         return HTCLIENT;
     }
-    DynamicParam::CsScrollBarCtrlParameterRefPtr& pScrollParam =
+    DynamicParam::CScrollBarCtrlParameterRefPtr& pScrollParam =
             p ->GetScrollBarParam( ) ;
     if( pScrollParam ->GetVBar( ).IsVisible( ) )
     {
@@ -1252,7 +1252,7 @@ void CDialogBoxSkin::OnNcCalcSize( bool bCalcValidRects, NCCALCSIZE_PARAMS* lpnc
     {
         lpRect->top += GetSystemMetrics(SM_CYMENU);
     }
-    DynamicParam::sScrollBarBasic& vBar =
+    DynamicParam::CScrollBarBasic& vBar =
             GetCurParam( ) ->GetScrollBarParam( ) ->GetVBar( );
 
     if( vBar.IsVisible() )
@@ -1270,7 +1270,7 @@ void CDialogBoxSkin::OnNcCalcSize( bool bCalcValidRects, NCCALCSIZE_PARAMS* lpnc
             }
         }
     }
-    DynamicParam::sScrollBarBasic& hBar =
+    DynamicParam::CScrollBarBasic& hBar =
             GetCurParam( ) ->GetScrollBarParam( ) ->GetHBar( );
     if ( hBar.IsVisible() )
     {
@@ -1339,7 +1339,7 @@ void CDialogBoxSkin::OnNcPaint(HRGN rgn1)
         DrawNcMargin( hdc, rtWindow, GetCurParam() ->IsActivated(),
                       CPE::WBKIP_Right );
     }
-    DynamicParam::CsScrollBarCtrlParameterRefPtr& pScrollBar =
+    DynamicParam::CScrollBarCtrlParameterRefPtr& pScrollBar =
             GetCurParam() ->GetScrollBarParam();
     if( pScrollBar ->GetHBar().IsVisible() &&
             pScrollBar ->GetVBar().IsVisible() )
@@ -1577,7 +1577,7 @@ void CDialogBoxSkin::OnTimer(UINT_PTR nIDEvent)
         const LRESULT nHit = OnNcHitTest(pt);
         if( nHit != HTMENU)
         {
-            DynamicParam::CsMenubarCtrlSkinParameterRefPtr
+            DynamicParam::CMenubarCtrlSkinParameterRefPtr
                     pMenBar = p ->GetMenuBarParamPtr( );
             KillTimer(m_hWnd,MenuTrackTimerId);
             pMenBar ->SetHot( NULL );
@@ -1828,143 +1828,143 @@ DynamicParam::CMenubarCtrlSkin& CDialogBoxSkin::LoadMenuBarCtrlSkin( )
 	skin.Init( GetCurHwnd(), GetCurParam() ->GetMenuBarParamPtr() );
 	return skin;
 }
-bool sDialogBoxParameter::HasMaxButton() const
+bool CDialogBoxParameter::HasMaxButton() const
 {
     return m_bMaxBtn;
 }
 
-void sDialogBoxParameter::setHasMaxButton(bool bHasMaxButton)
+void CDialogBoxParameter::SetHasMaxButton(bool bHasMaxButton)
 {
     m_bMaxBtn = bHasMaxButton;
 }
 
-bool sDialogBoxParameter::HasMinButton() const
+bool CDialogBoxParameter::HasMinButton() const
 {
     return m_bMinBtn;
 }
 
-void sDialogBoxParameter::SetHasMinButton(bool bHasMinButton)
+void CDialogBoxParameter::SetHasMinButton(bool bHasMinButton)
 {
     m_bMinBtn = bHasMinButton;
 }
 
 
-bool sDialogBoxParameter::HasCloseButton( ) const
+bool CDialogBoxParameter::HasCloseButton( ) const
 {
     return m_bCloseBtn;
 }
 
-void sDialogBoxParameter::SetHasCloseButton( bool bHasCloseButton )
+void CDialogBoxParameter::SetHasCloseButton( bool bHasCloseButton )
 {
     m_bCloseBtn = bHasCloseButton;
 }
 
 
-bool sDialogBoxParameter::IsActivated( ) const
+bool CDialogBoxParameter::IsActivated( ) const
 {
     return m_bIsActivated;
 }
 
-void sDialogBoxParameter::SetActivated( bool bActivated )
+void CDialogBoxParameter::SetActivated( bool bActivated )
 {
     m_bIsActivated = bActivated;
 }
 
-CPE::MouseState sDialogBoxParameter::GetNcMouseState( ) const
+CPE::MouseState CDialogBoxParameter::GetNcMouseState( ) const
 {
     return m_nNcMouseState;
 }
 
-void sDialogBoxParameter::SetNcMouseState( CPE::MouseState state )
+void CDialogBoxParameter::SetNcMouseState( CPE::MouseState state )
 {
     m_nNcMouseState = state;
 }
 
-CPE::WindowButtonState sDialogBoxParameter::GetMaxButtonState() const
+CPE::WindowButtonState CDialogBoxParameter::GetMaxButtonState() const
 {
     return m_nMaxBtnState;
 }
 
-void sDialogBoxParameter::SetMaxButtonState(CPE::WindowButtonState nMaxButtonState)
+void CDialogBoxParameter::SetMaxButtonState(CPE::WindowButtonState nMaxButtonState)
 {
     m_nMaxBtnState = nMaxButtonState;
 }
 
-CPE::WindowButtonState sDialogBoxParameter::GetMinButtonState() const
+CPE::WindowButtonState CDialogBoxParameter::GetMinButtonState() const
 {
     return m_nMinBtnState;
 }
 
-void sDialogBoxParameter::SetMinButtonState(CPE::WindowButtonState nMinButtonState)
+void CDialogBoxParameter::SetMinButtonState(CPE::WindowButtonState nMinButtonState)
 {
     m_nMinBtnState = nMinButtonState;
 }
 
-CPE::WindowButtonState sDialogBoxParameter::GetCloseButtonState() const
+CPE::WindowButtonState CDialogBoxParameter::GetCloseButtonState() const
 {
     return m_nCloseBtnState;
 }
 
-void sDialogBoxParameter::SetCloseButtonState(CPE::WindowButtonState nCloseButtonState)
+void CDialogBoxParameter::SetCloseButtonState(CPE::WindowButtonState nCloseButtonState)
 {
     m_nCloseBtnState = nCloseButtonState;
 }
 
-CPE::WindowButtonState sDialogBoxParameter::GetHelpButtonState() const
+CPE::WindowButtonState CDialogBoxParameter::GetHelpButtonState() const
 {
     return m_nHelpBtnState;
 }
 
-void sDialogBoxParameter::SetHelpButtonState(CPE::WindowButtonState nHelpButtonState)
+void CDialogBoxParameter::SetHelpButtonState(CPE::WindowButtonState nHelpButtonState)
 {
     m_nHelpBtnState = nHelpButtonState;
 }
 
-CPE::WindowHitType sDialogBoxParameter::GetSelelectedButtonType() const
+CPE::WindowHitType CDialogBoxParameter::GetSelelectedButtonType() const
 {
     return m_nSelBtnType;
 }
 
-void sDialogBoxParameter::SetSelectedButtonType(CPE::WindowHitType nSelelectedButtonType)
+void CDialogBoxParameter::SetSelectedButtonType(CPE::WindowHitType nSelelectedButtonType)
 {
     m_nSelBtnType = nSelelectedButtonType;
 }
 
 
-bool sDialogBoxParameter::IsSizable( ) const
+bool CDialogBoxParameter::IsSizable( ) const
 {
     return m_bSizable;
 }
 
-void sDialogBoxParameter::SetSizable( bool bSizable )
+void CDialogBoxParameter::SetSizable( bool bSizable )
 {
     m_bSizable = bSizable;
 }
 
-bool sDialogBoxParameter::IsInMenu() const
+bool CDialogBoxParameter::IsInMenu() const
 {
     return m_bInMenu;
 }
 
-void sDialogBoxParameter::SetInMenu(bool bInMenu)
+void CDialogBoxParameter::SetInMenu(bool bInMenu)
 {
     m_bInMenu = bInMenu;
 }
 
-DynamicParam::CsMenubarCtrlSkinParameterRefPtr
-sDialogBoxParameter::GetMenuBarParamPtr()
+DynamicParam::CMenubarCtrlSkinParameterRefPtr
+CDialogBoxParameter::GetMenuBarParamPtr()
 {
     return m_pMenuBarParam;
 }
 
-const DynamicParam::CsMenubarCtrlSkinParameterRefPtr
-sDialogBoxParameter::GetMenuBarParamPtr() const
+const DynamicParam::CMenubarCtrlSkinParameterRefPtr
+CDialogBoxParameter::GetMenuBarParamPtr() const
 {
     return m_pMenuBarParam;
 }
 
-void sDialogBoxParameter::SetMenuBarParamPtr(
-        const DynamicParam::CsMenubarCtrlSkinParameterRefPtr pMenuBarParam)
+void CDialogBoxParameter::SetMenuBarParamPtr(
+        const DynamicParam::CMenubarCtrlSkinParameterRefPtr pMenuBarParam)
 {
     if( 0x0000054100000004 == int( pMenuBarParam.get()) )
     {
@@ -1974,59 +1974,59 @@ void sDialogBoxParameter::SetMenuBarParamPtr(
     m_pMenuBarParam = pMenuBarParam;
 }
 
-bool sDialogBoxParameter::HasMenu() const
+bool CDialogBoxParameter::HasMenu() const
 {
     return m_bHasMenu;
 }
 
-void sDialogBoxParameter::SetHasMenu(bool bMenu)
+void CDialogBoxParameter::SetHasMenu(bool bMenu)
 {
     m_bHasMenu = bMenu;
 }
 
-const CRect& sDialogBoxParameter::GetWindowRect( ) const
+const CRect& CDialogBoxParameter::GetWindowRect( ) const
 {
     return m_rectWindow;
 }
 
-CRect& sDialogBoxParameter::GetWindowRect( )
+CRect& CDialogBoxParameter::GetWindowRect( )
 {
     return m_rectWindow;
 }
 
-void sDialogBoxParameter::SetWindowRect( const CRect& rectWindow )
+void CDialogBoxParameter::SetWindowRect( const CRect& rectWindow )
 {
     m_rectWindow = rectWindow;
 }
 
-const CRect& sDialogBoxParameter::GetMargin( )const
+const CRect& CDialogBoxParameter::GetMargin( )const
 {
     return m_rectMargins;
 }
 
-CRect& sDialogBoxParameter::GetMargin( )
+CRect& CDialogBoxParameter::GetMargin( )
 {
     return m_rectMargins;
 }
 
-void sDialogBoxParameter::SetMargin( const CRect& rectMargin )
+void CDialogBoxParameter::SetMargin( const CRect& rectMargin )
 {
     m_rectMargins = rectMargin;
 }
 
-bool sDialogBoxParameter::HasTitle() const
+bool CDialogBoxParameter::HasTitle() const
 {
     return m_bTitle;
 }
 
-void sDialogBoxParameter::setHasTitle(bool bHasTitle)
+void CDialogBoxParameter::SetHasTitle(bool bHasTitle)
 {
     m_bTitle = bHasTitle;
 }
 
 
 
-void sDialogBoxParameter::UpdatePartRect( const CRect& rectWindow )
+void CDialogBoxParameter::UpdatePartRect( const CRect& rectWindow )
 {
     if(m_rectWindow == rectWindow )
     {
@@ -2085,24 +2085,24 @@ void sDialogBoxParameter::UpdatePartRect( const CRect& rectWindow )
                 rectWindow.bottom );
 }
 
-const CRect& sDialogBoxParameter::GetPartRect( CPE::WindowPart wp ) const
+const CRect& CDialogBoxParameter::GetPartRect( CPE::WindowPart wp ) const
 {
     ASSERT( wp >= CPE::WP_TopLeft && wp < CPE::WP_Size );
     return m_rectParts[wp];
 }
 
-CRect& sDialogBoxParameter::GetPartRect( CPE::WindowPart wp )
+CRect& CDialogBoxParameter::GetPartRect( CPE::WindowPart wp )
 {
     ASSERT( wp >= CPE::WP_TopLeft && wp < CPE::WP_Size );
     return m_rectParts[wp];
 }
 
-void sDialogBoxParameter::SetPartRect( CPE::WindowPart wp, const CRect& rect )
+void CDialogBoxParameter::SetPartRect( CPE::WindowPart wp, const CRect& rect )
 {
     ASSERT( wp >= CPE::WP_TopLeft && wp < CPE::WP_Size );
     m_rectParts[wp] = rect;
 }
-void sDialogBoxParameter::UpdateButtonRect(
+void CDialogBoxParameter::UpdateButtonRect(
         const CRect& rectWindow,
         const CWindowButtonParam (&paramButtons)[CPE::WB_Size] )
 {
@@ -2112,24 +2112,24 @@ void sDialogBoxParameter::UpdateButtonRect(
     }
 }
 
-const CRect& sDialogBoxParameter::GetButtonRect( CPE::WindowButton wb ) const
+const CRect& CDialogBoxParameter::GetButtonRect( CPE::WindowButton wb ) const
 {
     ASSERT( wb >= CPE::WB_System && wb < CPE::WB_Size );
     return m_rectButtons[wb];
 }
-CRect& sDialogBoxParameter::GetButtonRect( CPE::WindowButton wb )
+CRect& CDialogBoxParameter::GetButtonRect( CPE::WindowButton wb )
 {
     ASSERT( wb >= CPE::WB_System && wb < CPE::WB_Size );
     return m_rectButtons[wb];
 }
 
-void sDialogBoxParameter::SetButtonRect( CPE::WindowButton wb, const CRect& rect )
+void CDialogBoxParameter::SetButtonRect( CPE::WindowButton wb, const CRect& rect )
 {
 
     ASSERT( wb >= CPE::WB_System && wb < CPE::WB_Size );
     m_rectButtons[wb] = rect;
 }
-UINT sDialogBoxParameter::HitButtonTest( const CPoint& pt )
+UINT CDialogBoxParameter::HitButtonTest( const CPoint& pt )
 {
     //TRACE("[hit-Test]rect(%d,%d,%d-%d),point:%d,%d\n",
     //      m_rectButtons[CPE::WB_Close].left,
@@ -2196,12 +2196,12 @@ UINT sDialogBoxParameter::HitButtonTest( const CPoint& pt )
     return HTNOWHERE;
 }
 
-const CRect& sDialogBoxParameter::GetMenuRect( ) const
+const CRect& CDialogBoxParameter::GetMenuRect( ) const
 {
     return m_rectMenu;
 }
 
-void sDialogBoxParameter::SetMenuRect( const CRect& rect )
+void CDialogBoxParameter::SetMenuRect( const CRect& rect )
 {
     m_rectMenu = rect;
 }

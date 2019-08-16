@@ -7,7 +7,7 @@
 ///
 namespace GlobalSkin
 {
-	struct sProgressBarCtrlParameter:public sCtrlParameter
+	struct CProgressBarCtrlParameter:public CCtrlParameter
 	{
 	public:
 		bool IsVertical( ) const;
@@ -19,7 +19,7 @@ namespace GlobalSkin
 		bool	m_bIsVertical;
 	};
 
-	class CProgressBarCtrlSkin:public CCtrlSkinPackage<sProgressBarCtrlParameter>
+	class CProgressBarCtrlSkin:public CCtrlSkinPackage<CProgressBarCtrlParameter>
 	{
 	public:
 		CProgressBarCtrlSkin( );

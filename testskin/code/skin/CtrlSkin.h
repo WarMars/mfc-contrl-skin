@@ -5,10 +5,10 @@
 namespace GlobalSkin
 {
 	// 注意，不要在这里增加虚函数
-	struct sCtrlParameter
+	struct CCtrlParameter
 	{
 	public:
-		virtual ~sCtrlParameter(){}
+		virtual ~CCtrlParameter(){}
 		WNDPROC		m_pPreviousProc;  // 系统的处理过程
 	};
 	class CSkinConfig;
@@ -20,7 +20,7 @@ namespace GlobalSkin
 	}
 	class CCtrlSkin : public CReferenceObject
 	{
-		friend class  RefPtr<CCtrlSkin>;
+		friend class  CRefPtr<CCtrlSkin>;
 	public:
 		
 		/** 
@@ -43,14 +43,14 @@ namespace GlobalSkin
 		void SetCurrentWindow( HWND hWnd );
 
 		virtual bool	CheckHwnd( 
-			HWND hWnd, PCTSTR lpszWndClassName, sCtrlParameter*& pParam ) = 0;
+			HWND hWnd, PCTSTR lpszWndClassName, CCtrlParameter*& pParam ) = 0;
 
 		virtual bool	RemoveHwnd( HWND hWnd, WNDPROC& pProc ) = 0;
 
 		/** 
 		 * @brief 检查是否是此类型窗口
 		 */
-		virtual bool	CheckOwner( HWND hWnd, sCtrlParameter*& pParam ) = 0;
+		virtual bool	CheckOwner( HWND hWnd, CCtrlParameter*& pParam ) = 0;
 
 		/** 
 		 * @brief 窗口过程处理
@@ -90,6 +90,6 @@ namespace GlobalSkin
 		CGlobalUiManager*	m_pManager;
 	};
 
-	typedef  RefPtr<CCtrlSkin> CCtrlSkinPtr;
+	typedef  CRefPtr<CCtrlSkin> CCtrlSkinPtr;
 }
 

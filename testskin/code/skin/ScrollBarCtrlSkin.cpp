@@ -16,9 +16,9 @@ static const TCHAR szBarDynamicParamter[] = TEXT("szBarDynamicParamter");
 bool GetScrollRect( HWND hWnd, UINT nBar, LPRECT lpRect,int *nArrowSize,int *nThumbSize,int *nThumbPos);
 
 
-CsScrollBarCtrlParameterRefPtr CreateHwndScrollBarParam( HWND hWnd )
+CScrollBarCtrlParameterRefPtr CreateHwndScrollBarParam( HWND hWnd )
 {
-    CsScrollBarCtrlParameterRefPtr pParam = new CsScrollBarCtrlParameterRef;
+    CScrollBarCtrlParameterRefPtr pParam = new CScrollBarCtrlParameterRef;
 	
 	/* 获取水平滚动条信息 */
     pParam ->m_hBar.nArrowState1 = CPE::SBS_Normal;
@@ -56,7 +56,7 @@ CsScrollBarCtrlParameterRefPtr CreateHwndScrollBarParam( HWND hWnd )
 
 UINT OnScrollBarHitTest(
         HWND  hWnd,  
-		CsScrollBarCtrlParameterRefPtr pParam,
+		CScrollBarCtrlParameterRefPtr pParam,
 		const CPoint& point )
 {
     if( !pParam )
@@ -287,7 +287,7 @@ CPE::ScrollBarHitTest CScrollBarCtrlSkin::ScrollHitTest(
     }
     return CPE::SBHT_Thumb;
 }
-void SetScrollBarParamVisible( HWND hWnd, CsScrollBarCtrlParameterRefPtr pParam )
+void SetScrollBarParamVisible( HWND hWnd, CScrollBarCtrlParameterRefPtr pParam )
 {
     if( !pParam )
     {
@@ -315,7 +315,7 @@ void SetScrollBarParamVisible( HWND hWnd, CsScrollBarCtrlParameterRefPtr pParam 
 }
 
 void OnNcScrollBar( HWND hWnd,
-                    CsScrollBarCtrlParameterRefPtr pParam,
+                    CScrollBarCtrlParameterRefPtr pParam,
                     bool bBorder, bool bCalcValidRects, NCCALCSIZE_PARAMS *lpncsp)
 {
     if( !pParam )
@@ -704,7 +704,7 @@ bool GetScrollRect( HWND hWnd, UINT nBar, LPRECT lpRect,int *nArrowSize,int *nTh
     }
     return 0 != vertical;
 }
-void CScrollBarCtrlSkin::DrawHScrollBar( HWND hWnd, CsScrollBarCtrlParameterRefPtr pParam )
+void CScrollBarCtrlSkin::DrawHScrollBar( HWND hWnd, CScrollBarCtrlParameterRefPtr pParam )
 {
     if( !pParam )
     {
@@ -748,7 +748,7 @@ void CScrollBarCtrlSkin::DrawHScrollBar( HWND hWnd, CsScrollBarCtrlParameterRefP
     ReleaseDC( hWnd, hdc );
 }
 
-void CScrollBarCtrlSkin::DrawVScrollBar( HWND hWnd, CsScrollBarCtrlParameterRefPtr pParam )
+void CScrollBarCtrlSkin::DrawVScrollBar( HWND hWnd, CScrollBarCtrlParameterRefPtr pParam )
 {
     if( !pParam )
     {
@@ -823,7 +823,7 @@ void CScrollBarCtrlSkin::DrawSizing( HWND hWnd, const CRect& r )
 }
 void CScrollBarCtrlSkin::HandleScrollEvent(
         HWND hWnd,
-        CsScrollBarCtrlParameterRefPtr pParam,
+        CScrollBarCtrlParameterRefPtr pParam,
         UINT nType,UINT msg, const CPoint& pt1,
         POINT& ptPrevious,
         UINT& nThumbPos,
@@ -1371,7 +1371,7 @@ void CScrollBarCtrlSkin::HandleScrollEvent(
 }
 void CScrollBarCtrlSkin::TrackScrollBar(
         HWND hWnd,
-        CsScrollBarCtrlParameterRefPtr pParam,
+        CScrollBarCtrlParameterRefPtr pParam,
         UINT nType, const CPoint& ptCur )
 {
     if( !pParam )
@@ -1515,7 +1515,7 @@ void CScrollBarCtrlSkin::DrawVScroll( HDC hdc, const CRect& rtDest,int nState )
 }
 
 void CScrollBarCtrlSkin::DrawMovingThumb(
-        HWND hWnd, CsScrollBarCtrlParameterRefPtr pParam,
+        HWND hWnd, CScrollBarCtrlParameterRefPtr pParam,
         bool bVertical, const CRect& rtPos,int nArrowSize,int nThumbSize)
 {
     int pos = pParam ->m_nTrackingPos;
@@ -1575,211 +1575,211 @@ void CScrollBarCtrlSkin::DrawMovingThumb(
 }
 
 
-bool sScrollBarCtrlParameter::IsEnableThumbTracking( ) const
+bool CScrollBarCtrlParameter::IsEnableThumbTracking( ) const
 {
 	return m_bEnableThumbTracking;
 }
 
-void sScrollBarCtrlParameter::SetEnableThumbTracking( bool bEnable )
+void CScrollBarCtrlParameter::SetEnableThumbTracking( bool bEnable )
 {
 	m_bEnableThumbTracking = bEnable;
 }
 
-bool sScrollBarCtrlParameter::IsLeftScrollBar( ) const
+bool CScrollBarCtrlParameter::IsLeftScrollBar( ) const
 {
 	return m_bLeftScrollbar;
 }
 
-void sScrollBarCtrlParameter::SetLeftScrollBar( bool b )
+void CScrollBarCtrlParameter::SetLeftScrollBar( bool b )
 {
 	m_bLeftScrollbar = b;
 }
 
-const sScrollBarBasic& sScrollBarCtrlParameter::GetVBar() const
+const CScrollBarBasic& CScrollBarCtrlParameter::GetVBar() const
 {
     return m_vBar;
 }
 
-const sScrollBarBasic& sScrollBarCtrlParameter::GetHBar() const
+const CScrollBarBasic& CScrollBarCtrlParameter::GetHBar() const
 {
     return m_hBar;
 }
 
-const CRect& sScrollBarCtrlParameter::GetHScrollRect() const
+const CRect& CScrollBarCtrlParameter::GetHScrollRect() const
 {
     return m_rectHScroll;
 }
 
-void sScrollBarCtrlParameter::SetHScrollRect(const CRect &rtHScroll)
+void CScrollBarCtrlParameter::SetHScrollRect(const CRect &rtHScroll)
 {
     m_rectHScroll = rtHScroll;
 }
 
-const CRect& sScrollBarCtrlParameter::GetVScrollRect() const
+const CRect& CScrollBarCtrlParameter::GetVScrollRect() const
 {
     return m_rectVScroll;
 }
 
-void sScrollBarCtrlParameter::SetVScrollRect(const CRect &rtVScroll)
+void CScrollBarCtrlParameter::SetVScrollRect(const CRect &rtVScroll)
 {
     m_rectVScroll = rtVScroll;
 }
 
-CPE::ScrollBarHitTest sScrollBarCtrlParameter::GetHitTest() const
+CPE::ScrollBarHitTest CScrollBarCtrlParameter::GetHitTest() const
 {
     return m_hitTest;
 }
 
-void sScrollBarCtrlParameter::setHitTest(const CPE::ScrollBarHitTest &hitTest)
+void CScrollBarCtrlParameter::setHitTest(const CPE::ScrollBarHitTest &hitTest)
 {
     m_hitTest = hitTest;
 }
 
-bool sScrollBarCtrlParameter::NeedDrawTrackingBar() const
+bool CScrollBarCtrlParameter::NeedDrawTrackingBar() const
 {
     return m_bDrawTrackingBar;
 }
 
-void sScrollBarCtrlParameter::SetNeedDrawTrackingBar(bool bDrawTrackingBar)
+void CScrollBarCtrlParameter::SetNeedDrawTrackingBar(bool bDrawTrackingBar)
 {
     m_bDrawTrackingBar = bDrawTrackingBar;
 }
 
-int sScrollBarCtrlParameter::GetTrackingPos() const
+int CScrollBarCtrlParameter::GetTrackingPos() const
 {
     return m_nTrackingPos;
 }
 
-void sScrollBarCtrlParameter::SetTrackingPos(int nTrackingPos)
+void CScrollBarCtrlParameter::SetTrackingPos(int nTrackingPos)
 {
     m_nTrackingPos = nTrackingPos;
 }
 
-int sScrollBarCtrlParameter::GetTrackingValue() const
+int CScrollBarCtrlParameter::GetTrackingValue() const
 {
     return m_nTrackingValue;
 }
 
-void sScrollBarCtrlParameter::SetTrackingValue(int nTrackingValue)
+void CScrollBarCtrlParameter::SetTrackingValue(int nTrackingValue)
 {
     m_nTrackingValue = nTrackingValue;
 }
 
-sScrollBarBasic &sScrollBarCtrlParameter::GetHBar()
+CScrollBarBasic &CScrollBarCtrlParameter::GetHBar()
 {
     return m_hBar;
 }
 
-sScrollBarBasic &sScrollBarCtrlParameter::GetVBar()
+CScrollBarBasic &CScrollBarCtrlParameter::GetVBar()
 {
     return m_vBar;
 }
-bool sScrollBarCtrlParameter::IsPreventStyleChange() const
+bool CScrollBarCtrlParameter::IsPreventStyleChange() const
 {
     return m_bPreventStyleChange;
 }
 
-void sScrollBarCtrlParameter::SetPreventStyleChange(bool value)
+void CScrollBarCtrlParameter::SetPreventStyleChange(bool value)
 {
     m_bPreventStyleChange = value;
 }
 
-bool sScrollBarBasic::IsVisible() const
+bool CScrollBarBasic::IsVisible() const
 {
     return bVisible;
 }
 
-void sScrollBarBasic::SetVisible(bool value)
+void CScrollBarBasic::SetVisible(bool value)
 {
     bVisible = value;
 }
 
-const SCROLLINFO &sScrollBarBasic::GetSysInfo() const
+const SCROLLINFO &CScrollBarBasic::GetSysInfo() const
 {
     return sysInfo;
 }
 
-SCROLLINFO &sScrollBarBasic::GetSysInfo()
+SCROLLINFO &CScrollBarBasic::GetSysInfo()
 {
     return sysInfo;
 }
 
-CPE::ScrollBarState sScrollBarBasic::GetArrowState1( ) const
+CPE::ScrollBarState CScrollBarBasic::GetArrowState1( ) const
 {
     return nArrowState1;
 }
 
-void sScrollBarBasic::SetArrowState1(CPE::ScrollBarState state )
+void CScrollBarBasic::SetArrowState1(CPE::ScrollBarState state )
 {
     nArrowState1 = state;
 }
 
-CPE::ScrollBarState sScrollBarBasic::GetArrowState2( ) const
+CPE::ScrollBarState CScrollBarBasic::GetArrowState2( ) const
 {
     return  nArrowState2;
 }
 
-void sScrollBarBasic::SetArrowState2(CPE::ScrollBarState state )
+void CScrollBarBasic::SetArrowState2(CPE::ScrollBarState state )
 {
     nArrowState2 = state;
 }
 
-CPE::ScrollBarState sScrollBarBasic::GetTopArrowState( ) const
+CPE::ScrollBarState CScrollBarBasic::GetTopArrowState( ) const
 {
     return nTopArrowState;
 }
 
-void sScrollBarBasic::SetTopArrowState(CPE::ScrollBarState state )
+void CScrollBarBasic::SetTopArrowState(CPE::ScrollBarState state )
 {
     nTopArrowState = state;
 }
 
-CPE::ScrollBarState sScrollBarBasic::GetBotArrowState( ) const
+CPE::ScrollBarState CScrollBarBasic::GetBotArrowState( ) const
 {
     return nBotArrowState;
 }
 
-void sScrollBarBasic::SetBotArrowState(CPE::ScrollBarState state )
+void CScrollBarBasic::SetBotArrowState(CPE::ScrollBarState state )
 {
     nBotArrowState = state;
 }
 
-CPE::ScrollBarState sScrollBarBasic::GetLeftArrowState( ) const
+CPE::ScrollBarState CScrollBarBasic::GetLeftArrowState( ) const
 {
     return nLeftArrowState;
 }
 
-void sScrollBarBasic::SetLeftArrowState(CPE::ScrollBarState state )
+void CScrollBarBasic::SetLeftArrowState(CPE::ScrollBarState state )
 {
     nLeftArrowState = state;
 }
 
-CPE::ScrollBarState sScrollBarBasic::GetRightArrowState( ) const
+CPE::ScrollBarState CScrollBarBasic::GetRightArrowState( ) const
 {
     return nRightArrowState;
 }
 
-void sScrollBarBasic::SetRightArrowState(CPE::ScrollBarState state )
+void CScrollBarBasic::SetRightArrowState(CPE::ScrollBarState state )
 {
     nRightArrowState = state;
 }
 
-CPE::ScrollBarState sScrollBarBasic::GetThumbState() const
+CPE::ScrollBarState CScrollBarBasic::GetThumbState() const
 {
     return nThumbState;
 }
 
-void sScrollBarBasic::SetThumbState(CPE::ScrollBarState value)
+void CScrollBarBasic::SetThumbState(CPE::ScrollBarState value)
 {
     nThumbState = value;
 }
 
-UINT sScrollBarBasic::GetFlags() const
+UINT CScrollBarBasic::GetFlags() const
 {
     return nFlags;
 }
 
-void sScrollBarBasic::SetFlags(const UINT &value)
+void CScrollBarBasic::SetFlags(const UINT &value)
 {
     nFlags = value;
 }

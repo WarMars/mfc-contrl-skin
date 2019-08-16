@@ -12,7 +12,7 @@ namespace GlobalSkin
 	///
 	/// @brief 状态栏的目前仅支持滚动条自绘制
 	///
-	struct sStatusBarCtrlParameter:public sCtrlParameter
+	struct CStatusBarCtrlParameter:public CCtrlParameter
 	{
 
 	};
@@ -20,7 +20,7 @@ namespace GlobalSkin
 	///
 	/// @brief 状态栏的实现
 	///
-	class CStatusBarCtrlSkin:public CCtrlSkinPackage<sStatusBarCtrlParameter>
+	class CStatusBarCtrlSkin:public CCtrlSkinPackage<CStatusBarCtrlParameter>
 	{
 	public:
 		CStatusBarCtrlSkin( );

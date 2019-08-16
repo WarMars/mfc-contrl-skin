@@ -10,7 +10,7 @@ namespace GlobalSkin
 	/*!
 	 * @brief 组合框的控件参数
 	 */
-	struct sComboboxCtrlParameter:public sCtrlParameter
+	struct CComboboxCtrlParameter:public CCtrlParameter
 	{
 		enum
 		{
@@ -44,7 +44,7 @@ namespace GlobalSkin
 	/*!
 	 * @brief 组合框的控件皮肤
 	 */
-	class CComboBoxCtrlSkin: public CCtrlSkinPackage<sComboboxCtrlParameter>
+	class CComboBoxCtrlSkin: public CCtrlSkinPackage<CComboboxCtrlParameter>
 	{
 	public:
 		CComboBoxCtrlSkin( );
@@ -131,7 +131,7 @@ namespace GlobalSkin
 		/* 边框图 */
 		CBitmapRefPtr	m_pBmpBorder;
 		/* 下拉箭头的状态贴图 */
-		CBitmapRefPtr	m_pBmpThumb[sComboboxCtrlParameter::CheckBoxStateSize];
+		CBitmapRefPtr	m_pBmpThumb[CComboboxCtrlParameter::CheckBoxStateSize];
 	};
 
 }

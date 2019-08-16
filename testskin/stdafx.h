@@ -38,7 +38,7 @@
 #include <afxcontrolbars.h>     // 功能区和控件条的 MFC 支持
 
 
-
+//#include"vld.h"
 
 
 
@@ -55,4 +55,4 @@
 #endif
 #endif
 
-
+//#pragma comment(linker, "/STACK:0x02000000")

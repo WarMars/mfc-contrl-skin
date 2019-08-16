@@ -7,7 +7,7 @@
 ///
 namespace GlobalSkin
 {
-	struct sSliderCtrlParameter:public sCtrlParameter
+	struct CSliderCtrlParameter:public CCtrlParameter
 	{
 	public:
 		bool IsVertical( ) const;
@@ -20,7 +20,7 @@ namespace GlobalSkin
 	///
 	/// @brief »¬¿é¿Ø¼þµÄÆ¤·ô
 	///
-	class CSilderCtrlSkin:public CCtrlSkinPackage<sSliderCtrlParameter>
+	class CSilderCtrlSkin:public CCtrlSkinPackage<CSliderCtrlParameter>
 	{
 	public:
 		CSilderCtrlSkin( );

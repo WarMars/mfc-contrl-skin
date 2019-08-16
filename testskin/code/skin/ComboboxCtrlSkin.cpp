@@ -134,7 +134,7 @@ CComboBoxCtrlSkin::CParamReference* CComboBoxCtrlSkin::OnPreTakeOverSkin( HWND h
 	long lStyle	  = GetWindowLong( GetCurHwnd( ), GWL_STYLE );
 	long lExStyle = GetWindowLong( GetCurHwnd( ),GWL_EXSTYLE );
 	/* 初始化参数设置 */
-	pParam ->m_nState = sComboboxCtrlParameter::COMBOX_NORMAL;
+	pParam ->m_nState = CComboboxCtrlParameter::COMBOX_NORMAL;
 	pParam ->m_nHScrollBar = lStyle & WS_HSCROLL;
 	pParam ->m_nVScrollBar = lStyle & WS_VSCROLL;
 	pParam ->m_bHitThumb = false;
@@ -150,8 +150,8 @@ void CComboBoxCtrlSkin::OnMouseLeave()
 		return;
 	}
 	/* 加入按下和鼠标滑过状态 */
-	GetCurParam( ) ->m_nState &= ~sComboboxCtrlParameter::COMBOX_PRESSED;
-	GetCurParam( ) ->m_nState &= ~sComboboxCtrlParameter::COMBOX_HOVER;
+	GetCurParam( ) ->m_nState &= ~CComboboxCtrlParameter::COMBOX_PRESSED;
+	GetCurParam( ) ->m_nState &= ~CComboboxCtrlParameter::COMBOX_HOVER;
 
 	Redraw( );
 }
@@ -228,13 +228,13 @@ void CComboBoxCtrlSkin::OnMouseMove( UINT nFlags, const CPoint& point )
 	}
 	OnAutoDefaultWndProc( );
 
-	if(( GetCurParam( ) ->m_nState == sComboboxCtrlParameter::COMBOX_NORMAL) && 
+	if(( GetCurParam( ) ->m_nState == CComboboxCtrlParameter::COMBOX_NORMAL) && 
 		( 0 == ( nFlags & MK_LBUTTON) ) )
 	{/* 当前状态为无操作状态，且未按下左键 */
 		TRACKMOUSEEVENT tme;
 		/* 当前鼠标经过发生变化 */
 		GetCurParam( ) ->m_bHitThumb = HitTestThumb(point);
-		GetCurParam( ) ->m_nState |= sComboboxCtrlParameter::COMBOX_HOVER;
+		GetCurParam( ) ->m_nState |= CComboboxCtrlParameter::COMBOX_HOVER;
 		tme.cbSize = sizeof(TRACKMOUSEEVENT);
 		tme.dwFlags = TME_LEAVE;
 		tme.hwndTrack = GetCurHwnd( );
@@ -246,7 +246,7 @@ void CComboBoxCtrlSkin::OnMouseMove( UINT nFlags, const CPoint& point )
 		TRACKMOUSEEVENT tme;
 		/* 当前点击发生变化 */
 		GetCurParam( ) ->m_bHitThumb  = HitTestThumb(point);
-		GetCurParam( ) ->m_nState |= sComboboxCtrlParameter::COMBOX_PRESSED;
+		GetCurParam( ) ->m_nState |= CComboboxCtrlParameter::COMBOX_PRESSED;
 		tme.cbSize = sizeof(TRACKMOUSEEVENT);
 		tme.dwFlags = TME_LEAVE;
 		tme.hwndTrack = GetCurHwnd( );
@@ -263,7 +263,7 @@ void CComboBoxCtrlSkin::OnLButtonDown( UINT nFlags , const CPoint& point )
 		return;
 	}
 	/* 左键按下，加入按下状态 */
-	GetCurParam( ) ->m_nState |= sComboboxCtrlParameter::COMBOX_PRESSED;
+	GetCurParam( ) ->m_nState |= CComboboxCtrlParameter::COMBOX_PRESSED;
 	Redraw();
 }
 void CComboBoxCtrlSkin::OnLButtonUp( UINT nFlags, const CPoint& point )
@@ -274,7 +274,7 @@ void CComboBoxCtrlSkin::OnLButtonUp( UINT nFlags, const CPoint& point )
 		return;
 	}
 	/* 左键弹起，去掉按下状态 */
-	GetCurParam( ) ->m_nState &= ~sComboboxCtrlParameter::COMBOX_PRESSED;
+	GetCurParam( ) ->m_nState &= ~CComboboxCtrlParameter::COMBOX_PRESSED;
 	Redraw();
 }
 void CComboBoxCtrlSkin::OnNcCalcSize( BOOL bCalcValidRects, NCCALCSIZE_PARAMS* lpncsp)
@@ -339,30 +339,30 @@ void CComboBoxCtrlSkin::DrawComboBox(CDC *pDC)
 
 	
 	/* 根据不同的状态，绘制不同的滑块 */
-	if( GetCurParam( ) -> m_nState & sComboboxCtrlParameter::COMBOX_DISABLED)
+	if( GetCurParam( ) -> m_nState & CComboboxCtrlParameter::COMBOX_DISABLED)
 	{
-		if(!DrawBmp(pDC,rectThumb, m_pBmpThumb[ sComboboxCtrlParameter::CheckDisabled ] ) )
+		if(!DrawBmp(pDC,rectThumb, m_pBmpThumb[ CComboboxCtrlParameter::CheckDisabled ] ) )
 		{
-			DrawBmp(pDC,rectThumb, m_pBmpThumb[ sComboboxCtrlParameter::CheckNormal ] );
+			DrawBmp(pDC,rectThumb, m_pBmpThumb[ CComboboxCtrlParameter::CheckNormal ] );
 		}
 	}
-	if( GetCurParam( ) -> m_nState & sComboboxCtrlParameter::COMBOX_PRESSED)
+	if( GetCurParam( ) -> m_nState & CComboboxCtrlParameter::COMBOX_PRESSED)
 	{
-		if(!DrawBmp(pDC,rectThumb, m_pBmpThumb[ sComboboxCtrlParameter::CheckPressed ] ) )
+		if(!DrawBmp(pDC,rectThumb, m_pBmpThumb[ CComboboxCtrlParameter::CheckPressed ] ) )
 		{
-			DrawBmp(pDC,rectThumb, m_pBmpThumb[ sComboboxCtrlParameter::CheckNormal ] );
+			DrawBmp(pDC,rectThumb, m_pBmpThumb[ CComboboxCtrlParameter::CheckNormal ] );
 		}
 	}
-	else if( GetCurParam( ) -> m_nState & sComboboxCtrlParameter::COMBOX_HOVER)
+	else if( GetCurParam( ) -> m_nState & CComboboxCtrlParameter::COMBOX_HOVER)
 	{
-		if(!DrawBmp(pDC,rectThumb, m_pBmpThumb[ sComboboxCtrlParameter::CheckHover ] ) )
+		if(!DrawBmp(pDC,rectThumb, m_pBmpThumb[ CComboboxCtrlParameter::CheckHover ] ) )
 		{
-			DrawBmp(pDC,rectThumb, m_pBmpThumb[ sComboboxCtrlParameter::CheckNormal ] );
+			DrawBmp(pDC,rectThumb, m_pBmpThumb[ CComboboxCtrlParameter::CheckNormal ] );
 		}
 	}
 	else
 	{
-		DrawBmp(pDC,rectThumb, m_pBmpThumb[ sComboboxCtrlParameter::CheckNormal ] );
+		DrawBmp(pDC,rectThumb, m_pBmpThumb[ CComboboxCtrlParameter::CheckNormal ] );
 	}
 
 }

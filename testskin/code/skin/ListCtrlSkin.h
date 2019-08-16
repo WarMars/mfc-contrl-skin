@@ -3,14 +3,14 @@
 
 namespace GlobalSkin
 {
-	struct sListCtrlParameter : public sCtrlWithScrollBar
+	struct CListCtrlParameter : public CCtrlWithScrollBarParameter
 	{
 
 	};
 	/** 
 	 * @brief list¿Ø¼þÆ¤·ô
 	 */
-	class CListCtrlSkin:public CCtrlWithScrollBar<sListCtrlParameter>
+	class CListCtrlSkin:public CCtrlWithScrollBar<CListCtrlParameter>
 	{
 	public:
 		CListCtrlSkin( );

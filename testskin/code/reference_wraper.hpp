@@ -37,7 +37,7 @@ template<typename T>
 class CClassReference: public T,public CReferenceObject
 {
 	typedef CClassReference<T> ReferenceClassType;
-	friend class RefPtr<ReferenceClassType>;
+	friend class CRefPtr<ReferenceClassType>;
 	friend class CImageManager;
 public:
 	inline CClassReference( ){}

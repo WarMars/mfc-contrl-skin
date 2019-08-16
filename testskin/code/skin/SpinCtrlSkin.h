@@ -36,7 +36,7 @@ namespace GlobalSkin
 	///
 	/// @brief spin控件的参数
 	///
-	struct sSpinCtrlParameter:public sCtrlParameter
+	struct CSpinCtrlParameter:public CCtrlParameter
 	{
 	public:
 		CPE::SpinCtrlButton	GetPressedButton( ) const;
@@ -63,7 +63,7 @@ namespace GlobalSkin
 	///
 	/// @brief spin的皮肤
 	///
-	class CSpinCtrlSkin:public CCtrlSkinPackage<sSpinCtrlParameter>
+	class CSpinCtrlSkin:public CCtrlSkinPackage<CSpinCtrlParameter>
 	{
 	public:
 		CSpinCtrlSkin( );

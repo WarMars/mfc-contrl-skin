@@ -399,12 +399,12 @@ void CSpinCtrlSkin::DrawSpin(HDC hDC)
 	}
 
 }
-CPE::SpinCtrlButton	sSpinCtrlParameter::GetPressedButton( ) const
+CPE::SpinCtrlButton	CSpinCtrlParameter::GetPressedButton( ) const
 {
 	return  m_nPressedButton;
 }
 
-bool sSpinCtrlParameter::SetPressedButton( CPE::SpinCtrlButton nType )
+bool CSpinCtrlParameter::SetPressedButton( CPE::SpinCtrlButton nType )
 {
 	if( m_nPressedButton != nType )
 	{
@@ -414,12 +414,12 @@ bool sSpinCtrlParameter::SetPressedButton( CPE::SpinCtrlButton nType )
 	return false;
 }
 
-CPE::SpinCtrlButton	sSpinCtrlParameter::GetHotButton( ) const
+CPE::SpinCtrlButton	CSpinCtrlParameter::GetHotButton( ) const
 {
 	return m_nHotButton;
 }
 
-bool sSpinCtrlParameter::SetHotButton( CPE::SpinCtrlButton nType )
+bool CSpinCtrlParameter::SetHotButton( CPE::SpinCtrlButton nType )
 {
 	if( m_nHotButton != nType )
 	{
@@ -429,12 +429,12 @@ bool sSpinCtrlParameter::SetHotButton( CPE::SpinCtrlButton nType )
 	return false;
 }
 
-bool sSpinCtrlParameter::IsVertical( ) const
+bool CSpinCtrlParameter::IsVertical( ) const
 {
 	return m_bVertical;
 }
 
-void sSpinCtrlParameter::SetVertical( bool bNew )
+void CSpinCtrlParameter::SetVertical( bool bNew )
 {
 	m_bVertical = bNew;
 }

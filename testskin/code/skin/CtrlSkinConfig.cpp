@@ -70,9 +70,9 @@ namespace GlobalSkin
 
 #endif
 	bool CSkinConfig::GetConfigData(
-		const XPath& strPath,RefPtr<CConfigData>& configData ) const
+		const XPath& strPath,CRefPtr<CConfigData>& configData ) const
 	{
-		for( std::map<XString,RefPtr<CConfigData> >::const_iterator 
+		for( std::map<XString,CRefPtr<CConfigData> >::const_iterator 
 			it = m_mapConfig.begin(); it != m_mapConfig.end(); ++it )
 		{
 			if( NULL != _tcsstr( it ->first.c_str( ), strPath.c_str() ) )
@@ -93,7 +93,7 @@ namespace GlobalSkin
 #endif
 	CRecti CSkinConfig::GetColor( const XPath& strPath ) const
 	{
-		RefPtr<CConfigData> configData;
+		CRefPtr<CConfigData> configData;
 		if( !GetConfigData( strPath,configData) )
 		{
 			AfxMessageBox( (_T("无法找到:") + strPath ).c_str() );
@@ -104,7 +104,7 @@ namespace GlobalSkin
 
 	CBitmapRefPtr CSkinConfig::GetBitmap( const XPath& strPath ) const
 	{
-		RefPtr<CConfigData> configData;
+		CRefPtr<CConfigData> configData;
 		if( !GetConfigData( strPath,configData) )
 		{
 			AfxMessageBox( (_T("无法找到:") + strPath ).c_str() );

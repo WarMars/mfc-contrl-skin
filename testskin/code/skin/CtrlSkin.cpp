@@ -14,7 +14,7 @@ bool	CCtrlSkin::AddControl( HWND hWnd, WNDPROC pProc, WNDPROC* pOldProcPtr )
 	TCHAR szClassName[MAX_CLASS_NAME] = {0};
 
 	GetClassName( hWnd,szClassName, sizeof(szClassName) );
-	sCtrlParameter* pParam = NULL;
+	CCtrlParameter* pParam = NULL;
 	if( !CheckHwnd( hWnd, szClassName, pParam ) )
 	{
 		return false;

@@ -144,12 +144,12 @@ void CSilderCtrlSkin::Draw( HDC hDC )
 	}
 }
 
-bool sSliderCtrlParameter::IsVertical( ) const
+bool CSliderCtrlParameter::IsVertical( ) const
 {
     return m_bIsVertical;
 }
 
-bool sSliderCtrlParameter::SetVertical( bool bNew )
+bool CSliderCtrlParameter::SetVertical( bool bNew )
 {
     if( m_bIsVertical != bNew )
     {

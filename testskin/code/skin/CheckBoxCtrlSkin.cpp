@@ -201,20 +201,20 @@ namespace GlobalSkin
 		DrawBmp( &dcMem, rtWindow, m_pBmpBk );
 
 		if ( i2b(GetCurParam( ) ->m_nButtonState & 
-			sButtonCtrlStatus::BUTTON_DISABLED ) )
+			CButtonCtrlStatus::BUTTON_DISABLED ) )
 		{	
 			/* 禁用状态 */
 
 			/* 禁用状态下的选择绘制 */
 
 			if ( i2b(GetCurParam( ) ->m_nButtonState &
-				sButtonCtrlStatus::BUTTON_CHECKED) )
+				CButtonCtrlStatus::BUTTON_CHECKED) )
 			{
 				DrawBmp( &dcMem, rtRadio,
 					m_pBmpState[CBS_Disabled].pBmpChecked );
 			}
 			else if( i2b(GetCurParam( ) ->m_nButtonState &
-				sButtonCtrlStatus::BUTTON_INDETERMINATE ) )
+				CButtonCtrlStatus::BUTTON_INDETERMINATE ) )
 			{
 				DrawBmp( &dcMem, rtRadio, 
 					m_pBmpState[CBS_Disabled].pBmpIndeterminate );
@@ -226,19 +226,19 @@ namespace GlobalSkin
 			}
 		}
 		else if ( i2b(GetCurParam( ) ->m_nButtonState & 
-			sButtonCtrlStatus::BUTTON_PRESSED) )
+			CButtonCtrlStatus::BUTTON_PRESSED) )
 		{
 			/* 按下状态 */
 
 			/* 按下状态的选择绘制 */
 			if ( i2b(GetCurParam( ) ->m_nButtonState &
-				sButtonCtrlStatus::BUTTON_CHECKED) )
+				CButtonCtrlStatus::BUTTON_CHECKED) )
 			{
 				DrawBmp( &dcMem, rtRadio,
 					m_pBmpState[CBS_Pressed].pBmpChecked );
 			}
 			else if( i2b(GetCurParam( ) ->m_nButtonState &
-				sButtonCtrlStatus::BUTTON_INDETERMINATE ) )
+				CButtonCtrlStatus::BUTTON_INDETERMINATE ) )
 			{
 				DrawBmp( &dcMem, rtRadio, 
 					m_pBmpState[CBS_Pressed].pBmpIndeterminate );
@@ -250,19 +250,19 @@ namespace GlobalSkin
 			}
 		}
 		else if (i2b(GetCurParam( ) ->m_nButtonState & 
-			sButtonCtrlStatus::BUTTON_HOVER) )
+			CButtonCtrlStatus::BUTTON_HOVER) )
 		{
 			/* 鼠标经过 */
 
 			/* 鼠标经过时的选择绘制 */
 			if ( i2b(GetCurParam( ) ->m_nButtonState &
-				sButtonCtrlStatus::BUTTON_CHECKED) )
+				CButtonCtrlStatus::BUTTON_CHECKED) )
 			{
 				DrawBmp( &dcMem, rtRadio,
 					m_pBmpState[CBS_Hover].pBmpChecked );
 			}
 			else if( i2b(GetCurParam( ) ->m_nButtonState &
-				sButtonCtrlStatus::BUTTON_INDETERMINATE ) )
+				CButtonCtrlStatus::BUTTON_INDETERMINATE ) )
 			{
 				DrawBmp( &dcMem, rtRadio, 
 					m_pBmpState[CBS_Hover].pBmpIndeterminate );
@@ -274,19 +274,19 @@ namespace GlobalSkin
 			}
 		}
 		else if (i2b(GetCurParam( ) ->m_nButtonState & 
-			sButtonCtrlStatus::BUTTON_FOCUS) )
+			CButtonCtrlStatus::BUTTON_FOCUS) )
 		{
 			/* 获得焦点状态 */
 
 			/* 有焦点下的各种状态绘制 */
 			if ( i2b(GetCurParam( ) ->m_nButtonState &
-				sButtonCtrlStatus::BUTTON_CHECKED) )
+				CButtonCtrlStatus::BUTTON_CHECKED) )
 			{
 				DrawBmp( &dcMem, rtRadio,
 					m_pBmpState[CBS_Focused].pBmpChecked );
 			}
 			else if( i2b(GetCurParam( ) ->m_nButtonState &
-				sButtonCtrlStatus::BUTTON_INDETERMINATE ) )
+				CButtonCtrlStatus::BUTTON_INDETERMINATE ) )
 			{
 				DrawBmp( &dcMem, rtRadio, 
 					m_pBmpState[CBS_Focused].pBmpIndeterminate );
@@ -303,13 +303,13 @@ namespace GlobalSkin
 
 			/* 绘制在无操作状态下的各种状态背景 */
 			if ( i2b(GetCurParam( ) ->m_nButtonState &
-				sButtonCtrlStatus::BUTTON_CHECKED) )
+				CButtonCtrlStatus::BUTTON_CHECKED) )
 			{
 				DrawBmp( &dcMem, rtRadio,
 					m_pBmpState[CBS_Normal].pBmpChecked );
 			}
 			else if( i2b(GetCurParam( ) ->m_nButtonState &
-				sButtonCtrlStatus::BUTTON_INDETERMINATE ) )
+				CButtonCtrlStatus::BUTTON_INDETERMINATE ) )
 			{
 				DrawBmp( &dcMem, rtRadio, 
 					m_pBmpState[CBS_Normal].pBmpIndeterminate );

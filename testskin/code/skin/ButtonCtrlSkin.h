@@ -13,7 +13,7 @@ namespace GlobalSkin
 /** 
  * @brief °´Å¥¿Ø¼þ×´Ì¬
  */
-struct sButtonCtrlStatus:public sCtrlParameter
+struct CButtonCtrlStatus:public CCtrlParameter
 {
 	enum
 	{ 
@@ -40,12 +40,12 @@ struct sButtonCtrlStatus:public sCtrlParameter
 	TCAPTURESTATE m_CaptureState; // Êó±êÐÐÎª²¶×½×´Ì¬
 };
 
-DECLARE_REF_PTR( sButtonCtrlStatus );
+DECLARE_REF_PTR( CButtonCtrlStatus );
 
 /** 
  * @brief °´Å¥¿Ø¼þÆ¤·ô
  */
-class CButtonCtrlSkin:public CCtrlSkinPackage<sButtonCtrlStatus>
+class CButtonCtrlSkin:public CCtrlSkinPackage<CButtonCtrlStatus>
 {
 public:
 

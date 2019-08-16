@@ -3,7 +3,7 @@
 
 namespace GlobalSkin
 {
-	struct sListBoxCtrlParameter:public sCtrlWithScrollBar
+	struct CListBoxCtrlParameter:public CCtrlWithScrollBarParameter
 	{
 	public:
 		bool			m_bMenu;
@@ -27,7 +27,7 @@ namespace GlobalSkin
 		CRect			m_rtMenu;
 	};
 	
-	class CListBoxCtrlSkin:public CCtrlWithScrollBar<sListBoxCtrlParameter>
+	class CListBoxCtrlSkin:public CCtrlWithScrollBar<CListBoxCtrlParameter>
 	{
 	public:
 		CListBoxCtrlSkin( );

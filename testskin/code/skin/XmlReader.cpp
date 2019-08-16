@@ -2,6 +2,7 @@
 #include "XmlReader.h"
 #include "../../Markup.h"
 #include "utils.hpp"
+
 namespace GlobalSkin
 {
 
@@ -20,7 +21,7 @@ CXmlReader::~CXmlReader(void)
 bool Xml2XPathMap( 
 	CMarkup& reader, 
 	const XPath& strCurPath,
-	std::map<XPath,RefPtr<CConfigData> >& mapXml,
+	std::map<XPath,CRefPtr<CConfigData> >& mapXml,
 	const XPath& strRootPath );
 bool CXmlReader::LoadFile( const XString& strPath )
 {
@@ -72,14 +73,14 @@ bool CXmlReader::LoadFile( const XString& strPath )
 static bool Xml2XPathMap( 
 	CMarkup& reader, 
 	const XPath& strCurPath,
-	std::map<XPath,RefPtr<CConfigData> >& mapXml,
+	std::map<XPath,CRefPtr<CConfigData> >& mapXml,
 	const XPath& strRootPath )
 {
 	reader.IntoElem( );
 	const XString& strNodeName =
 		MCD_2PCSZ( reader.GetTagName( ) );
 	const XPath& strLevelPath = strCurPath + _T('/') + strNodeName ;
-	RefPtr<CConfigData> configData = new CConfigData;
+	CRefPtr<CConfigData> configData = new CConfigData;
 	configData ->SetIsColor( false );
 	XPath strDiskPath = strRootPath;
 	CRecti rect;

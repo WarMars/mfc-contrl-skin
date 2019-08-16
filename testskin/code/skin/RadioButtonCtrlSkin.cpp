@@ -163,11 +163,11 @@ void CRadioButtonCtrlSkin::OnDrawButton(CDC *pDC)
     DrawBmp( &dcMem, rtWindow, m_pBmpBk );
 
     if ( i2b(GetCurParam( ) ->m_nButtonState &
-             sButtonCtrlStatus::BUTTON_DISABLED ) )
+             CButtonCtrlStatus::BUTTON_DISABLED ) )
     {
         /* 禁用 */
         if ( i2b(GetCurParam( ) ->m_nButtonState &
-                 sButtonCtrlStatus::BUTTON_CHECKED) )
+                 CButtonCtrlStatus::BUTTON_CHECKED) )
         {
             /* 勾选 */
             DrawBmp( &dcMem, rtRadio,
@@ -181,11 +181,11 @@ void CRadioButtonCtrlSkin::OnDrawButton(CDC *pDC)
         }
     }
     else if ( i2b(GetCurParam( ) ->m_nButtonState &
-                  sButtonCtrlStatus::BUTTON_PRESSED) )
+                  CButtonCtrlStatus::BUTTON_PRESSED) )
     {
         /* 按下 */
         if (i2b(GetCurParam( ) ->m_nButtonState &
-                sButtonCtrlStatus::BUTTON_CHECKED) )
+                CButtonCtrlStatus::BUTTON_CHECKED) )
         {
             /* 勾选 */
             DrawBmp( &dcMem, rtRadio,
@@ -199,11 +199,11 @@ void CRadioButtonCtrlSkin::OnDrawButton(CDC *pDC)
         }
     }
     else if (i2b(GetCurParam( ) ->m_nButtonState &
-                 sButtonCtrlStatus::BUTTON_HOVER) )
+                 CButtonCtrlStatus::BUTTON_HOVER) )
     {
         /* 鼠标经过 */
         if (i2b(GetCurParam( ) ->m_nButtonState &
-                sButtonCtrlStatus::BUTTON_CHECKED) )
+                CButtonCtrlStatus::BUTTON_CHECKED) )
         {
             /* 勾选 */
             DrawBmp( &dcMem, rtRadio,
@@ -217,11 +217,11 @@ void CRadioButtonCtrlSkin::OnDrawButton(CDC *pDC)
         }
     }
     else if (i2b(GetCurParam( ) ->m_nButtonState &
-                 sButtonCtrlStatus::BUTTON_FOCUS) )
+                 CButtonCtrlStatus::BUTTON_FOCUS) )
     {
         /* 有焦点 */
         if (i2b(GetCurParam( ) ->m_nButtonState &
-                sButtonCtrlStatus::BUTTON_CHECKED) )
+                CButtonCtrlStatus::BUTTON_CHECKED) )
         {
             /* 勾选 */
             DrawBmp( &dcMem, rtRadio,
@@ -238,7 +238,7 @@ void CRadioButtonCtrlSkin::OnDrawButton(CDC *pDC)
     {
         /* 无操作 */
         if (i2b(GetCurParam( ) ->m_nButtonState &
-                sButtonCtrlStatus::BUTTON_CHECKED) )
+                CButtonCtrlStatus::BUTTON_CHECKED) )
         {
             /* 勾选 */
             DrawBmp( &dcMem, rtRadio,

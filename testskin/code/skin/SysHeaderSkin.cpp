@@ -29,13 +29,13 @@ void CSysHeaderSkin::LoadSkin( const CSkinConfig* pConfig )
         int nSize = 0;
         m_pBmpBk = Util::CreateSubBitmap(pBitmap,
                                          nXOffset, nYOffset + nSize, nSize, nSize );
-        m_pBmpItem[sSysHeaderParameter::HIS_Normal]=
+        m_pBmpItem[CSysHeaderParameter::HIS_Normal]=
                 Util::CreateSubBitmap(pBitmap,
                                       nXOffset, nYOffset, nSize, nSize );
-        m_pBmpItem[sSysHeaderParameter::HIS_Hover] =
+        m_pBmpItem[CSysHeaderParameter::HIS_Hover] =
                 Util::CreateSubBitmap(pBitmap,
                                       nXOffset + nSize, nYOffset, nSize, nSize );
-        m_pBmpItem[sSysHeaderParameter::HIS_Press] =
+        m_pBmpItem[CSysHeaderParameter::HIS_Press] =
                 Util::CreateSubBitmap(pBitmap,
                                       nXOffset + nSize*2, nYOffset, nSize, nSize );
 		return;
@@ -43,13 +43,13 @@ void CSysHeaderSkin::LoadSkin( const CSkinConfig* pConfig )
 #ifdef USING_CONFIG_FILE
 	m_pBmpBk = pConfig ->GetBitmap(TEXT("header/background") );
 	
-	m_pBmpItem[sSysHeaderParameter::HIS_Normal]=
+	m_pBmpItem[CSysHeaderParameter::HIS_Normal]=
 		 pConfig ->GetBitmap(TEXT("header/item/background/normal") );
 	
-	m_pBmpItem[sSysHeaderParameter::HIS_Hover] =
+	m_pBmpItem[CSysHeaderParameter::HIS_Hover] =
 		 pConfig ->GetBitmap(TEXT("header/item/background/hover") );
 
-	m_pBmpItem[sSysHeaderParameter::HIS_Press] =
+	m_pBmpItem[CSysHeaderParameter::HIS_Press] =
 		 pConfig ->GetBitmap(TEXT("header/item/background/pressed") );
 #endif
 
@@ -306,28 +306,28 @@ void CSysHeaderSkin::DrawHeader(HDC hdc )
         {
             /* 当前按下的 */
             DrawItemEntry(hdc,i,rectItem,
-                          sSysHeaderParameter::HIS_Press );
+                          CSysHeaderParameter::HIS_Press );
         }
         else if( GetCurParam( ) ->m_nHotItem == i )
         {
             /* 焦点项 */
             DrawItemEntry(hdc,i,rectItem,
-                          sSysHeaderParameter::HIS_Hover );
+                          CSysHeaderParameter::HIS_Hover );
         }
         else
         {
             /* 一般项 */
             DrawItemEntry(hdc,i,rectItem,
-                          sSysHeaderParameter::HIS_Normal );
+                          CSysHeaderParameter::HIS_Normal );
         }
     }
 }
 
 void CSysHeaderSkin::DrawItemEntry(HDC hdc, LRESULT nIndex,
-                                   const CRect& rectItem,  sSysHeaderParameter::HeaderItemState state )
+                                   const CRect& rectItem,  CSysHeaderParameter::HeaderItemState state )
 {
-    if( state >= sSysHeaderParameter::HIS_Normal &&
-            state < sSysHeaderParameter::HIS_State )
+    if( state >= CSysHeaderParameter::HIS_Normal &&
+            state < CSysHeaderParameter::HIS_State )
     {
 
         /* 绘制子项的背景 */
@@ -335,8 +335,8 @@ void CSysHeaderSkin::DrawItemEntry(HDC hdc, LRESULT nIndex,
     }
     else
     {
-        ASSERT(state >= sSysHeaderParameter::HIS_Normal &&
-               state < sSysHeaderParameter::HIS_State );
+        ASSERT(state >= CSysHeaderParameter::HIS_Normal &&
+               state < CSysHeaderParameter::HIS_State );
     }
 
     /* 获取文本内容 */

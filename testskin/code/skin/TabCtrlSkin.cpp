@@ -298,22 +298,22 @@ void CTablCtrlSkin::DrawItemEntry( HDC hdc, int nIndex, const CRect& rcItem, CPE
 	DrawBmp( hdc, rcItem, m_pBmpItem[nState] );
 }
 
-int	sTabCtrlSkinParameter::GetPressedIndex( ) const
+int	CTabCtrlSkinParameter::GetPressedIndex( ) const
 {
 	return m_nPressedIndex;
 }
 
-void sTabCtrlSkinParameter::SetPressedIndex( int nIndex )
+void CTabCtrlSkinParameter::SetPressedIndex( int nIndex )
 {
 	m_nPressedIndex = nIndex;
 }
 
-int sTabCtrlSkinParameter::GetHotIndex( ) const
+int CTabCtrlSkinParameter::GetHotIndex( ) const
 {
 	return m_nHotIndex;
 }
 
-void sTabCtrlSkinParameter::SetHotIndex( int nIndex )
+void CTabCtrlSkinParameter::SetHotIndex( int nIndex )
 {
 	m_nHotIndex = nIndex;
 }

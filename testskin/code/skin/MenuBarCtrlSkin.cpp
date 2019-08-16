@@ -448,9 +448,9 @@ void CMenuItemParameter::InitAccessKeyAndVerticalLinePoint( HWND hWnd )
     }
 }
 
-CsMenubarCtrlSkinParameterRefPtr CreateMenuBarSkinParameter( HWND hWnd )
+CMenubarCtrlSkinParameterRefPtr CreateMenuBarSkinParameter( HWND hWnd )
 {
-    CsMenubarCtrlSkinParameterRefPtr pParam = new CsMenubarCtrlSkinParameterRef;
+    CMenubarCtrlSkinParameterRefPtr pParam = new CMenubarCtrlSkinParameterRef;
     pParam ->SetPressed( NULL );
     pParam ->SetHot( NULL );
     pParam ->SetNewPopUp( -1 );
@@ -573,7 +573,7 @@ void CMenubarCtrlSkin::LoadSkin( const CSkinConfig* pConfig )
 
 }
 
-void CMenubarCtrlSkin::Init( HWND hWnd, const CsMenubarCtrlSkinParameterRefPtr& pParam )
+void CMenubarCtrlSkin::Init( HWND hWnd, const CMenubarCtrlSkinParameterRefPtr& pParam )
 {
 	m_hWnd = hWnd;
 	m_pParam = pParam;
@@ -961,158 +961,158 @@ LRESULT CALLBACK CMenubarCtrlSkin::MenuInputFilter(int code, WPARAM wp, LPARAM l
 }
 
 
-CMenuItemParameterRef *sMenubarCtrlSkinParameter::GetHot() const
+CMenuItemParameterRef *CMenubarCtrlSkinParameter::GetHot() const
 {
     return m_pHot;
 }
 
-void sMenubarCtrlSkinParameter::SetHot(CMenuItemParameterRef *pHot)
+void CMenubarCtrlSkinParameter::SetHot(CMenuItemParameterRef *pHot)
 {
     m_pHot = pHot;
 }
 
-CMenuItemParameterRef *sMenubarCtrlSkinParameter::GetPressed() const
+CMenuItemParameterRef *CMenubarCtrlSkinParameter::GetPressed() const
 {
     return m_pPressed;
 }
 
-void sMenubarCtrlSkinParameter::SetPressed(CMenuItemParameterRef *pPressed)
+void CMenubarCtrlSkinParameter::SetPressed(CMenuItemParameterRef *pPressed)
 {
     m_pPressed = pPressed;
 }
 
-void sMenubarCtrlSkinParameter::SetNewPopUp( int nNew )
+void CMenubarCtrlSkinParameter::SetNewPopUp( int nNew )
 {
     m_nNewPopUp = nNew;
 }
 
-int sMenubarCtrlSkinParameter::GetNewPopUp( ) const
+int CMenubarCtrlSkinParameter::GetNewPopUp( ) const
 {
     return m_nNewPopUp;
 }
 
 
-HMENU sMenubarCtrlSkinParameter::GetTrackingMenu( ) const
+HMENU CMenubarCtrlSkinParameter::GetTrackingMenu( ) const
 {
     return m_hTrackingMenu;
 }
 
-void sMenubarCtrlSkinParameter::SetTrackingMenu( HMENU hMenu )
+void CMenubarCtrlSkinParameter::SetTrackingMenu( HMENU hMenu )
 {
     m_hTrackingMenu = hMenu;
 }
 
-HMENU sMenubarCtrlSkinParameter::GetHMenu( ) const
+HMENU CMenubarCtrlSkinParameter::GetHMenu( ) const
 {
     return m_hMenu;
 }
 
-void sMenubarCtrlSkinParameter::SetHMenu( HMENU hMenu )
+void CMenubarCtrlSkinParameter::SetHMenu( HMENU hMenu )
 {
     m_hMenu = hMenu;
 }
 
-const CRect& sMenubarCtrlSkinParameter::GetPosition( ) const
+const CRect& CMenubarCtrlSkinParameter::GetPosition( ) const
 {
     return m_rectPos;
 }
 
-CRect& sMenubarCtrlSkinParameter::GetPosition( )
+CRect& CMenubarCtrlSkinParameter::GetPosition( )
 {
     return m_rectPos;
 }
 
-void sMenubarCtrlSkinParameter::SetPosition( const CRect& rectPos )
+void CMenubarCtrlSkinParameter::SetPosition( const CRect& rectPos )
 {
     m_rectPos = rectPos;
 }
 
-void sMenubarCtrlSkinParameter::AddMenuItem( const CMenuItemParameterRefPtr& pItem )
+void CMenubarCtrlSkinParameter::AddMenuItem( const CMenuItemParameterRefPtr& pItem )
 {
     m_vectorItems.push_back( pItem );
 }
-CMenuItemParameterRefPtr sMenubarCtrlSkinParameter::GetMenuItem( int i ) const
+CMenuItemParameterRefPtr CMenubarCtrlSkinParameter::GetMenuItem( int i ) const
 {
     std::size_t nIndex = (std::size_t)i;
     ASSERT( nIndex >= 0 && nIndex < m_vectorItems.size() );
     return m_vectorItems[nIndex];
 }
-void sMenubarCtrlSkinParameter::RemoveMenuItem( int i )
+void CMenubarCtrlSkinParameter::RemoveMenuItem( int i )
 {
     std::size_t nIndex = (std::size_t)i;
     ASSERT( nIndex >= 0 && nIndex < m_vectorItems.size() );
     m_vectorItems.erase( m_vectorItems.begin() + nIndex );
 }
-void sMenubarCtrlSkinParameter::ClearMenuItem( )
+void CMenubarCtrlSkinParameter::ClearMenuItem( )
 {
     m_vectorItems.clear();
 }
 
-int sMenubarCtrlSkinParameter::GetMenuItemCount( ) const
+int CMenubarCtrlSkinParameter::GetMenuItemCount( ) const
 {
     return (int) m_vectorItems.size();
 }
 
-bool sMenubarCtrlSkinParameter::GetEscapedPressed( ) const
+bool CMenubarCtrlSkinParameter::GetEscapedPressed( ) const
 {
     return m_bEscapePressed;
 }
 
-void sMenubarCtrlSkinParameter::SetEscapedPressed( bool bPressed )
+void CMenubarCtrlSkinParameter::SetEscapedPressed( bool bPressed )
 {
     m_bEscapePressed = bPressed;
 }
 
-CPE::MenuBarTrackState sMenubarCtrlSkinParameter::GetMenuBarTrackingState( ) const
+CPE::MenuBarTrackState CMenubarCtrlSkinParameter::GetMenuBarTrackingState( ) const
 {
     return m_nTrackingState;
 }
 
-void sMenubarCtrlSkinParameter::SetMenuBarTrackingState( CPE::MenuBarTrackState mbts )
+void CMenubarCtrlSkinParameter::SetMenuBarTrackingState( CPE::MenuBarTrackState mbts )
 {
     m_nTrackingState = mbts;
 }
 
-bool sMenubarCtrlSkinParameter::IsProcessLeftArrow( ) const
+bool CMenubarCtrlSkinParameter::IsProcessLeftArrow( ) const
 {
     return m_bProcessLeftArrow;
 }
 
-void sMenubarCtrlSkinParameter::SetProcessLeftArrow( bool b )
+void CMenubarCtrlSkinParameter::SetProcessLeftArrow( bool b )
 {
     m_bProcessLeftArrow = b;
 }
 
-bool sMenubarCtrlSkinParameter::IsProcessRightArrow( ) const
+bool CMenubarCtrlSkinParameter::IsProcessRightArrow( ) const
 {
     return m_bProcessRightArrow;
 }
 
-void sMenubarCtrlSkinParameter::SetProcessRightArrow( bool b )
+void CMenubarCtrlSkinParameter::SetProcessRightArrow( bool b )
 {
     m_bProcessRightArrow = b;
 }
 
-int sMenubarCtrlSkinParameter::GetPopupTracking( ) const
+int CMenubarCtrlSkinParameter::GetPopupTracking( ) const
 {
     return m_nPopupTracking;
 }
-void sMenubarCtrlSkinParameter::SetPopupTracking( int nTracking )
+void CMenubarCtrlSkinParameter::SetPopupTracking( int nTracking )
 {
     m_nPopupTracking = nTracking;
 }
 
-void sMenubarCtrlSkinParameter::SetMousePoint( const CPoint& ptMouse )
+void CMenubarCtrlSkinParameter::SetMousePoint( const CPoint& ptMouse )
 {
     m_ptMouse = ptMouse;
 }
 
-const CPoint& sMenubarCtrlSkinParameter::GetMousePoint( ) const
+const CPoint& CMenubarCtrlSkinParameter::GetMousePoint( ) const
 {
     return m_ptMouse;
 }
 
-CPoint& sMenubarCtrlSkinParameter::GetMousePoint( )
+CPoint& CMenubarCtrlSkinParameter::GetMousePoint( )
 {
     return m_ptMouse;
 }

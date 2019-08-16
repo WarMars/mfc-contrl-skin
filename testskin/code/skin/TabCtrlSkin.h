@@ -21,7 +21,7 @@ namespace GlobalSkin
 	///
 	/// @brief tab的参数
 	///
-	struct sTabCtrlSkinParameter:public sCtrlParameter
+	struct CTabCtrlSkinParameter:public CCtrlParameter
 	{
 	public:
 		int	GetPressedIndex( ) const;
@@ -40,7 +40,7 @@ namespace GlobalSkin
 	/** 
 	 * @brief tab控件皮肤
 	 */
-	class CTablCtrlSkin:public CCtrlSkinPackage<sTabCtrlSkinParameter>
+	class CTablCtrlSkin:public CCtrlSkinPackage<CTabCtrlSkinParameter>
 	{
 	public:
 		CTablCtrlSkin( );

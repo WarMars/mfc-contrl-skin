@@ -7,12 +7,12 @@
 ///
 namespace GlobalSkin
 {
-	struct sEditParameter:public sCtrlWithScrollBar
+	struct CEditParameter:public CCtrlWithScrollBarParameter
 	{
 
 	};
 
-	class CEditCtrlSkin:public CCtrlWithScrollBar<sEditParameter>
+	class CEditCtrlSkin:public CCtrlWithScrollBar<CEditParameter>
 	{
 	public:
 		CEditCtrlSkin();

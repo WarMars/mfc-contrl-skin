@@ -33,13 +33,13 @@ CButtonCtrlSkin::CParamReference* CButtonCtrlSkin::OnPreTakeOverSkin( HWND hWnd 
 	CParamReference* pStatus = new CParamReference;
 	pStatus ->m_nID = ::GetDlgCtrlID(hWnd);
 	pStatus ->m_nButtonState = 0;
-	pStatus ->m_CaptureState = sButtonCtrlStatus::NO_CAPTURE_OR_UP_RELEASE;
+	pStatus ->m_CaptureState = CButtonCtrlStatus::NO_CAPTURE_OR_UP_RELEASE;
 	// 获取初始按钮状态
 	if(style & WS_DISABLED)
 	{
 		SetState(
 			pStatus ->m_nButtonState, 
-			sButtonCtrlStatus::BUTTON_DISABLED );
+			CButtonCtrlStatus::BUTTON_DISABLED );
 	}
 	pStatus ->m_bIcon = style & BS_ICON;
 	DWORD dwState = (LONG) SendMessage(hWnd, BM_GETCHECK, 0, 0);
@@ -165,7 +165,7 @@ void CButtonCtrlSkin::OnSetState(WPARAM wp,LPARAM lp)
 	}
 	// 更新按下状态
 	if( SetState( GetCurParam( ) ->m_nButtonState,
-		sButtonCtrlStatus::BUTTON_PRESSED, 0!=wp ) )
+		CButtonCtrlStatus::BUTTON_PRESSED, 0!=wp ) )
 	{
 		Redraw( );
 	}
@@ -181,33 +181,33 @@ void CButtonCtrlSkin::OnSetCheck(WPARAM wp, LPARAM lp )
 	case BST_CHECKED:
 		{
 			bRet1 = SetState( GetCurParam( ) ->m_nButtonState, 
-				sButtonCtrlStatus::BUTTON_CHECKED,
+				CButtonCtrlStatus::BUTTON_CHECKED,
 				true );
 
 			bRet2 = SetState( GetCurParam( ) ->m_nButtonState, 
-				sButtonCtrlStatus::BUTTON_INDETERMINATE,
+				CButtonCtrlStatus::BUTTON_INDETERMINATE,
 				false );
 		}
 		break;
 	case BST_INDETERMINATE:
 		{
 			bRet1 = SetState( GetCurParam( ) ->m_nButtonState, 
-				sButtonCtrlStatus::BUTTON_CHECKED,
+				CButtonCtrlStatus::BUTTON_CHECKED,
 				false );
 
 			bRet2 = SetState( GetCurParam( ) ->m_nButtonState, 
-				sButtonCtrlStatus::BUTTON_INDETERMINATE,
+				CButtonCtrlStatus::BUTTON_INDETERMINATE,
 				true );
 		}
 		break;
 	default:
 		{
 			bRet1 = SetState( GetCurParam( ) ->m_nButtonState, 
-				sButtonCtrlStatus::BUTTON_CHECKED,
+				CButtonCtrlStatus::BUTTON_CHECKED,
 				false );
 
 			bRet2 = SetState( GetCurParam( ) ->m_nButtonState, 
-				sButtonCtrlStatus::BUTTON_INDETERMINATE,
+				CButtonCtrlStatus::BUTTON_INDETERMINATE,
 				false );
 		}
 		break;
@@ -236,7 +236,7 @@ void CButtonCtrlSkin::OnSetStyle(WPARAM wp,LPARAM lp)
 	// 风格主要处理是否是对话框的默认的“确定”按钮
 	if( SetState( 
 		GetCurParam( ) ->m_nButtonState,
-		sButtonCtrlStatus::BUTTON_DEFAULT,
+		CButtonCtrlStatus::BUTTON_DEFAULT,
 		wp & BS_DEFPUSHBUTTON ) )
 	{
 		Redraw( );
@@ -252,11 +252,11 @@ void CButtonCtrlSkin::OnMouseMove( UINT nFlags, CPoint point )
 	}
 	bool bNeedRedraw = false;
 	if(( GetCurParam( ) ->m_nButtonState & 
-		sButtonCtrlStatus::BUTTON_HOVER) == 0 && ((nFlags & MK_LBUTTON) == 0) )
+		CButtonCtrlStatus::BUTTON_HOVER) == 0 && ((nFlags & MK_LBUTTON) == 0) )
 	{ // 鼠标普通的移入按钮（没有按键）
 		bNeedRedraw = SetState( 
 			GetCurParam( ) ->m_nButtonState, 
-			sButtonCtrlStatus::BUTTON_HOVER, true);
+			CButtonCtrlStatus::BUTTON_HOVER, true);
 
 		// 继续跟踪鼠标，不调用将出错
 		TRACKMOUSEEVENT tme;
@@ -267,7 +267,7 @@ void CButtonCtrlSkin::OnMouseMove( UINT nFlags, CPoint point )
 	}
 
 	if(( GetCurParam( ) ->m_CaptureState == 
-		sButtonCtrlStatus::RELEASE_IN_LEAVE ) )
+		CButtonCtrlStatus::RELEASE_IN_LEAVE ) )
 	{ // 如果上次处于鼠标弹起的状态离开按钮，
 	  // 模拟一次鼠标按下，保持按钮状态追踪的完整性
 		if((nFlags & MK_LBUTTON) != 0)
@@ -279,7 +279,7 @@ void CButtonCtrlSkin::OnMouseMove( UINT nFlags, CPoint point )
 		else
 		{// 没有按键按下的普通鼠标
 			GetCurParam( ) -> m_CaptureState = 
-				sButtonCtrlStatus::NO_CAPTURE_OR_UP_RELEASE;
+				CButtonCtrlStatus::NO_CAPTURE_OR_UP_RELEASE;
 		    bNeedRedraw = true;
 		}
 	}
@@ -306,14 +306,14 @@ void CButtonCtrlSkin::OnLButtonDown( UINT nFlags, const CPoint& point )
 	// 捕获输入 
 	SetCapture( GetCurHwnd( ) );
 
-	GetCurParam( ) ->m_CaptureState = sButtonCtrlStatus::CAPTURE_IN_DOWN;
+	GetCurParam( ) ->m_CaptureState = CButtonCtrlStatus::CAPTURE_IN_DOWN;
 
 	// 捕获鼠标焦点
 	SetFocus( GetCurHwnd( ) );
 
 	// 状态为按下按钮
 	bool b = SetState( GetCurParam( ) ->m_nButtonState, 
-		sButtonCtrlStatus::BUTTON_PRESSED, TRUE );
+		CButtonCtrlStatus::BUTTON_PRESSED, TRUE );
 
 	// 默认的处理
 	OnAutoDefaultWndProc();
@@ -330,20 +330,20 @@ void CButtonCtrlSkin::OnMouseLeave()
 	}
 
 	if( GetCurParam( ) ->m_CaptureState == 
-		sButtonCtrlStatus::CAPTURE_IN_DOWN )
+		CButtonCtrlStatus::CAPTURE_IN_DOWN )
 	{ // 鼠标没有在按钮内移动，直接弹起
 		ReleaseCapture();
 		GetCurParam( ) ->m_CaptureState = 
-			sButtonCtrlStatus::RELEASE_IN_LEAVE;
+			CButtonCtrlStatus::RELEASE_IN_LEAVE;
 	}
 	// 取消鼠标移动状态
 	bool bRet1 = SetState( GetCurParam( ) ->m_nButtonState, 
-		(sButtonCtrlStatus::BUTTON_HOVER | 
-		sButtonCtrlStatus::BUTTON_PRESSED ), false );
+		(CButtonCtrlStatus::BUTTON_HOVER | 
+		CButtonCtrlStatus::BUTTON_PRESSED ), false );
 
 	// 鼠标恢复正常
 	bool bRet2 = SetState( GetCurParam( ) ->m_nButtonState, 
-		sButtonCtrlStatus::BUTTON_NORMAL, true );
+		CButtonCtrlStatus::BUTTON_NORMAL, true );
 	if( bRet1 || bRet2 )
 	{
 		Redraw( );
@@ -358,7 +358,7 @@ void CButtonCtrlSkin::OnSetFocus( )
 	}
 	// 获取焦点
 	if( SetState( GetCurParam( ) ->m_nButtonState, 
-		sButtonCtrlStatus::BUTTON_FOCUS, true) )
+		CButtonCtrlStatus::BUTTON_FOCUS, true) )
 	{
 		Redraw( );
 	}
@@ -373,7 +373,7 @@ void CButtonCtrlSkin::OnKillFocus( )
 	// 失去焦点
 	if( SetState(
 		GetCurParam( ) ->m_nButtonState, 
-		sButtonCtrlStatus::BUTTON_FOCUS, false ) )
+		CButtonCtrlStatus::BUTTON_FOCUS, false ) )
 	{
 		Redraw( );
 	}
@@ -386,7 +386,7 @@ void CButtonCtrlSkin::OnEnable(BOOL bEnable)
 	}
 	// 按钮可用状态变化
 	if( SetState( GetCurParam( ) ->m_nButtonState, 
-		sButtonCtrlStatus::BUTTON_DISABLED, !bEnable ) )
+		CButtonCtrlStatus::BUTTON_DISABLED, !bEnable ) )
 	{
 		Redraw( );
 	}
@@ -403,7 +403,7 @@ void CButtonCtrlSkin::OnLButtonUp( UINT nFlags, const CPoint& point )
 	}
 	// 鼠标抬起
 	GetCurParam( ) ->m_CaptureState = 
-		sButtonCtrlStatus::NO_CAPTURE_OR_UP_RELEASE;
+		CButtonCtrlStatus::NO_CAPTURE_OR_UP_RELEASE;
 
 }
 
@@ -449,27 +449,27 @@ bool CButtonCtrlSkin::UpdateCheckStatus()
 		{
 			bRet1 = SetState(
 				GetCurParam( ) ->m_nButtonState, 
-				sButtonCtrlStatus::BUTTON_CHECKED, true);
+				CButtonCtrlStatus::BUTTON_CHECKED, true);
 			bRet2 = SetState(GetCurParam( ) ->m_nButtonState,
-				sButtonCtrlStatus::BUTTON_INDETERMINATE, false );
+				CButtonCtrlStatus::BUTTON_INDETERMINATE, false );
 		}
 		break;
 	case BST_INDETERMINATE:
 		{
 			bRet1 = SetState(
 				GetCurParam( ) ->m_nButtonState, 
-				sButtonCtrlStatus::BUTTON_CHECKED, false );
+				CButtonCtrlStatus::BUTTON_CHECKED, false );
 			bRet2 = SetState(GetCurParam( ) ->m_nButtonState,
-				sButtonCtrlStatus::BUTTON_INDETERMINATE, false );
+				CButtonCtrlStatus::BUTTON_INDETERMINATE, false );
 		}
 		break;
 	default:
 		{
 			bRet1 = SetState(
 				GetCurParam( ) ->m_nButtonState, 
-				sButtonCtrlStatus::BUTTON_CHECKED, false);
+				CButtonCtrlStatus::BUTTON_CHECKED, false);
 			bRet2 = SetState(GetCurParam( ) ->m_nButtonState,
-				sButtonCtrlStatus::BUTTON_INDETERMINATE, false );
+				CButtonCtrlStatus::BUTTON_INDETERMINATE, false );
 		}
 		break;
 

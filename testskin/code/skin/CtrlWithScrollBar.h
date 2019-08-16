@@ -4,15 +4,15 @@
 
 namespace GlobalSkin
 {
-	struct sCtrlWithScrollBar:public sCtrlParameter
+	struct CCtrlWithScrollBarParameter:public CCtrlParameter
 	{
 		bool		    m_bBorder;
-		DynamicParam::CsScrollBarCtrlParameterRefPtr	m_pScrollBarParam;
-		inline const DynamicParam::CsScrollBarCtrlParameterRefPtr& GetScrollBarParam( ) const
+		DynamicParam::CScrollBarCtrlParameterRefPtr	m_pScrollBarParam;
+		inline const DynamicParam::CScrollBarCtrlParameterRefPtr& GetScrollBarParam( ) const
 		{
 			return m_pScrollBarParam;
 		}
-		inline DynamicParam::CsScrollBarCtrlParameterRefPtr& GetScrollBarParam( )
+		inline DynamicParam::CScrollBarCtrlParameterRefPtr& GetScrollBarParam( )
 		{
 			return m_pScrollBarParam;
 		}
@@ -21,7 +21,7 @@ namespace GlobalSkin
 	};
 
 	/** 
-	 * @brief T必须是一种sListCtrlParameter
+	 * @brief T必须是一种CListCtrlParameter
 	 */
 	template<typename T>
 	class CCtrlWithScrollBar: public CCtrlSkinPackage<T>

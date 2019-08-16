@@ -118,7 +118,7 @@ private:
     CBitmapRefPtr	m_pBmpState[CPE::WBS_Size];
 };
 
-struct sDialogBoxParameter:public sCtrlWithScrollBar
+struct CDialogBoxParameter:public CCtrlWithScrollBarParameter
 {
 public:
 
@@ -128,14 +128,14 @@ public:
      * @return
      */
     bool HasTitle() const;
-    void setHasTitle(bool HasTitle);
+    void SetHasTitle(bool HasTitle);
 
     /**
      * @brief HasMaxButton 是否有最大化按钮
      * @return
      */
     bool HasMaxButton() const;
-    void setHasMaxButton(bool HasMaxButton);
+    void SetHasMaxButton(bool HasMaxButton);
 
     /**
      * @brief HasMinButton 是否有最小化按钮
@@ -218,10 +218,10 @@ public:
      * @brief GetMenuBarParamPtr
      * @return
      */
-    DynamicParam::CsMenubarCtrlSkinParameterRefPtr GetMenuBarParamPtr();
-    const DynamicParam::CsMenubarCtrlSkinParameterRefPtr GetMenuBarParamPtr() const;
+    DynamicParam::CMenubarCtrlSkinParameterRefPtr GetMenuBarParamPtr();
+    const DynamicParam::CMenubarCtrlSkinParameterRefPtr GetMenuBarParamPtr() const;
     void SetMenuBarParamPtr(
-            const DynamicParam::CsMenubarCtrlSkinParameterRefPtr pMenuBarParamPtr);
+            const DynamicParam::CMenubarCtrlSkinParameterRefPtr pMenuBarParamPtr);
     
     /**
      * @brief HasMenu
@@ -354,14 +354,14 @@ private:
     /**
      * @brief m_pMenuBarParam
      */
-    DynamicParam::CsMenubarCtrlSkinParameterRefPtr	m_pMenuBarParam;
+    DynamicParam::CMenubarCtrlSkinParameterRefPtr	m_pMenuBarParam;
 
 protected:
 
 };
 
 
-class CDialogBoxSkin: public CCtrlWithScrollBar<sDialogBoxParameter>
+class CDialogBoxSkin: public CCtrlWithScrollBar<CDialogBoxParameter>
 {
     enum
     {

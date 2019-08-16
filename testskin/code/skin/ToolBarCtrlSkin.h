@@ -22,7 +22,7 @@ namespace GlobalSkin
 	/*!
 	 * @brief 工具栏控件参数
 	 */
-	struct sToolBarCtrlParameter:public sCtrlParameter
+	struct CToolBarCtrlParameter:public CCtrlParameter
 	{
 	public:
 
@@ -39,7 +39,7 @@ namespace GlobalSkin
 	};
 
 	/* 工具栏控件皮肤 */
-	class CToolBarCtrlSkin:public CCtrlSkinPackage<sToolBarCtrlParameter>
+	class CToolBarCtrlSkin:public CCtrlSkinPackage<CToolBarCtrlParameter>
 	{
 	public:
 		CToolBarCtrlSkin( );

@@ -189,12 +189,12 @@ BOOL CProgressBarCtrlSkin::GetPosRect( RECT &rectPos )
 	return TRUE;
 }
 
-bool sProgressBarCtrlParameter::IsVertical( ) const
+bool CProgressBarCtrlParameter::IsVertical( ) const
 {
 	return m_bIsVertical;
 }
 
-bool sProgressBarCtrlParameter::SetVertical( bool bNew )
+bool CProgressBarCtrlParameter::SetVertical( bool bNew )
 {
 	if( m_bIsVertical != bNew )
 	{

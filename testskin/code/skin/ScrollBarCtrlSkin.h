@@ -45,7 +45,7 @@ enum ScrollBarHitTest
 }
 namespace DynamicParam
 {
-struct sScrollBarBasic
+struct CScrollBarBasic
 {
 	///
 	/// @brief 标志。为了存储更多的状态
@@ -134,17 +134,17 @@ public:
     void SetThumbState(CPE::ScrollBarState value);
 };
 
-struct sScrollBarCtrlParameter : public sCtrlParameter
+struct CScrollBarCtrlParameter : public CCtrlParameter
 {
 	///
 	/// @brief 水平滚动条参数
 	///
-    sScrollBarBasic m_hBar; 
+    CScrollBarBasic m_hBar; 
 
 	///
 	/// @brief 垂直滚动条参数
 	///
-    sScrollBarBasic m_vBar;
+    CScrollBarBasic m_vBar;
 	
 	///
 	/// @brief 启动滑块追踪
@@ -213,14 +213,14 @@ public:
     void SetTrackingPos(int nTrackingPos);
     int GetTrackingValue() const;
     void SetTrackingValue(int nTrackingValue);
-    const sScrollBarBasic& GetHBar() const;
-    const sScrollBarBasic& GetVBar() const;
+    const CScrollBarBasic& GetHBar() const;
+    const CScrollBarBasic& GetVBar() const;
 
-    sScrollBarBasic& GetHBar();
-    sScrollBarBasic& GetVBar();
+    CScrollBarBasic& GetHBar();
+    CScrollBarBasic& GetVBar();
 };
 
-DECLARE_REF_PTR( sScrollBarCtrlParameter );
+DECLARE_REF_PTR_NC( CScrollBarCtrlParameter );
 class CScrollBarCtrlSkin
 {
 public:
@@ -241,7 +241,7 @@ public:
 	 * @return 
 	 * @note 
 	 */
-    void DrawHScrollBar( HWND hWnd, CsScrollBarCtrlParameterRefPtr pParam );
+    void DrawHScrollBar( HWND hWnd, CScrollBarCtrlParameterRefPtr pParam );
 
 	/*!
 	 * @brief 绘制垂直滚动条
@@ -250,7 +250,7 @@ public:
 	 * @return 
 	 * @note
 	 */
-    void DrawVScrollBar( HWND hWnd, CsScrollBarCtrlParameterRefPtr pParam );
+    void DrawVScrollBar( HWND hWnd, CScrollBarCtrlParameterRefPtr pParam );
 
 	/*!
 	 * @brief 绘制sizing块
@@ -272,7 +272,7 @@ public:
 	 */
     void TrackScrollBar(
             HWND hWnd,
-            CsScrollBarCtrlParameterRefPtr pParam,
+            CScrollBarCtrlParameterRefPtr pParam,
             UINT nType, const CPoint& ptCur );
 	
 	/*!
@@ -382,7 +382,7 @@ protected:
 	 */
     void HandleScrollEvent(
             HWND hWnd,
-            CsScrollBarCtrlParameterRefPtr pParam,
+            CScrollBarCtrlParameterRefPtr pParam,
             UINT nType, UINT nEventType, const CPoint& ptCur,
             POINT& ptPrevious,UINT& nThumbPos, INT& nLastClickPos,
             INT& nLastMousePos,
@@ -401,12 +401,12 @@ protected:
 	 * @note
 	 */
     void DrawMovingThumb(
-            HWND hWnd, CsScrollBarCtrlParameterRefPtr pParam,
+            HWND hWnd, CScrollBarCtrlParameterRefPtr pParam,
             bool bVertical, const CRect& rtPos,int nArrowSize,int nThumbSize);
 private:
 	
 	/* 当前滚动条的参数 */
-    CsScrollBarCtrlParameterRefPtr	m_pParam;
+    CScrollBarCtrlParameterRefPtr	m_pParam;
 	
 	/* 当前滚动条窗口 */
     HWND							m_hWnd;
@@ -447,7 +447,7 @@ private:
  * @return 滚动条参数指针
  * @note
  */
-CsScrollBarCtrlParameterRefPtr CreateHwndScrollBarParam( HWND hWnd );
+CScrollBarCtrlParameterRefPtr CreateHwndScrollBarParam( HWND hWnd );
 
 
 /*!
@@ -460,7 +460,7 @@ CsScrollBarCtrlParameterRefPtr CreateHwndScrollBarParam( HWND hWnd );
  */
 UINT OnScrollBarHitTest(
         HWND  hWnd,
-        CsScrollBarCtrlParameterRefPtr pParam,
+        CScrollBarCtrlParameterRefPtr pParam,
         const CPoint& point );
 
 
@@ -473,7 +473,7 @@ UINT OnScrollBarHitTest(
  */
 void SetScrollBarParamVisible(
 	HWND hWnd, 
-	CsScrollBarCtrlParameterRefPtr pParam );
+	CScrollBarCtrlParameterRefPtr pParam );
 
 
 /*!
@@ -488,7 +488,7 @@ void SetScrollBarParamVisible(
  */
 void OnNcScrollBar( 
 	HWND hWnd,
-	CsScrollBarCtrlParameterRefPtr pParam,
+	CScrollBarCtrlParameterRefPtr pParam,
 	bool bBorder, 
 	bool bCalcValidRects, 
 	NCCALCSIZE_PARAMS *lpncsp);

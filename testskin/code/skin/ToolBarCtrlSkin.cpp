@@ -403,21 +403,21 @@ void CToolBarCtrlSkin::DrawItemEntry( HDC hDC, const CRect& rectItem,
 	DrawBmp( hDC, rectItem, m_pBmpItemBk[nState] );
 }
 
-int sToolBarCtrlParameter::GetPressedItem( ) const
+int CToolBarCtrlParameter::GetPressedItem( ) const
 {
 	return m_nPressedItem;
 }
-void sToolBarCtrlParameter::SetPressedItem( int nIndex )
+void CToolBarCtrlParameter::SetPressedItem( int nIndex )
 {
 	m_nPressedItem = nIndex;
 }
 
-int sToolBarCtrlParameter::GetHotItem( ) const
+int CToolBarCtrlParameter::GetHotItem( ) const
 {
 	return m_nHotItem;
 }
 
-void sToolBarCtrlParameter::SetHotItem( int nIndex )
+void CToolBarCtrlParameter::SetHotItem( int nIndex )
 {
 	m_nHotItem = nIndex;
 }

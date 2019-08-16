@@ -55,7 +55,7 @@ namespace GlobalSkin
 		};
 
 	}
-	struct sPopupMenuCtrlParameter: public sCtrlParameter
+	struct CPopupMenuCtrlParameter: public CCtrlParameter
 	{
 		bool IsAnimatedMenus( ) const;
 		void SetAnimatedMenus( bool b );
@@ -71,8 +71,8 @@ namespace GlobalSkin
 		HWND GetHwnd( ) const;
 		void SetHwnd( HWND hWnd );
 
-		void SetParent(sPopupMenuCtrlParameter* pParent );
-		sPopupMenuCtrlParameter* GetParent( ) const;
+		void SetParent(CPopupMenuCtrlParameter* pParent );
+		CPopupMenuCtrlParameter* GetParent( ) const;
 
 		bool IsGradient( ) const;
 		void SetGradient( bool b );
@@ -119,7 +119,7 @@ namespace GlobalSkin
 		///
 		/// @brief 父参数
 		///
-		sPopupMenuCtrlParameter*	m_pParent;
+		CPopupMenuCtrlParameter*	m_pParent;
 
 		///
 		/// @brief 是否是渐变
@@ -145,7 +145,7 @@ namespace GlobalSkin
 	///
 	/// @brief 弹出菜单
 	///
-	class CPopupMenuCtrlSkin : public CCtrlSkinPackage<sPopupMenuCtrlParameter>
+	class CPopupMenuCtrlSkin : public CCtrlSkinPackage<CPopupMenuCtrlParameter>
 	{
 	public:
 		CPopupMenuCtrlSkin( );

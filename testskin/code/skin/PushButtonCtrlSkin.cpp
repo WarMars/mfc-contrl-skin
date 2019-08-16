@@ -102,16 +102,16 @@ void CPushButtonCtrl::DrawBackground(CDC *pDC,const CRect& destRect )
 
 	CButton *pButton = (CButton*)CWnd::FromHandle(GetCurHwnd( ));
 	bool bDisabled = ( 0 != ( GetCurParam( ) -> m_nButtonState & 
-		sButtonCtrlStatus::BUTTON_DISABLED ) );
+		CButtonCtrlStatus::BUTTON_DISABLED ) );
 	if ( bDisabled )
 	{
 		/* ½ûÓÃ */
 		DrawBmp( pDC, destRect, m_pBmpDisabled );
 	}
 	else if ( 0!=( GetCurParam( ) -> m_nButtonState & 
-		sButtonCtrlStatus::BUTTON_PRESSED) ||
+		CButtonCtrlStatus::BUTTON_PRESSED) ||
 		0!=( GetCurParam( ) ->m_nButtonState & 
-		sButtonCtrlStatus::BUTTON_HOVER) )
+		CButtonCtrlStatus::BUTTON_HOVER) )
 	{	
 		/* °´ÏÂ */
 		DrawBmp( pDC, destRect, m_pBmpPressed );

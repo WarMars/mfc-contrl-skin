@@ -3,5 +3,5 @@
 #include "reference_ptr.hpp"
 
 typedef CClassReference<CBitmap> CBitmapRef;
-typedef RefPtr<CBitmapRef> CBitmapRefPtr;
+typedef CRefPtr<CBitmapRef> CBitmapRefPtr;
 

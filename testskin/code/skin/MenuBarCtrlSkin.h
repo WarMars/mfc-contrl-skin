@@ -319,7 +319,7 @@ DECLARE_REF_PTR_NC( CMenuItemParameter );
 /**
  * @brief The sMenubarCtrlSkinParameter struct
  */
-struct sMenubarCtrlSkinParameter:public sCtrlParameter
+struct CMenubarCtrlSkinParameter:public CCtrlParameter
 {
     /**
      * @brief m_pHot 当前操作的菜单项的参数
@@ -386,7 +386,7 @@ struct sMenubarCtrlSkinParameter:public sCtrlParameter
      */
     CPoint					m_ptMouse;
 public:
-    ~sMenubarCtrlSkinParameter(){ int i=0; ++i;}
+    ~CMenubarCtrlSkinParameter(){ int i=0; ++i;}
     CMenuItemParameterRef *GetHot() const;
     void SetHot(CMenuItemParameterRef *pHot);
     CMenuItemParameterRef *GetPressed() const;
@@ -422,14 +422,14 @@ public:
     const CPoint& GetMousePoint( ) const;
     CPoint& GetMousePoint( );
 };
-DECLARE_REF_PTR(sMenubarCtrlSkinParameter);
+DECLARE_REF_PTR_NC(CMenubarCtrlSkinParameter);
 
 /**
  * @brief CreateMenuBarSkinParameter 创建菜单栏皮肤参数
  * @param hWnd 菜单栏句柄
  * @return 菜单参数指针
  */
-CsMenubarCtrlSkinParameterRefPtr CreateMenuBarSkinParameter( HWND hWnd );
+CMenubarCtrlSkinParameterRefPtr CreateMenuBarSkinParameter( HWND hWnd );
 
 /**
  * @brief CopyMenu 复制菜单
@@ -454,9 +454,9 @@ public:
      * @return 菜单栏皮肤对象引用
      */
 //    static CMenubarCtrlSkin& GetInstance(
-//            HWND hWnd, CsMenubarCtrlSkinParameterRefPtr pParam, bool bInit = true );
+//            HWND hWnd, CMenubarCtrlSkinParameterRefPtr pParam, bool bInit = true );
 
-	void Init( HWND hWnd, const CsMenubarCtrlSkinParameterRefPtr& pParam );
+	void Init( HWND hWnd, const CMenubarCtrlSkinParameterRefPtr& pParam );
     CMenubarCtrlSkin( );
     ~CMenubarCtrlSkin( );
 public:
@@ -597,7 +597,7 @@ private:
 	///
 	/// @brief 菜单栏参数
 	///
-    CsMenubarCtrlSkinParameterRefPtr            m_pParam;
+    CMenubarCtrlSkinParameterRefPtr            m_pParam;
 
     // 菜单项的皮肤
     CMenuItemSkinParameterRefPtr				m_pItem;

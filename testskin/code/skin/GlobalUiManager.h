@@ -39,8 +39,8 @@ namespace GlobalSkin
 		std::vector<CCtrlSkinPtr>	  m_vectorCtrlSkins;
 		HHOOK						  m_pPreviosHook;
 
-		SimplePtr<DynamicParam::CScrollBarCtrlSkin> m_pScrollBarCtrlSkin;
-		SimplePtr<DynamicParam::CMenubarCtrlSkin>	  m_pMenuBarCtrlSkin;
+		CSimplePtr<DynamicParam::CScrollBarCtrlSkin> m_pScrollBarCtrlSkin;
+		CSimplePtr<DynamicParam::CMenubarCtrlSkin>	  m_pMenuBarCtrlSkin;
 	};
 
 }
