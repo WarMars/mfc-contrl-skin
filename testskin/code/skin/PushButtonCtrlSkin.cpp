@@ -81,11 +81,12 @@ void CPushButtonCtrl::OnDrawButton(CDC *pDC)
 	GetWindowRect(hWnd,&rectWindow);
 	rectWindow.OffsetRect( 
 		-rectWindow.left, -rectWindow.top );
-	
+	CMemDC dcMem( *pDC, rectWindow );
+	CDC* pMemDC = &dcMem.GetDC( );
 	/* 绘制背景 */
-	DrawBackground( pDC,rectWindow );
+	DrawBackground( pMemDC,rectWindow );
 	/* 绘制文本 */
-	DrawText( pDC, rectWindow );
+	DrawText( pMemDC, rectWindow );
 }
 
 

@@ -234,39 +234,40 @@ void CTablCtrlSkin::DrawTab( HDC hdc )
 	{ 
 		return;
 	} 
+	Util::CTempCompatibleDC tdc( hdc, rtClient.Width(),rtClient.Height());
 	// 绘制背景
-	DrawBmp( hdc, rtClient, m_pBmkBk );
+	DrawBmp( tdc, rtClient, m_pBmkBk );
 	CRect rcItem;
 	DWORD dwStyle = GetWindowLong( hWnd, GWL_STYLE );
-	int nOldBkMode = SetBkMode( hdc, TRANSPARENT);
+	int nOldBkMode = SetBkMode( tdc, TRANSPARENT);
 	
 	/* 获取字体 */
 	HFONT hFont = (HFONT)SendMessage(hWnd, WM_GETFONT, 0, 0);
-	HGDIOBJ hOldFont = SelectObject( hdc, hFont );
+	HGDIOBJ hOldFont = SelectObject( tdc, hFont );
 
 	const int nPressedIndex = p ->GetPressedIndex();
 	const int nHotIndex = p ->GetHotIndex();
-	
+	int nSelected = (int)::SendMessage(m_hWnd, TCM_GETCURSEL, 0, 0L);
 	for(int i = 0 ; i < nItemCount ; i++)
 	{
 		
 		/* 获取tab的尺寸信息 */
 		SendMessage( hWnd, TCM_GETITEMRECT, i, (LPARAM)&rcItem );
-		if(nPressedIndex == i)
+		if(nPressedIndex == i || nSelected == i )
 		{
 			
 			/* 按下 */
-			DrawItemEntry(hdc,i,rcItem,CPE::TabIS_Pressed);
+			DrawItemEntry(tdc,i,rcItem,CPE::TabIS_Pressed);
 		}
 		else if(nHotIndex == i)
 		{
 			/* 鼠标经过 */
-			DrawItemEntry(hdc,i,rcItem,CPE::TabIs_Hover);
+			DrawItemEntry(tdc,i,rcItem,CPE::TabIs_Hover);
 		}
 		else
 		{
 			/* 无操作 */
-			DrawItemEntry(hdc,i,rcItem,CPE::TabIS_Normal );
+			DrawItemEntry(tdc,i,rcItem,CPE::TabIS_Normal );
 		}
 		TCHAR szItemText[256] = {0};
 		TCITEM tim;
@@ -281,12 +282,12 @@ void CTablCtrlSkin::DrawTab( HDC hdc )
 		rtText.left = rtText.left +3;
 		
 		/* 绘制文本 */
-		DrawText( hdc, szItemText,
+		DrawText( tdc, szItemText,
 			(int)_tcslen(szItemText),&rtText,
 			DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS );
 	}
-	SetBkMode( hdc, nOldBkMode );
-	SelectObject( hdc, hOldFont );
+	SetBkMode( tdc, nOldBkMode );
+	SelectObject( tdc, hOldFont );
 }
 
 void CTablCtrlSkin::DrawItemEntry( HDC hdc, int nIndex, const CRect& rcItem, CPE::TabItemState nState)
