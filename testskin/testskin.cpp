@@ -7,11 +7,13 @@
 #include "testskinDlg.h"
 #include "skin/GlobalUiManager.h"
 #include <skin/XmlReader.h>
+#include "code/ImageManager.h"
 //#include <vld.h>
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
+#include "gdi_leak/source/apihook/gdi/Gdi.hpp"
+//#include "gdi_leak/source/apihook/APIHook.hpp"
 
 // CtestskinApp
 
@@ -36,11 +38,71 @@ CtestskinApp::CtestskinApp()
 
 CtestskinApp theApp;
 
+int test0( )
+{
+	using namespace apihook;
 
+	// 启动堆栈记录
+
+	apihook::StackWalker::Inst().Enable();
+
+
+
+	// Hook DeleteObject，必须开
+
+	apihook::gdi_base::EnableHook();
+
+
+
+	// 各个对象使能，自行注释掉不需要的
+
+	apihook::gdi_pen::EnableHook();
+
+	apihook::gdi_font::EnableHook();
+
+	apihook::gdi_dc::EnableHook();
+
+	apihook::gdi_bitmap::EnableHook();
+
+	apihook::gdi_brush::EnableHook();
+
+	apihook::gdi_extpen::EnableHook();
+
+	apihook::gdi_palette::EnableHook();
+
+	apihook::gdi_region::EnableHook();
+
+	return 0;
+}
+
+int test1( )
+{
+
+	// 运行一段时间后，或者操作某个界面后，打印泄漏信息到执行目录下
+
+	// 打印需要通过DeleteObject释放的泄漏地址
+
+	apihook::gdi_base::MyStacks_base::Inst().Dump("xgdi.leak");
+
+
+
+	// 打印需要通过ReleaseDC释放的泄漏地址，需要开启gdi_dc
+
+	apihook::gdi_dc::MyStacks_relasedc::Inst().Dump("xreleasedc.leak");
+
+
+
+	// 打印需要通过DeleteDC释放的泄漏地址，需要开启gdi_dc
+
+	apihook::gdi_dc::MyStacks_deletedc::Inst().Dump("xdeletedc.leak");
+
+	return 0;
+}
 // CtestskinApp 初始化
 
 BOOL CtestskinApp::InitInstance()
 {
+	test0( );
 	DWORD dwTime = GetDoubleClickTime( );
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
 	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，
@@ -72,7 +134,7 @@ BOOL CtestskinApp::InitInstance()
 	//AfxEnableMemoryLeakDump( TRUE );
 	GlobalSkin::CXmlReader* pReader = new GlobalSkin::CXmlReader;
 	pReader ->LoadFile(_T("ui\\skin\\skin-config.xml") );
-	GlobalSkin::CGlobalUiManager uiManager( pReader );
+	//GlobalSkin::CGlobalUiManager uiManager( pReader );
 	delete pReader;
 	CtestskinDlg dlg;
 	{
@@ -107,7 +169,9 @@ BOOL CtestskinApp::InitInstance()
 
 int CtestskinApp::ExitInstance()
 {
+	ImagePool( ).TidyUp();
 	// TODO: 在此添加专用代码和/或调用基类
 	//_CrtDumpMemoryLeaks( );
+	test1( );
 	return CWinApp::ExitInstance();
 }
