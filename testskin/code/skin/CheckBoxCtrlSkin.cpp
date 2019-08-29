@@ -108,7 +108,7 @@ namespace GlobalSkin
 		const CBitmapRefPtr& pDisabledIndeterminateImg   )
 	{
 		m_pBmpBk = pBkImg;
-#define LOAD_BUTTON_STATE_BOX_BMP(variable,pChceck,pUncheck,pInde) \
+#define LOAD_BUTTON_STATE_BOX_BMP(variable,pUncheck,pChceck,pInde) \
 	variable.pBmpChecked = pChceck;\
 	variable.pBmpUnchecked = pUncheck;\
 	variable.pBmpIndeterminate = pInde
