@@ -803,11 +803,13 @@ void CScrollBarCtrlSkin::DrawSizing( HWND hWnd, const CRect& r )
     if( m_bmpSizing.valid() )
     {
         HDC hMemDC = CreateCompatibleDC( hdc );
-        SelectObject( hMemDC, m_bmpSizing );
+        HGDIOBJ hOldBitmap = SelectObject( hMemDC, m_bmpSizing );
         const CSize& szBmp = GetBMPSize( *m_bmpSizing );
         StretchBlt( hdc, r.left, r.top, r.Width(), r.Height(),
                     hMemDC, 0,0, szBmp.cx, szBmp.cy, SRCCOPY );
-        DeleteDC( hMemDC );
+        SelectObject( hMemDC, hOldBitmap);
+		DeleteDC( hMemDC );
+		
 
     }
     else

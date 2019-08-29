@@ -1,6 +1,9 @@
 #pragma  once
 #include <Windows.h>
 #include <reference_ptr.hpp>
+#include <stack>
+#include "GlobalSkinUtil.h"
+
 #define USING_CONFIG_FILE
 namespace GlobalSkin
 {
@@ -41,6 +44,8 @@ namespace GlobalSkin
 		 * @brief 设置当前按钮
 		 */
 		void SetCurrentWindow( HWND hWnd );
+		void ResetCurrentWindow( );
+		virtual void OnFinishProc( ) = 0;
 
 		virtual bool	CheckHwnd( 
 			HWND hWnd, PCTSTR lpszWndClassName, CCtrlParameter*& pParam ) = 0;
@@ -80,13 +85,29 @@ namespace GlobalSkin
 	
 		virtual ~CCtrlSkin( );
 
-		inline HWND GetCurHwnd( ) { return m_hWnd; }
+		inline HWND GetCurHwnd( ) const
+		{ 
+			if( m_stackWnd.empty() )
+			{
+				ShowErrorMsg( );
+				return NULL;
+			}
+#ifdef _DEBUG
+			if( m_stackWnd.size() > 1 )
+			{
+				std::size_t i = m_stackWnd.size();
+				i = i;
+			}
+#endif
+			return m_stackWnd.top( );
+		}
 	public:
 		void SetUiManager( CGlobalUiManager* pManager );
 		DynamicParam::CScrollBarCtrlSkin& GetScrollBarCtrlSkin( );
 		DynamicParam::CMenubarCtrlSkin& GetMenuBarCtrlSkin( );
 	protected:
-		HWND				m_hWnd;
+		std::stack<HWND>	m_stackWnd;
+		//HWND				m_hWnd;
 		CGlobalUiManager*	m_pManager;
 	};
 

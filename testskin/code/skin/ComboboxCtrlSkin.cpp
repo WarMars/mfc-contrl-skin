@@ -131,8 +131,8 @@ LPCTSTR CComboBoxCtrlSkin::GetHwndClassName( )
 CComboBoxCtrlSkin::CParamReference* CComboBoxCtrlSkin::OnPreTakeOverSkin( HWND hWnd )
 {
 	CParamReference* pParam = new CParamReference;
-	long lStyle	  = GetWindowLong( GetCurHwnd( ), GWL_STYLE );
-	long lExStyle = GetWindowLong( GetCurHwnd( ),GWL_EXSTYLE );
+	long lStyle	  = GetWindowLong( hWnd, GWL_STYLE );
+	long lExStyle = GetWindowLong( hWnd,GWL_EXSTYLE );
 	/* 初始化参数设置 */
 	pParam ->m_nState = CComboboxCtrlParameter::COMBOX_NORMAL;
 	pParam ->m_nHScrollBar = lStyle & WS_HSCROLL;

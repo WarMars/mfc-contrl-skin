@@ -213,7 +213,9 @@ int CTablCtrlSkin::HitTest( const POINT& point)
 	/* 系统默认的检测 */
 	TCHITTESTINFO hti;
 	hti.pt = point;
-	return (int)::SendMessage(m_hWnd, TCM_HITTEST, 0, (LPARAM)&hti );
+	return (int)::SendMessage(
+		GetCurHwnd(),
+		TCM_HITTEST, 0, (LPARAM)&hti );
 }
 
 void CTablCtrlSkin::DrawTab( HDC hdc )
@@ -247,7 +249,7 @@ void CTablCtrlSkin::DrawTab( HDC hdc )
 
 	const int nPressedIndex = p ->GetPressedIndex();
 	const int nHotIndex = p ->GetHotIndex();
-	int nSelected = (int)::SendMessage(m_hWnd, TCM_GETCURSEL, 0, 0L);
+	int nSelected = (int)::SendMessage(hWnd, TCM_GETCURSEL, 0, 0L);
 	for(int i = 0 ; i < nItemCount ; i++)
 	{
 		
@@ -276,7 +278,7 @@ void CTablCtrlSkin::DrawTab( HDC hdc )
 		tim.cchTextMax = sizeof(szItemText)/sizeof(TCHAR);
 		
 		/* 获取文本 */
-		SendMessage(m_hWnd, TCM_GETITEM, i, (LPARAM)&tim);
+		SendMessage(hWnd, TCM_GETITEM, i, (LPARAM)&tim);
 
 		CRect rtText = rcItem;
 		rtText.left = rtText.left +3;

@@ -98,7 +98,7 @@ CPopupMenuCtrlSkin::~CPopupMenuCtrlSkin( )
 {
 	if( NULL != m_hMenuFont )
 	{
-		DeleteObject( m_hMenuFont );
+		CheckFunc( DeleteObject( m_hMenuFont ) );
 	}
 }
 
@@ -127,9 +127,10 @@ CPopupMenuCtrlSkin::CParamReference* CPopupMenuCtrlSkin::OnPreTakeOverSkin( HWND
 	pParam ->SetSideBar( );
 	pParam ->SetFlat( );
 	BOOL bAnmiated = FALSE;
-	SystemParametersInfo(SPI_GETMENUANIMATION, 0, &bAnmiated, 0);
+	CheckFunc( SystemParametersInfo(
+		SPI_GETMENUANIMATION, 0, &bAnmiated, 0) );
 	pParam ->SetAnimatedMenus( TRUE == bAnmiated?true:false );
-	UpdateWindow( hWnd );
+	CheckFunc( UpdateWindow( hWnd ) );
 	return pParam;
 
 }
@@ -155,7 +156,14 @@ LRESULT CPopupMenuCtrlSkin::OnWndProc( UINT nMsg, WPARAM wParam, LPARAM lParam )
 			if (!p ->IsAnimatedMenus() || ! p ->IsFirstRedraw( ) )
 			{
 				Util::CTempWindowDC wdc(hWnd);
-				OnNcPaint( wdc );
+				if( wdc )
+				{
+					OnNcPaint( wdc );
+				}
+				else
+				{
+					ShowErrorMsg( );
+				}
 				return 0;
 			}
 		}
@@ -180,11 +188,18 @@ LRESULT CPopupMenuCtrlSkin::OnWndProc( UINT nMsg, WPARAM wParam, LPARAM lParam )
 
 	case WM_PAINT:
 		{
-			Util::CTempPaintDC pdc(m_hWnd);
-			SendMessage(
-				hWnd, WM_PRINTCLIENT, 
-				(WPARAM)(HDC)pdc, 
-				PRF_CLIENT | PRF_CHECKVISIBLE );
+			Util::CTempPaintDC pdc(hWnd);
+			if( pdc )
+			{
+				SendMessage(
+					hWnd, WM_PRINTCLIENT, 
+					(WPARAM)(HDC)pdc, 
+					PRF_CLIENT | PRF_CHECKVISIBLE );
+			}
+			else
+			{
+				ShowErrorMsg( );
+			}
 			return 0;
 		}
 	case WM_KEYDOWN:
@@ -213,8 +228,9 @@ LRESULT CPopupMenuCtrlSkin::OnWndProc( UINT nMsg, WPARAM wParam, LPARAM lParam )
 
 				p ->SetSelectedIndex( -1 );
 
-				InvalidateRect( hWnd, NULL, FALSE );
-				UpdateWindow( hWnd );
+				CheckFunc( InvalidateRect( 
+					hWnd, NULL, FALSE ) );
+				CheckFunc( UpdateWindow( hWnd ) );
 				p ->SetFirstRedraw( false );
 			}
 			else // have menu handle
@@ -243,8 +259,9 @@ LRESULT CPopupMenuCtrlSkin::OnWndProc( UINT nMsg, WPARAM wParam, LPARAM lParam )
 					CRect rectInvalid;
 					GetInvalidRect( nCurSel, nPrevSel, rectInvalid);
 
-					InvalidateRect( hWnd, rectInvalid, FALSE);
-					UpdateWindow( hWnd );
+					CheckFunc( InvalidateRect( 
+						hWnd, rectInvalid, FALSE) );
+					CheckFunc( UpdateWindow( hWnd ) );
 
 					p ->SetFirstRedraw( false );
 				}
@@ -269,7 +286,7 @@ LRESULT CPopupMenuCtrlSkin::OnWndProc( UINT nMsg, WPARAM wParam, LPARAM lParam )
 			}
 			else
 			{
-				GetClientRect( hWnd, rInvalid);
+				CheckFunc( GetClientRect( hWnd, rInvalid) );
 			}
 			//防止在缺省消息处理期间重绘
 			//否则，这个项就会被重绘而被覆盖
@@ -279,11 +296,13 @@ LRESULT CPopupMenuCtrlSkin::OnWndProc( UINT nMsg, WPARAM wParam, LPARAM lParam )
 
 			p ->SetSelectedIndex( wParam );
 			// TRACE("selected:%d\n", wParam);
-			InvalidateRect( hWnd, rInvalid, FALSE);
+			CheckFunc(
+				InvalidateRect( hWnd, rInvalid, FALSE) );
 
 			if (! p ->IsFirstRedraw() )
 			{
-				UpdateWindow( hWnd );
+				CheckFunc( 
+					UpdateWindow( hWnd ) );
 			}
 		}
 
@@ -332,14 +351,17 @@ LRESULT CPopupMenuCtrlSkin::OnWndProc( UINT nMsg, WPARAM wParam, LPARAM lParam )
 				//需要调整以避免出客户端rect
 				CRect rectParentWindow;
 				HWND hParentHwnd = pParent ->GetHwnd( );
-				::GetWindowRect( hParentHwnd, rectParentWindow);
+				CheckFunc(
+					::GetWindowRect( hParentHwnd, rectParentWindow) );
 
 				if (pWP->x > rectParentWindow.left) // right
 				{
 					CRect rParentClient;
-					::GetClientRect( hParentHwnd, rParentClient);
+					CheckFunc(
+						::GetClientRect( hParentHwnd, rParentClient) );
 
-					ClientToScreen(hParentHwnd,&rParentClient);
+					CheckFunc(
+						ClientToScreen(hParentHwnd,&rParentClient) );
 
 					pWP->x = rParentClient.right;
 				}
@@ -372,7 +394,7 @@ void CPopupMenuCtrlSkin::OnNcPaint(HDC hdc)
 
 	/* 获取系统默认的裁剪区域 */
 	CRect rClip;
-	GetClipBox( hdc,rClip );
+	CheckFunc( GetClipBox( hdc,rClip ) );
 
 	HBITMAP hMemBmp = CreateCompatibleBitmap(
 		hdc, rWindow.right, rWindow.bottom);
@@ -394,10 +416,10 @@ void CPopupMenuCtrlSkin::OnNcPaint(HDC hdc)
 	}
 	
 	/* 裁剪 */
-	ExcludeClipRect( 
+	CheckFunc( ExcludeClipRect( 
 		hMemDc,
 		rSidebar.left, rSidebar.top,
-		rSidebar.right,rSidebar.bottom );
+		rSidebar.right,rSidebar.bottom ) );
 
 	/* 绘制背景 */
 	if (!bIRender || !DrawMenuNonClientBkgnd( hMemDc, rWindow))
@@ -422,35 +444,40 @@ void CPopupMenuCtrlSkin::OnNcPaint(HDC hdc)
 
 	int nSaveState = SaveDC( hdc );
 	
-	ExcludeClipRect(hdc,
-		rClient.left, rClient.top, rClient.right, rClient.bottom );
-	BitBlt( hdc, 0, 0, rWindow.right, rWindow.bottom, hMemDc, 0, 0, SRCCOPY);
+	CheckFunc( 
+		ExcludeClipRect(hdc,
+		rClient.left, rClient.top,
+		rClient.right, rClient.bottom ) );
+	CheckFunc( BitBlt(
+		hdc, 0, 0, rWindow.right, rWindow.bottom, 
+		hMemDc, 0, 0, SRCCOPY) );
 	
-	RestoreDC( hdc,nSaveState );
+	CheckFunc( RestoreDC( hdc,nSaveState ) );
 
 	SelectObject( hMemDc, hOldBmp );
-	DeleteObject( hMemBmp );
-	DeleteDC( hMemDc );
+	CheckFunc( DeleteObject( hMemBmp ) );
+	CheckFunc( DeleteDC( hMemDc ) );
 	
 }
 
 void CPopupMenuCtrlSkin::SendRedrawMsg( BOOL bRedraw ) const
 { 
 	/* 控制菜单是否重绘，菜单并不总是需要全部重绘 */
-	::SendMessage(m_hWnd, WM_SETREDRAW, bRedraw, 0);
+	::SendMessage(GetCurHwnd(), WM_SETREDRAW, bRedraw, 0);
 }
 void CPopupMenuCtrlSkin::GetDrawRect(LPRECT pWindow, LPRECT pClient )
 {
 	HWND hWnd = GetCurHwnd( );
 	CRect rWindow;
-	GetWindowRect( hWnd, &rWindow );
+	CheckFunc( GetWindowRect( hWnd, &rWindow ) );
 
 	if (NULL != pClient)
 	{
 		/* 客户区坐标 */
-		GetClientRect( hWnd, pClient );
-		ClientToScreen( hWnd, pClient );
-		::OffsetRect(pClient, -rWindow.left, -rWindow.top);
+		CheckFunc( GetClientRect( hWnd, pClient ) );
+		CheckFunc( ClientToScreen( hWnd, pClient ) );
+		CheckFunc( OffsetRect(pClient,
+			-rWindow.left, -rWindow.top) );
 	}
 
 	if (NULL != pWindow)
@@ -475,30 +502,33 @@ void CPopupMenuCtrlSkin::GetInvalidRect(int nCurSel, int nPrevSel, LPRECT lpRect
 		nPrevSel == CPE::PMSS_ReDrawAll )
 	{
 		/* 整个菜单全部重绘 */
-		GetClientRect(hWnd,lpRect);
+		CheckFunc( GetClientRect(hWnd,lpRect) );
 	}
 	else if ( NULL !=hMenu )
 	{
-		::SetRectEmpty(lpRect);
-
+		CheckFunc( ::SetRectEmpty(lpRect) );
+		 
 		if (nCurSel >= 0 || nPrevSel >= 0)
 		{
 			if (nCurSel >= 0)
 			{
 				/* 获取当前项的矩形区域 */
-				GetMenuItemRect(NULL, hMenu, nCurSel, lpRect);
+				CheckFunc( GetMenuItemRect(
+					NULL, hMenu, nCurSel, lpRect) );
 			}
 
 			if (nPrevSel >= 0)
 			{
 				CRect rTemp;
 				/* 上一个菜单项的位置矩形 */
-				GetMenuItemRect(NULL, hMenu, nPrevSel, rTemp);
+				CheckFunc( GetMenuItemRect(NULL,
+					hMenu, nPrevSel, rTemp) );
 				/* 计算得到在当前客户区中的位置坐标和尺寸信息等 */
-				::UnionRect(lpRect, lpRect, rTemp);
+				CheckFunc( ::UnionRect(lpRect, 
+					lpRect, rTemp) );
 			}
 			/* 得到客户区坐标 */
-			ScreenToClient(hWnd,lpRect);
+			CheckFunc( ScreenToClient(hWnd,lpRect) );
 		}
 	}
 }
@@ -638,7 +668,8 @@ void CPopupMenuCtrlSkin::InitFont( )
 	ncm.cbSize = sizeof(ncm);
 
 	// 获取非客户区的信息
-	SystemParametersInfo(SPI_GETNONCLIENTMETRICS, 0, (PVOID)&ncm, FALSE);
+	CheckFunc( SystemParametersInfo(
+		SPI_GETNONCLIENTMETRICS, 0, (PVOID)&ncm, FALSE) );
 
 	// 创建此字体
 	
@@ -674,8 +705,8 @@ void CPopupMenuCtrlSkin::OnPrintClient(HDC hdc, DWORD dwFlags)
 	CParamReference* p = GetCurParam( );
 	HWND hWnd = GetCurHwnd( );
 	CRect rectClient;
-	GetClientRect( hWnd, &rectClient );
-
+	CheckFunc( GetClientRect( hWnd, &rectClient ) );
+ 
 	CRect rectClip(rectClient);
 
 	HDC hMemDC1 = CreateCompatibleDC( NULL );
@@ -687,7 +718,7 @@ void CPopupMenuCtrlSkin::OnPrintClient(HDC hdc, DWORD dwFlags)
 		rectClient.right, rectClient.bottom);
 	HBITMAP hMemBmp2 =CreateCompatibleBitmap(hDesktopDC,
 		rectClient.right, rectClient.bottom) ;
-	ReleaseDC( NULL, hDesktopDC );
+	CheckFunc( ReleaseDC( NULL, hDesktopDC ) );
 
 	// 初始化dc
 	SetBkMode(hMemDC1,TRANSPARENT);
@@ -700,13 +731,15 @@ void CPopupMenuCtrlSkin::OnPrintClient(HDC hdc, DWORD dwFlags)
 	/* 裁剪区域小于客户区 */
 	if (i2b(rectClip.top) )
 	{
-		ExcludeClipRect(hMemDC1,0, 0, rectClient.right, rectClip.top);
+		CheckFunc( ExcludeClipRect(hMemDC1,
+			0, 0, rectClient.right, rectClip.top) );
 	}
 	if (rectClip.bottom < rectClient.bottom)
 	{
 		/* 从dc中去掉此案件区域 */
-		ExcludeClipRect(hMemDC1, 0, rectClip.bottom,
-			rectClient.right, rectClient.bottom );
+		CheckFunc( ExcludeClipRect(
+			hMemDC1, 0, rectClip.bottom,
+			rectClient.right, rectClient.bottom ) );
 	}
 	/* 填充裁剪区域矩形 */
 	Util::FillSolid(hMemDC1, rectClip, (COLORREF)GetSysColor(COLOR_MENU));
@@ -729,20 +762,20 @@ void CPopupMenuCtrlSkin::OnPrintClient(HDC hdc, DWORD dwFlags)
 		++i;
 	}
 	// 完成绘制
-	BitBlt(
+	CheckFunc( BitBlt(
 		hdc, rectClip.left, rectClip.top, 
 		rectClip.Width(), rectClip.Height(), 
-		hSrcDC, rectClip.left, rectClip.top, SRCCOPY );
+		hSrcDC, rectClip.left, rectClip.top, SRCCOPY ) );
 		
 
 	SelectObject(hMemDC1,hOldBmp1 );
 	SelectObject(hMemDC1,hOldFont );
-	DeleteDC( hMemDC1 );
-	DeleteObject(hMemBmp1);
+	CheckFunc( DeleteDC( hMemDC1 ) );
+	CheckFunc( DeleteObject(hMemBmp1) );
 
 	SelectObject(hMemDC2,hOldBmp2 );
-	DeleteDC( hMemDC2 );
-	DeleteObject(hMemBmp2 );
+	CheckFunc( DeleteDC( hMemDC2 ) );
+	CheckFunc( DeleteObject(hMemBmp2 ) );
 }
 void CPopupMenuCtrlSkin::OnPaint(HDC hdc)
 {
@@ -752,7 +785,7 @@ void CPopupMenuCtrlSkin::OnPaint(HDC hdc)
 	}
 	HWND hWnd = GetCurHwnd( );
 	CRect rClient;
-	GetClientRect( hWnd, &rClient );
+	CheckFunc( GetClientRect( hWnd, &rClient ) );
 
 	HBITMAP hMemBmp = 
 		CreateCompatibleBitmap(hdc, rClient.right, rClient.bottom);
@@ -779,16 +812,17 @@ void CPopupMenuCtrlSkin::OnPaint(HDC hdc)
 	HDC hSrcDC = ReplaceSystemColors( hMemDC, hMemDC2, rClient, NULL);
 
 	// 覆盖
-	BitBlt(hdc, 0, 0, rClient.right, rClient.bottom, hSrcDC, 0, 0, SRCCOPY);
+	CheckFunc( BitBlt(hdc, 0, 0, rClient.right, 
+		rClient.bottom, hSrcDC, 0, 0, SRCCOPY) );
 
 	SelectObject(hMemDC,hOldBmp);
 	SelectObject(hMemDC,hOldFont);
-	DeleteDC(hMemDC);
-	DeleteObject(hMemBmp);
+	CheckFunc( DeleteDC(hMemDC) );
+	CheckFunc( DeleteObject(hMemBmp) );
 
 	SelectObject(hMemDC2,hOldBmp2 );
-	DeleteDC(hMemDC2);
-	DeleteObject(hMemBmp2);
+	CheckFunc( DeleteDC(hMemDC2) );
+	CheckFunc( DeleteObject(hMemBmp2) );
 }
 
 bool CPopupMenuCtrlSkin::DrawMenuNonClientBkgnd(HDC hdc, LPRECT pRect)

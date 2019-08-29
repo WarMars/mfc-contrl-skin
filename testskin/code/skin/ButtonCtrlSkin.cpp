@@ -263,7 +263,7 @@ void CButtonCtrlSkin::OnMouseMove( UINT nFlags, CPoint point )
 		tme.cbSize = sizeof(TRACKMOUSEEVENT);
 		tme.dwFlags = TME_LEAVE;
 		tme.hwndTrack = GetCurHwnd( );
-		TrackMouseEvent(&tme);
+		CheckFunc( TrackMouseEvent(&tme) );
 	}
 
 	if(( GetCurParam( ) ->m_CaptureState == 
@@ -285,8 +285,9 @@ void CButtonCtrlSkin::OnMouseMove( UINT nFlags, CPoint point )
 	}
 
 	RECT rect;
-	GetWindowRect( GetCurHwnd( ), &rect );
-	ClientToScreen( GetCurHwnd( ), &point );
+	CheckFunc( GetWindowRect( GetCurHwnd( ), &rect ) );
+	CheckFunc( ClientToScreen( GetCurHwnd( ), &point ) );
+	
 	if(!PtInRect(&rect, point))
 	{ // 鼠标离开按钮的状态，由MouseLeave处理
 		SendMessage(GetCurHwnd( ), WM_MOUSELEAVE, 0, 0);
@@ -332,7 +333,7 @@ void CButtonCtrlSkin::OnMouseLeave()
 	if( GetCurParam( ) ->m_CaptureState == 
 		CButtonCtrlStatus::CAPTURE_IN_DOWN )
 	{ // 鼠标没有在按钮内移动，直接弹起
-		ReleaseCapture();
+		CheckFunc( ReleaseCapture() );
 		GetCurParam( ) ->m_CaptureState = 
 			CButtonCtrlStatus::RELEASE_IN_LEAVE;
 	}
@@ -396,7 +397,7 @@ void CButtonCtrlSkin::OnLButtonUp( UINT nFlags, const CPoint& point )
 {
 	OnAutoDefaultWndProc();
 
-	ReleaseCapture();
+	CheckFunc( ReleaseCapture() );
 	if( IsNull( ) )
 	{
 		return;
@@ -421,7 +422,7 @@ void CButtonCtrlSkin::Redraw( )
 	}
 	UpdateCheckStatus();
 	OnDrawButton(pDC);
-	pWnd ->ReleaseDC( pDC );
+	CheckFunc( pWnd ->ReleaseDC( pDC ) );
 
 }
 void CButtonCtrlSkin::OnPaint()
@@ -484,7 +485,8 @@ void CButtonCtrlSkin::DrawText(CDC *pDC, const CRect& rectDest)
 		return;
 	}
 	CRect rectIcon,rectText;
-	CButton *pButton = (CButton*)CWnd::FromHandle(GetCurHwnd( ));
+	HWND hWnd = GetCurHwnd( );
+	CButton *pButton = (CButton*)CWnd::FromHandle( hWnd );
 	if( NULL == pButton )
 	{
 		return;
@@ -496,7 +498,7 @@ void CButtonCtrlSkin::DrawText(CDC *pDC, const CRect& rectDest)
 	rectText = rectDest;
 	if( 0 != GetCurParam( ) ->m_bIcon )
 	{
-		GetIconInfo(hIcon,&piconinfo); //取图标信息
+		CheckFunc( GetIconInfo(hIcon,&piconinfo) ); //取图标信息
 		rectIcon = rectDest;
 		if (dwStyle & BS_TOP) //文字置顶
 			rectIcon.top = rectDest.bottom - piconinfo.yHotspot*2 - 4;
@@ -511,9 +513,15 @@ void CButtonCtrlSkin::DrawText(CDC *pDC, const CRect& rectDest)
 			rectIcon.left = rectDest.right - (piconinfo.yHotspot*2 + 4);
 		else
 			rectIcon.left = (rectDest.right - rectDest.left)/2-piconinfo.yHotspot + 2;
-		pDC->DrawIcon( rectIcon.left,rectIcon.top, hIcon);
-		piconinfo.hbmColor ? DeleteObject(piconinfo.hbmColor) : NULL;
-		piconinfo.hbmMask ? DeleteObject(piconinfo.hbmMask) : NULL;
+		CheckFunc( pDC->DrawIcon( rectIcon.left,rectIcon.top, hIcon) );
+		if( NULL != piconinfo.hbmColor )
+		{
+			CheckFunc( DeleteObject(piconinfo.hbmColor) );
+		}
+		if( NULL != piconinfo.hbmMask )
+		{
+			DeleteObject(piconinfo.hbmMask);
+		}
 	}
 	else
 	{
@@ -521,7 +529,7 @@ void CButtonCtrlSkin::DrawText(CDC *pDC, const CRect& rectDest)
 		int nOldMode = pDC->SetBkMode(TRANSPARENT);
 		UINT uFormat = ButtonStyle2Format(dwStyle);
 		pButton->GetWindowText(strText);
-		HFONT hFont = (HFONT)SendMessage( m_hWnd, WM_GETFONT, 0,0);
+		HFONT hFont = (HFONT)SendMessage( hWnd, WM_GETFONT, 0,0);
 		bool bSystemFont = (0 == hFont);
 		if( bSystemFont )
 		{
@@ -538,7 +546,7 @@ void CButtonCtrlSkin::DrawText(CDC *pDC, const CRect& rectDest)
 		SelectObject( pDC ->GetSafeHdc(), hOldFont );
 		if( bSystemFont )
 		{
-			DeleteObject( hFont );
+			CheckFunc( DeleteObject( hFont ) );
 		}
 	}
 

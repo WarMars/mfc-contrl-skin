@@ -149,6 +149,7 @@ void CToolBarCtrlSkin::OnMouseMove(WPARAM wKeyType, const POINT& point)
 		return;
 	}
 	CParamReference* p = GetCurParam( );
+	HWND hWnd = GetCurHwnd( );
 	/* 左键按下 */
 	if( i2b(wKeyType & MK_LBUTTON) )
 	{
@@ -161,7 +162,7 @@ void CToolBarCtrlSkin::OnMouseMove(WPARAM wKeyType, const POINT& point)
 		/* 追踪后续消息 */
 		tme.cbSize = sizeof(TRACKMOUSEEVENT);
 		tme.dwFlags = TME_LEAVE;
-		tme.hwndTrack = m_hWnd;
+		tme.hwndTrack = hWnd;
 		TrackMouseEvent(&tme);
 	}
 	else
@@ -172,7 +173,7 @@ void CToolBarCtrlSkin::OnMouseMove(WPARAM wKeyType, const POINT& point)
 		p ->SetPressedItem( -1 );
 		tme.cbSize = sizeof(TRACKMOUSEEVENT);
 		tme.dwFlags = TME_LEAVE;
-		tme.hwndTrack = m_hWnd;
+		tme.hwndTrack = hWnd;
 		TrackMouseEvent(&tme);
 	}
 	
@@ -373,7 +374,7 @@ void CToolBarCtrlSkin::DrawToolBar(HDC hDC )
 			/* 绘制字体 */
 			CRect rectText = rectItem;
 			rectText.top = y + szExtent.cy;
-			if( IS_INTRESOURCE( tbb.iString ) )
+			if( FALSE == IS_INTRESOURCE( tbb.iString ) )
 			{
 				DrawTextW( tdc, (LPCWSTR)tbb.iString,-1,rectText,
 					DT_SINGLELINE|DT_CENTER|DT_VCENTER|DT_NOPREFIX);

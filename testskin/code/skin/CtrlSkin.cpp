@@ -69,9 +69,16 @@ bool	CCtrlSkin::RemoveControl( HWND hWnd )
 }
 void CCtrlSkin::SetCurrentWindow( HWND hWnd )
 {
-	m_hWnd = hWnd;
+	m_stackWnd.push( hWnd );
 }
-
+void CCtrlSkin::ResetCurrentWindow( )
+{
+	if( m_stackWnd.empty() )
+	{
+		return;
+	}
+	m_stackWnd.pop( );
+}
 
 LRESULT CCtrlSkin::OnAutoDefaultWndProc( )
 {

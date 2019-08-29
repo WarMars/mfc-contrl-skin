@@ -81,12 +81,21 @@ void CPushButtonCtrl::OnDrawButton(CDC *pDC)
 	GetWindowRect(hWnd,&rectWindow);
 	rectWindow.OffsetRect( 
 		-rectWindow.left, -rectWindow.top );
-	CMemDC dcMem( *pDC, rectWindow );
-	CDC* pMemDC = &dcMem.GetDC( );
+	CDC dcMem;
+	dcMem.CreateCompatibleDC( pDC);
+	CBitmap bmp;
+	bmp.CreateCompatibleBitmap( pDC, rectWindow.Width(),
+		rectWindow.Height() );
+	CBitmap* pOldBmp = dcMem.SelectObject( &bmp );
 	/* 绘制背景 */
-	DrawBackground( pMemDC,rectWindow );
+	DrawBackground( &dcMem,rectWindow );
 	/* 绘制文本 */
-	DrawText( pMemDC, rectWindow );
+	DrawText( &dcMem, rectWindow );
+
+	pDC ->BitBlt( rectWindow.left,rectWindow.top,
+		rectWindow.Width(), rectWindow.Height(),
+		&dcMem, 0, 0, SRCCOPY );
+	dcMem.SelectObject( pOldBmp );
 }
 
 

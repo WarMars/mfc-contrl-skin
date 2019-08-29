@@ -166,7 +166,7 @@ namespace GlobalSkin
 		CBitmap bmpMem;
 		bmpMem.CreateCompatibleBitmap( pDC, 
 			rtWindow.Width(), rtWindow.Height() );
-		dcMem.SelectObject( &bmpMem );
+		CBitmap* pOldBitmap = dcMem.SelectObject( &bmpMem );
 
 		/* 计算图片的尺寸，作为后续绘制的依据。 
 		   保证资源配置时，同一类贴图的尺寸相同。 */
@@ -325,6 +325,7 @@ namespace GlobalSkin
 		pDC ->BitBlt( rtWindow.left, rtWindow.top,
 			rtWindow.Width(),rtWindow.Height(),
 			&dcMem, 0,0, SRCCOPY );
+		dcMem.SelectObject( pOldBitmap );
 	}
 }
 

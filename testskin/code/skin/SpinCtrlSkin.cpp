@@ -90,13 +90,13 @@ void CSpinCtrlSkin::LoadSkin( const CSkinConfig* pConfig )
 		pConfig ->GetBitmap( TEXT("spin/arrow/down/background/disabled"));
 	/////////////////////////////////////
 	m_pBmpLeftArrow[CPE::SCBS_Normal] = 
-		pConfig ->GetBitmap( TEXT("spin/arrow/down/background/normal"));	
+		pConfig ->GetBitmap( TEXT("spin/arrow/left/background/normal"));	
 	m_pBmpLeftArrow[CPE::SCBS_Hot] = 
-		pConfig ->GetBitmap( TEXT("spin/arrow/down/background/hot"));
+		pConfig ->GetBitmap( TEXT("spin/arrow/left/background/hot"));
 	m_pBmpLeftArrow[CPE::SCBS_Pressed] = 
-		pConfig ->GetBitmap( TEXT("spin/arrow/down/background/pressed"));
+		pConfig ->GetBitmap( TEXT("spin/arrow/left/background/pressed"));
 	m_pBmpLeftArrow[CPE::SCBS_Disabled] = 
-		pConfig ->GetBitmap( TEXT("spin/arrow/down/background/disabled"));
+		pConfig ->GetBitmap( TEXT("spin/arrow/left/background/disabled"));
 	//////////////////////////////////////
 	m_pBmpRightArrow[CPE::SCBS_Normal] = 
 		pConfig ->GetBitmap( TEXT("spin/arrow/right/background/normal"));
@@ -128,6 +128,11 @@ LPCTSTR  CSpinCtrlSkin::GetHwndClassName( )
 CSpinCtrlSkin::CParamReference* CSpinCtrlSkin::OnPreTakeOverSkin( HWND hWnd )
 {
 	CParamReference* pParam = new CParamReference;
+
+	DWORD lStyle		= GetWindowLong( hWnd, GWL_STYLE );
+
+	/* 是否是垂直的 */
+	pParam ->SetVertical( i2b(lStyle & TBS_VERT) );
 	return pParam;
 }
 		
@@ -206,7 +211,7 @@ void CSpinCtrlSkin::OnMouseMove(WPARAM wKeyType, const POINT& point)
 		TRACKMOUSEEVENT tme;
 		tme.cbSize = sizeof(TRACKMOUSEEVENT);
 		tme.dwFlags = TME_LEAVE;
-		tme.hwndTrack = m_hWnd;
+		tme.hwndTrack = hWnd;
 		TrackMouseEvent(&tme);
 	}
 	else if( i2b(wKeyType & MK_LBUTTON) )
@@ -229,7 +234,7 @@ void CSpinCtrlSkin::OnMouseMove(WPARAM wKeyType, const POINT& point)
 		TRACKMOUSEEVENT tme;
 		tme.cbSize = sizeof(TRACKMOUSEEVENT);
 		tme.dwFlags = TME_LEAVE;
-		tme.hwndTrack = m_hWnd;
+		tme.hwndTrack = hWnd;
 		TrackMouseEvent(&tme);
 	}
 	
@@ -380,9 +385,9 @@ void CSpinCtrlSkin::DrawSpin(HDC hDC)
 		if(bIsDisabled )
 		{
 		/* 禁用 */
-			DrawBmp( hDC, rectUp, m_pBmpUpArrow[CPE::SCBS_Disabled] );
+			DrawBmp( hDC, rectUp, m_pBmpLeftArrow[CPE::SCBS_Disabled] );
 
-			DrawBmp( hDC, rectDown, m_pBmpDownArrow[CPE::SCBS_Disabled] );
+			DrawBmp( hDC, rectDown, m_pBmpRightArrow[CPE::SCBS_Disabled] );
 		}
 		else
 		{ 

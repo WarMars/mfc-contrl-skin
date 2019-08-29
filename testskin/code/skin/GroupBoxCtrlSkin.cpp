@@ -68,7 +68,8 @@ namespace GlobalSkin
 			return;
 		}
 		CRect rtWindow;
-		GetWindowRect( GetCurHwnd( ), &rtWindow);
+		HWND hWnd = GetCurHwnd( );
+		GetWindowRect( hWnd, &rtWindow);
 		rtWindow.OffsetRect(-rtWindow.left,-rtWindow.top);
 
 		//	CMemDC memDC(pDC,rtWindow);
@@ -93,7 +94,7 @@ namespace GlobalSkin
 		DrawBmp( pDC, rtCaption, m_pBmpCaption );
 
 		/* »ñÈ¡×ÖÌå */
-		HFONT hFont = (HFONT)SendMessage( m_hWnd, WM_GETFONT,0,0);
+		HFONT hFont = (HFONT)SendMessage( hWnd, WM_GETFONT,0,0);
 		HGDIOBJ hOldFont = SelectObject( pDC ->GetSafeHdc(), hFont );
 
 		int oldMode = pDC->SetBkMode(TRANSPARENT);

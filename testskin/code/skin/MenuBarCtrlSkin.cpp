@@ -345,6 +345,8 @@ void CMenuItemParameter::DrawVertText(
     SetGraphicsMode( hdc, nOldGraphicsMode );
     SetBkMode( hdc, nOldBkMode );
 	SelectObject( hdc, hOldFont );
+	SelectObject( hdc, hOldPen );
+	DeleteObject( hPen );
 }
 
 LONG CMenuItemParameter::GetTextMarginY( ) const
@@ -590,7 +592,7 @@ CMenubarCtrlSkin::CMenubarCtrlSkin( )
 
 CMenubarCtrlSkin::~CMenubarCtrlSkin( )
 {
-
+	DeleteObject( m_hFontItem );
 }
 
 bool CMenubarCtrlSkin::InitItems( const CRect& rectMargins )
@@ -796,8 +798,11 @@ void CMenubarCtrlSkin::CancelMenuAndTrackNewOne(int nButton)
 }
 bool CMenubarCtrlSkin::OnMenuInput( const MSG& m)
 {
-    ASSERT( m_pParam ->GetMenuBarTrackingState() ==
-            CPE::MBTS_Popup );
+    if( m_pParam ->GetMenuBarTrackingState() !=
+            CPE::MBTS_Popup )
+	{
+		return false;
+	}
 
     int msg = m.message;
 

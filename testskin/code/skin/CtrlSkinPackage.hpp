@@ -95,9 +95,25 @@ namespace GlobalSkin
 		 */
 		inline void SetCurrentProc( CParamReferencePtr proc )
 		{
-			m_pCurParam = proc;
+			m_stackParam.push( proc );
 		}
 
+		
+		/*!
+		 * @brief override
+		 * @param 
+		 * @return 
+		 * @note
+		 */
+		void OnFinishProc( )
+		{
+			if( m_stackParam.empty() )
+			{
+				return;
+			}
+			m_stackParam.pop();
+		}
+		
 		/** 
 		 * @brief 查找窗口过程
 		 */
@@ -153,13 +169,31 @@ namespace GlobalSkin
 		 */
 		virtual CParamReference* OnPreTakeOverSkin( HWND hWnd ) = 0;
 
-		bool	IsNull( ) const { return !m_pCurParam; }
+		bool	IsNull( ) const { return m_stackParam.empty(); }
 		bool	IsValid( ) const { return !IsNull();}
-		inline CParamReferencePtr& GetCurParam( ){ return m_pCurParam; }
-		inline const CParamReferencePtr& GetCurParam( ) const{ return m_pCurParam; }
+		inline CParamReferencePtr& GetCurParam( )
+		{
+			if( IsNull() )
+			{
+				ShowErrorMsg( );
+				static CParamReferencePtr tmpPtr = NULL;
+				return tmpPtr;
+			}
+			return m_stackParam.top(); 
+		}
+		inline const CParamReferencePtr& GetCurParam( ) const
+		{ 
+			if( IsNull() )
+			{
+				ShowErrorMsg( );
+				static CParamReferencePtr tmpPtr = NULL;
+				return tmpPtr;
+			}
+			return m_stackParam.top();
+		}
 	protected:
 
-		CParamReferencePtr				m_pCurParam;
+		std::stack<CParamReferencePtr>				m_stackParam;
 		std::map<HWND,CParamReferencePtr>	m_mapCtrlParameterPack;
 	};
 }

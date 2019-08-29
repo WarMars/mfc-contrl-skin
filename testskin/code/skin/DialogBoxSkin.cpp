@@ -25,7 +25,19 @@ bool CDialogBoxSkin::OnInitSkinParam( HWND hWnd, CParamReference* pParam )
     pParam ->SetMenuBarParamPtr(
                 DynamicParam::CreateMenuBarSkinParameter( hWnd ) );
 	CParamReference* p = pParam;
-
+	{
+		TCHAR szTitle[256] = {0};
+		GetWindowText( 
+			hWnd,
+			szTitle, sizeof(szTitle)/sizeof(TCHAR) );
+		if( 0 == _tcsicmp( szTitle,TEXT("打开") ) ||
+			0 == _tcsicmp( szTitle,TEXT("Open") ) ||
+			0 == _tcsicmp( szTitle,TEXT("关闭") ) ||
+			0 == _tcsicmp( szTitle,TEXT("Close") ) )
+		{
+			return false;
+		}
+	}
 	p ->SetSizable( false );
 	p ->SetHasMinButton( false );
 	p ->SetHasMaxButton( false );
@@ -1012,20 +1024,21 @@ void CDialogBoxSkin::OnNcLButtonDown( UINT nHitTest, const CPoint& point )
 
 void CDialogBoxSkin::OnNcRButtonDown(UINT nHitTest, const CPoint& point)
 {
+	HWND hWnd = GetCurHwnd();
     switch(nHitTest)
     {
     case HTCAPTION:
     case HTSYSMENU:
     {
-        HMENU hMenu = GetSystemMenu(m_hWnd, FALSE);
+        HMENU hMenu = GetSystemMenu(hWnd, FALSE);
         HMENU hSysMenuCopy = DynamicParam::CopyMenu(hMenu);
 
         int nID = TrackPopupMenu(hSysMenuCopy,
                                  TPM_RIGHTBUTTON | TPM_RETURNCMD,
-                                 point.x, point.y, 0, m_hWnd, NULL);
+                                 point.x, point.y, 0, hWnd, NULL);
         if(nID > 0)
         {
-            SendMessage(m_hWnd, WM_SYSCOMMAND, nID, 0);
+            SendMessage(hWnd, WM_SYSCOMMAND, nID, 0);
         }
         DestroyMenu(hSysMenuCopy);
         OnAutoDefaultWndProc( );
@@ -1043,25 +1056,26 @@ void CDialogBoxSkin::OnNcLButtonDblClk( UINT nHitTest, const CPoint& point )
     {
         return;
     }
-    if ( TRUE==IsIconic( GetCurHwnd() ) )
+	HWND hWnd = GetCurHwnd();
+    if ( TRUE==IsIconic( hWnd ) )
     {
         // 窗口最小化
-        SendMessage(m_hWnd,WM_SYSCOMMAND, SC_RESTORE, 0);
+        SendMessage(hWnd,WM_SYSCOMMAND, SC_RESTORE, 0);
         return;
     }
     if ( nHitTest == HTCAPTION && GetCurParam( ) ->IsSizable() )
     {
         SendMessage(
-                    GetCurHwnd(),
+                    hWnd,
                     WM_SYSCOMMAND,
-                    TRUE == IsZoomed(m_hWnd)?
+                    TRUE == IsZoomed(hWnd)?
                         SC_RESTORE:SC_MAXIMIZE, 0 );
         OnNcPaint(0);
     }
     else if(nHitTest == HTHSCROLL)
 	{
         SendMessage(
-                    GetCurHwnd(),
+                    hWnd,
                     WM_SYSCOMMAND,
                     (WPARAM)SC_HSCROLL,
                     MAKELPARAM(point.x,point.y) );
@@ -1069,7 +1083,7 @@ void CDialogBoxSkin::OnNcLButtonDblClk( UINT nHitTest, const CPoint& point )
     else if(nHitTest == HTVSCROLL)
     {
         SendMessage(
-                    GetCurHwnd(),
+                    hWnd,
                     WM_SYSCOMMAND,
                     (WPARAM)SC_VSCROLL,
                     MAKELPARAM(point.x,point.y) );
@@ -1082,7 +1096,8 @@ void CDialogBoxSkin::OnNcLButtonDblClk( UINT nHitTest, const CPoint& point )
 
 LRESULT CDialogBoxSkin::OnNcHitTest( const CPoint& point )
 {
-    DWORD style	 = GetWindowLong( m_hWnd, GWL_STYLE );
+	HWND hWnd = GetCurHwnd();
+    DWORD style	 = GetWindowLong( hWnd, GWL_STYLE );
     if( i2b(style & WS_MINIMIZE) )
     {
 		//TRACE("点击标题\n");
@@ -1214,9 +1229,10 @@ BOOL CDialogBoxSkin::OnNcActivate( BOOL bActive )
         return FALSE;
     }
 	// 
+	HWND hWnd = GetCurHwnd();
     bool bStatus = i2b( bActive );
     GetCurParam( ) ->SetActivated( bStatus );
-    if( FALSE == IsIconic(m_hWnd))
+    if( FALSE == IsIconic(hWnd))
     {
         OnNcPaint(0);
     }
@@ -1290,19 +1306,20 @@ void CDialogBoxSkin::OnNcPaint(HRGN rgn1)
     {
         return;
     }
+	HWND hWnd = GetCurHwnd();
     DynamicParam::SetScrollBarParamVisible(
-                GetCurHwnd(), GetCurParam( ) ->GetScrollBarParam( ) );
+                hWnd, GetCurParam( ) ->GetScrollBarParam( ) );
 
     CRect rtWindow;
-    GetWindowRect( m_hWnd, &rtWindow );
+    GetWindowRect( hWnd, &rtWindow );
     CRect rtClient;
-    GetClientRect( m_hWnd ,&rtClient);
-    ClientToScreen( m_hWnd ,&rtClient);
+    GetClientRect( hWnd ,&rtClient);
+    ClientToScreen( hWnd ,&rtClient);
     rtClient.OffsetRect(-rtWindow.left,-rtWindow.top);
 
     rtWindow.OffsetRect(-rtWindow.left,-rtWindow.top);
 
-    Util::CTempWindowDC wdc(m_hWnd);
+    Util::CTempWindowDC wdc(hWnd);
     HDC hdc = wdc;
     int nOldMode = SetBkMode( hdc, TRANSPARENT );
     //DWORD dwErrorCode = GetLastError( );
@@ -1511,7 +1528,7 @@ void CDialogBoxSkin::OnSysCommand(UINT nID,LPARAM lParem)
         HWND hWnd = GetCurHwnd();
         // 图标最小化 + 当前窗口
         if ( TRUE == IsIconic(hWnd) &&
-             m_hWnd == GetForegroundWindow())
+             hWnd == GetForegroundWindow())
         {
             //
             ShowOwnedPopups(hWnd,TRUE);
@@ -1557,7 +1574,7 @@ void CDialogBoxSkin::OnSetText(WPARAM wp,LPARAM lp)
 LRESULT CDialogBoxSkin::OnSetIcon(UINT nFlag,HICON hIcon)
 {
     OnAutoDefaultWndProc( );
-    DrawCaption( Util::CTempWindowDC(m_hWnd) );
+    DrawCaption( Util::CTempWindowDC(GetCurHwnd()) );
     return 0;
 }
 
@@ -1579,7 +1596,7 @@ void CDialogBoxSkin::OnTimer(UINT_PTR nIDEvent)
         {
             DynamicParam::CMenubarCtrlSkinParameterRefPtr
                     pMenBar = p ->GetMenuBarParamPtr( );
-            KillTimer(m_hWnd,MenuTrackTimerId);
+            KillTimer(hWnd,MenuTrackTimerId);
             pMenBar ->SetHot( NULL );
             pMenBar ->SetPressed( NULL );
             LoadMenuBarCtrlSkin( ).DrawMenuBar( );
@@ -1654,7 +1671,7 @@ void CDialogBoxSkin::DrawCaption( HDC hdc )
     {
         if( p ->HasMaxButton() )
         { // 绘制最大化/恢复按钮
-            if(IsZoomed(m_hWnd))
+            if(IsZoomed(hWnd))
             {
                 DrawWindowButton(
                             hMemDC,
@@ -1681,13 +1698,13 @@ void CDialogBoxSkin::DrawCaption( HDC hdc )
         }
 
         // 获取左上角图标
-        HICON hIcon = (HICON)::SendMessage(m_hWnd, WM_GETICON, 0, 0);;
+        HICON hIcon = (HICON)::SendMessage(hWnd, WM_GETICON, 0, 0);;
         if( NULL == hIcon )
         {
 #ifdef _WIN64
-            hIcon = (HICON)GetClassLongPtr(m_hWnd,GCLP_HICONSM );
+            hIcon = (HICON)GetClassLongPtr(hWnd,GCLP_HICONSM );
 #else
-            hIcon = (HICON)GetClassLong(m_hWnd,GCL_HICONSM );
+            hIcon = (HICON)GetClassLong(hWnd,GCL_HICONSM );
 #endif
         }
         CRect rtTitleText;
@@ -1720,7 +1737,7 @@ void CDialogBoxSkin::DrawCaption( HDC hdc )
         nif.cbSize = sizeof(nif);
         SystemParametersInfo(SPI_GETNONCLIENTMETRICS,sizeof(NONCLIENTMETRICS),&nif,0);
         HFONT hFont = CreateFontIndirect(&nif.lfSmCaptionFont);
-        SelectObject(hMemDC, hFont );
+        HGDIOBJ hOldFont = SelectObject(hMemDC, hFont );
 
 
         // 绘制窗口标题
@@ -1728,6 +1745,9 @@ void CDialogBoxSkin::DrawCaption( HDC hdc )
         DrawText( hMemDC, szBuf,-1,
                   &rtTitleText,
                   DT_LEFT | DT_VCENTER|DT_SINGLELINE);
+		SelectObject( hMemDC, hOldFont );
+		DeleteObject( hFont );
+		
     }
     //OpenClipboard( NULL );
     //EmptyClipboard( );

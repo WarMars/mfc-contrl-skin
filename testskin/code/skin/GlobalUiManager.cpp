@@ -129,7 +129,7 @@ void CGlobalUiManager::InstallSkin( const CSkinConfig* pConfig )
 	// 如果需要安装新的皮肤，请在这里添加新皮肤即可
 
 	m_vectorCtrlSkins.push_back( new CPushButtonCtrl );      // 按钮皮肤
-	m_vectorCtrlSkins.push_back( new CEditCtrlSkin );        // 文本框皮肤
+	//m_vectorCtrlSkins.push_back( new CEditCtrlSkin );        // 文本框皮肤
 	m_vectorCtrlSkins.push_back( new CComboBoxCtrlSkin );    // 组合框皮肤
 	m_vectorCtrlSkins.push_back( new CListBoxCtrlSkin );     // 列表框皮肤
 	m_vectorCtrlSkins.push_back( new CComboLBoxCtrlSkin );   // 组合框中的列表框
@@ -143,7 +143,7 @@ void CGlobalUiManager::InstallSkin( const CSkinConfig* pConfig )
 	m_vectorCtrlSkins.push_back( new CTablCtrlSkin );		 // tab控件
 	m_vectorCtrlSkins.push_back( new CTreeCtrlSkin );		 // 树状控件
 	m_vectorCtrlSkins.push_back( new CStatusBarCtrlSkin );   // 状态栏
-	m_vectorCtrlSkins.push_back( new CToolBarCtrlSkin );     // 工具栏
+	//m_vectorCtrlSkins.push_back( new CToolBarCtrlSkin );     // 工具栏
 	m_vectorCtrlSkins.push_back( new CSpinCtrlSkin );		 // Spin
 	m_vectorCtrlSkins.push_back( new CSilderCtrlSkin );		 // 滑块
 	m_vectorCtrlSkins.push_back( new CProgressBarCtrlSkin ); // 进度条
@@ -254,6 +254,8 @@ LRESULT CGlobalUiManager::HandleWndProc( HWND hWnd, UINT nMsg, WPARAM wParam, LP
 		{ //控件销毁
 			WNDPROC lpProc = pParam ->m_pPreviousProc;
 			Remove( hWnd );
+			pSkin ->ResetCurrentWindow( );
+			pSkin ->OnFinishProc( );
 			
 			return ::CallWindowProc(
 				lpProc,
@@ -274,9 +276,11 @@ LRESULT CGlobalUiManager::HandleWndProc( HWND hWnd, UINT nMsg, WPARAM wParam, LP
 	//找到按钮数据
 	LRESULT lResult;
 
+
 	//其它事件正常处理
 	lResult = pSkin ->OnWndProc( nMsg, wParam, lParam );
-
+	pSkin ->ResetCurrentWindow( );
+	pSkin ->OnFinishProc( );
 	// 恢复状态
 	msgLast = msgCur;			
 	return lResult;

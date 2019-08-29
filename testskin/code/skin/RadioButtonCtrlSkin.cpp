@@ -129,7 +129,7 @@ void CRadioButtonCtrlSkin::OnDrawButton(CDC *pDC)
     CBitmap bmpMem;
     bmpMem.CreateCompatibleBitmap( pDC,
                                    rtWindow.Width(), rtWindow.Height() );
-    dcMem.SelectObject( &bmpMem );
+    CBitmap* pOldBmp = dcMem.SelectObject( &bmpMem );
 
     /* 获取图片大小 */
     const CSize& bmpSize = GetBMPSize( *m_pBmpState[RS_Normal].pBmpUnchecked );
@@ -257,6 +257,7 @@ void CRadioButtonCtrlSkin::OnDrawButton(CDC *pDC)
     pDC ->BitBlt( rtWindow.left, rtWindow.top,
                   rtWindow.Width(),rtWindow.Height(),
                   &dcMem, 0,0, SRCCOPY );
+	dcMem.SelectObject( pOldBmp );
 }
 
 }

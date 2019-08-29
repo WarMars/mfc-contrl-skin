@@ -22,6 +22,9 @@
     <Filter Include="skin\src">
       <UniqueIdentifier>{9b63045e-b88e-4afb-b693-f12b114542b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gdi_leak_detect">
+      <UniqueIdentifier>{9adf5c13-88e7-4acf-ad92-e843e6a07e6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

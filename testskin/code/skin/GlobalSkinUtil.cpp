@@ -15,7 +15,7 @@ namespace GlobalSkin
 				return NULL;
 			}
 			BITMAP bmp = { 0 };
-			::GetObject( hBitmap, sizeof(BITMAP), &bmp );
+			CheckFunc(::GetObject( hBitmap, sizeof(BITMAP), &bmp ) );
 			LPBITMAPINFO bi = (LPBITMAPINFO) new BYTE[ sizeof(BITMAPINFO) + 8 ];
 
 			memset( bi, 0, sizeof(BITMAPINFO) + 8 );
@@ -42,11 +42,12 @@ namespace GlobalSkin
 			// 获取颜色表
 			LPDWORD clr_tbl = (LPDWORD)&bi->bmiColors;
 			res = GetDIBits( dc, hBitmap, 0, bih.biHeight, pBits, bi, DIB_RGB_COLORS );
-			DeleteDC( dc );
+			CheckFunc(res);
+			CheckFunc( DeleteDC( dc ) );
 
 			// 获取颜色信息
 			BITMAP bm;
-			::GetObject( hBitmap, sizeof(BITMAP), &bm );
+			CheckFunc( ::GetObject( hBitmap, sizeof(BITMAP), &bm ) );
 			LPBYTE pClr = (LPBYTE)&color;
 			BYTE tmp = pClr[0]; pClr[0] = pClr[2]; pClr[2] = tmp;
 			// 16位(5-6-5)转换
@@ -133,7 +134,7 @@ namespace GlobalSkin
 								// copy current region data to it
 								memcpy( pRgnDataNew, pRgnData, RGNDATAHEADER_SIZE + pRgnData->nCount * sizeof(RECT) );
 								// delte old region data buffer
-								delete pRgnData;
+								delete []pRgnData;
 								// set pointer to new regiondata buffer to current
 								pRgnData = (RGNDATAHEADER*)pRgnDataNew;
 								// correct pointer to RECT table
@@ -179,6 +180,7 @@ namespace GlobalSkin
 
 			// create region
 			HRGN hRgn = ExtCreateRegion( NULL, RGNDATAHEADER_SIZE + pRgnData->nCount * sizeof(RECT), (LPRGNDATA)pRgnData );
+			CheckFunc(hRgn);
 			// release region data
 			delete [] pRgnData;
 
@@ -187,8 +189,10 @@ namespace GlobalSkin
 
 		void FillSolid( HDC hdc, const CRect& rect, COLORREF clr )
 		{
-			::SetBkColor(hdc, clr);
-			::ExtTextOut(hdc, 0, 0, ETO_OPAQUE, &rect, NULL, 0, NULL);
+			int nOldBkColor = ::SetBkColor(hdc, clr);
+			CheckFunc( ::ExtTextOut(
+				hdc, 0, 0, ETO_OPAQUE, &rect, NULL, 0, NULL) );
+			SetBkColor( hdc, nOldBkColor );
 		}
 
 		void FillSolid( HDC hdc, LONG lLeft, LONG lTop, LONG lWidth, LONG lHeight,
@@ -217,8 +221,9 @@ namespace GlobalSkin
 		bool   FillColor( HDC hdc, const CRect& rect, COLORREF clr )
 		{
 			HBRUSH hBrush = CreateSolidBrush( clr );
-			FillRect( hdc, &rect, hBrush );
-			DeleteObject( hBrush );
+			CheckFunc(hBrush);
+			CheckFunc( FillRect( hdc, &rect, hBrush ) );
+			CheckFunc( DeleteObject( hBrush ) );
 			return true;
 		}
 		
@@ -261,6 +266,10 @@ namespace GlobalSkin
 			{
 				return true;
 			}
+			else
+			{
+				ShowErrorMsg( );
+			}
 
 			int nWidth = rect.right - rect.left;
 			int nHeight = rect.bottom - rect.top;
@@ -299,7 +308,8 @@ namespace GlobalSkin
 			HFONT hFont=(HFONT)(SendMessage(hWnd, WM_GETFONT, 0, 0));
 			HGDIOBJ hOldFont = SelectObject( wdc, hFont );
 			RECT rect = {0};
-			DrawText( wdc, lpszText,-1, &rect, DT_SINGLELINE | DT_CALCRECT );
+			CheckFunc( DrawText( wdc, lpszText,-1, 
+				&rect, DT_SINGLELINE | DT_CALCRECT ) );
 			
 			SelectObject( wdc, hOldFont);
 
@@ -321,9 +331,10 @@ namespace GlobalSkin
 			HBITMAP hBmp = (HBITMAP)(pBitmap ->GetSafeHandle());
 			HDC hdc = GetDC(NULL);
 			HDC hMemDC = CreateCompatibleDC(hdc);
-
+			CheckFunc( hdc );
+			CheckFunc( hMemDC );
 			BITMAP bitmap = {0};
-			GetObject( hBmp, sizeof(bitmap), &bitmap );
+			CheckFunc( GetObject( hBmp, sizeof(bitmap), &bitmap ) );
 			if( nLeft < 0 )
 			{
 				nLeft = 0;
@@ -344,11 +355,13 @@ namespace GlobalSkin
 			// 获取子位图
 			HBITMAP hBmp1 = CreateCompatibleBitmap(
 				hdc, nWidth, nHeight );
+			CheckFunc( hBmp1 );
 			HGDIOBJ hOldBmp1 =  SelectObject(hMemDC, hBmp1);
 			HDC hMemDC1 = CreateCompatibleDC(hdc);
+			CheckFunc( hMemDC1 );
 			HGDIOBJ hOldBmp2 = SelectObject(hMemDC1, hBmp);
-			BitBlt(hMemDC, 0,0, nWidth, nHeight,
-				hMemDC1, nLeft, nTop, SRCCOPY );
+			CheckFunc( BitBlt(hMemDC, 0,0, nWidth, nHeight,
+				hMemDC1, nLeft, nTop, SRCCOPY ) );
 
 			// 创建
 			CBitmapRef* pSubBmp = new CBitmapRef;
@@ -357,9 +370,9 @@ namespace GlobalSkin
 			//清理
 			SelectObject(hMemDC, hOldBmp1);
 			SelectObject(hMemDC1, hOldBmp2 );
-			ReleaseDC(NULL, hdc);
-			DeleteDC(hMemDC);
-			DeleteDC(hMemDC1);
+			CheckFunc( ReleaseDC(NULL, hdc) );
+			CheckFunc( DeleteDC(hMemDC) );
+			CheckFunc( DeleteDC(hMemDC1) );
 			return pSubBmp;
 		}
 
@@ -387,7 +400,7 @@ namespace GlobalSkin
 			HGDIOBJ hOldBmp = SelectObject( hDC, hBMP );
 			COLORREF clrRes = GetPixel( hDC, nX, nY );
 			SelectObject( hDC, hOldBmp );
-			DeleteDC( hDC );
+			CheckFunc( DeleteDC( hDC ) );
 			return clrRes;
 		}
 
@@ -431,6 +444,7 @@ namespace GlobalSkin
 		{
 			OSVERSIONINFO ovi = { sizeof(OSVERSIONINFO) };
 			BOOL bRet = ::GetVersionEx(&ovi);
+			CheckFunc( bRet );
 			return ((bRet != FALSE) && (ovi.dwMajorVersion >= 6));
 
 		}
@@ -469,60 +483,73 @@ namespace GlobalSkin
 			{
 				return true;
 			}
+			else
+			{
+				ShowErrorMsg( );
+			}
 			HDC hMemDC = CreateCompatibleDC( hDstDC );
+			CheckFunc( hMemDC);
 			HDC hMaskDC = CreateCompatibleDC( hDstDC );
+			CheckFunc( hMaskDC);
 			// 创建掩码图
 			HBITMAP hMaskBmp = CreateBitmap( nSrcWidth, nSrcHeight, 1, 1, NULL) ;
+			CheckFunc( hMaskBmp);
 			HBITMAP hMemBmp = CreateCompatibleBitmap( hDstDC, nSrcWidth, nSrcHeight );
+			CheckFunc( hMemBmp);
 
 
 			HGDIOBJ hOldMeMDcBmp = SelectObject(hMemDC,hMemBmp);
 			// 复制
-			BitBlt(hMemDC,0, 0, nSrcWidth, nSrcHeight, hSrcDC, nSrcX, nSrcY, SRCCOPY );
+			CheckFunc( BitBlt(hMemDC,0, 0, 
+				nSrcWidth, nSrcHeight, hSrcDC, nSrcX, nSrcY, SRCCOPY ) );
 
 			HGDIOBJ pOldMaskDcBmp = SelectObject(hMaskDC,hMaskBmp);
+			
 			SetBkColor(hMemDC,clrTransparent );
 
 			// 创建掩码图
-			BitBlt(hMaskDC,0, 0, nSrcWidth, nSrcHeight, hMemDC, 0, 0, SRCCOPY);
+			CheckFunc( BitBlt(hMaskDC,0,
+				0, nSrcWidth, nSrcHeight, hMemDC, 0, 0, SRCCOPY) );
 
 			SetBkColor(hMemDC,RGB(0,0,0));
 			SetTextColor(hMemDC,RGB(255,255,255));
 			// 原图与掩码图进行与操作。这样掩码图中为1的像素保留（不透明),为0的会被清除
-			BitBlt(hMemDC,0, 0, nSrcWidth, nSrcHeight, hMaskDC, 0, 0, SRCAND);
+			CheckFunc( BitBlt(hMemDC,0, 0, 
+				nSrcWidth, nSrcHeight, hMaskDC, 0, 0, SRCAND) );
 
-			SetStretchBltMode( hDstDC, HALFTONE );
+			CheckFunc( SetStretchBltMode( hDstDC, HALFTONE ) );
 			SetBkColor( hDstDC, RGB(255,255,255) );
 			SetTextColor( hDstDC, RGB(0,0,0) );
 
 			if ( nDstWidth == nSrcWidth && nDstHeight == nSrcHeight)
 			{
-				BitBlt( hDstDC, nDstX, nDstY,
-					nDstWidth, nDstHeight, hMaskDC, 0, 0, SRCAND );
+				CheckFunc( BitBlt( hDstDC, nDstX, nDstY,
+					nDstWidth, nDstHeight, hMaskDC, 0, 0, SRCAND ) );
 
 				// 与原始图像素进行或操作。hMemDC中已经是经过掩码过滤的颜色了。
 				// 此操作，会将目标颜色置为白色（掩码已经把其它颜色设置为0了）。
-				BitBlt( hDstDC,nDstX, nDstY, nDstWidth, nDstHeight, 
-					hMemDC, 0, 0, SRCPAINT );
+				CheckFunc( BitBlt( hDstDC,nDstX, nDstY, nDstWidth, nDstHeight, 
+					hMemDC, 0, 0, SRCPAINT ) );
 
 			}
 			else
 			{
-				StretchBlt( hDstDC, nDstX, nDstY,
+				CheckFunc( 
+					StretchBlt( hDstDC, nDstX, nDstY,
 					nDstWidth, nDstHeight, hMaskDC, 
-					0, 0, nSrcWidth, nSrcHeight,SRCAND );
-				StretchBlt( hDstDC, nDstX, nDstY,
+					0, 0, nSrcWidth, nSrcHeight,SRCAND ) );
+				CheckFunc( 
+					StretchBlt( hDstDC, nDstX, nDstY,
 					nDstWidth, nDstHeight, hMemDC, 
-					0, 0, nSrcWidth, nSrcHeight,SRCPAINT );
+					0, 0, nSrcWidth, nSrcHeight,SRCPAINT ) );
 			}
 
-
-			SelectObject(hMaskDC, hOldMeMDcBmp );
+			SelectObject( hMaskDC,pOldMaskDcBmp);
 			SelectObject(hMemDC, hOldMeMDcBmp );
-			DeleteObject( hMemBmp );
-			DeleteObject( hMaskBmp );
-			DeleteDC( hMemDC );
-			DeleteDC( hMaskDC );
+			CheckFunc( DeleteObject( hMemBmp ) );
+			CheckFunc( DeleteObject( hMaskBmp ) );
+			CheckFunc( DeleteDC( hMemDC ) );
+			CheckFunc( DeleteDC( hMaskDC ) );
 			return TRUE;
 		}
 
