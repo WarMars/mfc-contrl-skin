@@ -3,18 +3,24 @@
 //
 
 #include "stdafx.h"
+#ifndef _USE_MATH_DEFINES
+#define _USE_MATH_DEFINES
+#endif
 #include "testskin.h"
 #include "testskinDlg.h"
 #include "skin/GlobalUiManager.h"
 #include <skin/XmlReader.h>
 #include "code/ImageManager.h"
+#include <cmath>
+#include "ReportDialogEx.h"
 //#include <vld.h>
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 #include "gdi_leak/source/apihook/gdi/Gdi.hpp"
+#include "GDIPlusWrapper.h"
 //#include "gdi_leak/source/apihook/APIHook.hpp"
-
+#include "GdiplusWrapper.h"
 // CtestskinApp
 
 BEGIN_MESSAGE_MAP(CtestskinApp, CWinApp)
@@ -99,10 +105,30 @@ int test1( )
 	return 0;
 }
 // CtestskinApp 初始化
+namespace MYTEST
+{
+	float xKey2Longitude( int nXKey, float fZ )
+	{
+		return nXKey / std::pow(2.0f, fZ) * 360.0f - 180.0f;
+	}
 
+
+	float yKey2Latitude( int nYKey, float fZ )
+	{
+		double dTemp =  M_PI - 2.0f * M_PI * nYKey / std::pow(2.0f, fZ);
+
+		return float( 180.0f / M_PI * std::atan(0.5f * 
+			( std::exp(dTemp) - std::exp(-dTemp) ) ));
+
+	}
+}
 BOOL CtestskinApp::InitInstance()
 {
-	test0( );
+	//float floatArray[] = 
+	//{
+	//	MYTEST::xKey2Longitude( 123);
+	//};
+	//test0( );
 	DWORD dwTime = GetDoubleClickTime( );
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
 	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，
@@ -118,6 +144,7 @@ BOOL CtestskinApp::InitInstance()
 
 	AfxEnableControlContainer();
 
+	GdiplusWrapper::CGdiplusWrapper wrapper;
 	// 创建 shell 管理器，以防对话框包含
 	// 任何 shell 树视图控件或 shell 列表视图控件。
 	CShellManager *pShellManager = new CShellManager;
@@ -136,10 +163,11 @@ BOOL CtestskinApp::InitInstance()
 	pReader ->LoadFile(_T("ui\\skin\\skin-config.xml") );
 	//GlobalSkin::CGlobalUiManager uiManager( pReader );
 	delete pReader;
-	CtestskinDlg dlg;
+	CReportDialogEx dlg;
+	//CtestskinDlg dlg;
 	{
-		ASSERT(false);
-		AfxMessageBox( _T("测试窗口") );
+		//ASSERT(false);
+	//	AfxMessageBox( _T("测试窗口") );
 	}
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
@@ -172,6 +200,6 @@ int CtestskinApp::ExitInstance()
 	ImagePool( ).TidyUp();
 	// TODO: 在此添加专用代码和/或调用基类
 	//_CrtDumpMemoryLeaks( );
-	test1( );
+	//test1( );
 	return CWinApp::ExitInstance();
 }

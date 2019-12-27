@@ -41,15 +41,23 @@ namespace GlobalSkin
 		/// @brief 按下贴图
 		///
 		CBitmapRefPtr	m_pBmpPressed;
-
+		COLORREF		m_clrPressedText;
 		///
 		/// @brief 无操作贴图
 		///
 		CBitmapRefPtr	m_pBmpNormal;
+		COLORREF		m_clrNormalText;
+
+		///
+		/// @brief 禁用贴图
+		///
+		CBitmapRefPtr	m_pBmpHover;
+		COLORREF		m_clrHoverText;
 
 		///
 		/// @brief 禁用贴图
 		///
 		CBitmapRefPtr	m_pBmpDisabled;
+		COLORREF		m_clrDisableText;
 	};
 }

@@ -13,7 +13,6 @@ namespace GlobalSkin
 namespace DynamicParam
 {
 static const TCHAR szBarDynamicParamter[] = TEXT("szBarDynamicParamter");
-bool GetScrollRect( HWND hWnd, UINT nBar, LPRECT lpRect,int *nArrowSize,int *nThumbSize,int *nThumbPos);
 
 
 CScrollBarCtrlParameterRefPtr CreateHwndScrollBarParam( HWND hWnd )
@@ -398,7 +397,7 @@ void CScrollBarCtrlSkin::LoadSkin( const CSkinConfig* pConfig )
 	if( NULL == pConfig )
 #endif
 	{
-		CBitmapRefPtr pBitmap = ImagePool( ).CreateBitmap( 
+		Gdiplus::Image* pBitmap = ImagePool( ).GetImage( 
 			TEXT("ui\\skin\\ScrollBar.bmp") );
 		const int nXOffsetBase = 0;
 		const int nYOffsetBase = 0;
@@ -412,39 +411,39 @@ void CScrollBarCtrlSkin::LoadSkin( const CSkinConfig* pConfig )
 		nXOffset = nXOffsetBase;
 		nYOffset = nYOffsetBase + nSize * 3;
 		m_bmpHLeftArrow[CPE::SBS_Normal] =
-			Util::CreateSubBitmap( pBitmap, nXOffset,nYOffset,nSize,nSize );
+			Util::CreateSubImage( pBitmap, nXOffset,nYOffset,nSize,nSize );
 		m_bmpHLeftArrow[CPE::SBS_Hover] =
-			Util::CreateSubBitmap( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
+			Util::CreateSubImage( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
 		m_bmpHLeftArrow[CPE::SBS_Pressed] =
-			Util::CreateSubBitmap( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
+			Util::CreateSubImage( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
 		m_bmpHLeftArrow[CPE::SBS_Disabled] =
-			Util::CreateSubBitmap( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
+			Util::CreateSubImage( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
 
 		// -> 箭头
 		nXOffset = nXOffsetBase;
 		nYOffset = nYOffsetBase + nSize * 2;
 		m_bmpHRightArrow[CPE::SBS_Normal] =
-			Util::CreateSubBitmap( pBitmap, nXOffset,nYOffset,nSize,nSize );
+			Util::CreateSubImage( pBitmap, nXOffset,nYOffset,nSize,nSize );
 		m_bmpHRightArrow[CPE::SBS_Hover] =
-			Util::CreateSubBitmap( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
+			Util::CreateSubImage( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
 		m_bmpHRightArrow[CPE::SBS_Pressed] =
-			Util::CreateSubBitmap( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
+			Util::CreateSubImage( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
 		m_bmpHRightArrow[CPE::SBS_Disabled] =
-			Util::CreateSubBitmap( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
+			Util::CreateSubImage( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
 
 		//  水平滑块
 		nXOffset = nXOffsetBase;
 		nYOffset = nYOffsetBase + nSize * 4;
 		m_bmpHThumb[CPE::SBS_Normal] =
-			Util::CreateSubBitmap( pBitmap, nXOffset,nYOffset,nSize,nSize );
+			Util::CreateSubImage( pBitmap, nXOffset,nYOffset,nSize,nSize );
 		m_bmpHThumb[CPE::SBS_Hover] =
-			Util::CreateSubBitmap( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
+			Util::CreateSubImage( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
 		m_bmpHThumb[CPE::SBS_Pressed] =
-			Util::CreateSubBitmap( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
+			Util::CreateSubImage( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
 		m_bmpHThumb[CPE::SBS_Disabled] =
-			Util::CreateSubBitmap( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
+			Util::CreateSubImage( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
 		// 水平背景
-		m_bmpHBk = Util::CreateSubBitmap( 
+		m_bmpHBk = Util::CreateSubImage( 
 			pBitmap, nXOffsetBase,
 			nYOffsetBase + nSize * 6,
 			nBkLarge, nBkSmall );
@@ -453,25 +452,25 @@ void CScrollBarCtrlSkin::LoadSkin( const CSkinConfig* pConfig )
 		nXOffset = nXOffsetBase;
 		nYOffset = nYOffsetBase ;
 		m_bmpVTopArrow[CPE::SBS_Normal] =
-			Util::CreateSubBitmap( pBitmap, nXOffset,nYOffset,nSize,nSize );
+			Util::CreateSubImage( pBitmap, nXOffset,nYOffset,nSize,nSize );
 		m_bmpVTopArrow[CPE::SBS_Hover] =
-			Util::CreateSubBitmap( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
+			Util::CreateSubImage( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
 		m_bmpVTopArrow[CPE::SBS_Pressed] =
-			Util::CreateSubBitmap( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
+			Util::CreateSubImage( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
 		m_bmpVTopArrow[CPE::SBS_Disabled] =
-			Util::CreateSubBitmap( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
+			Util::CreateSubImage( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
 
 		// down 箭头
 		nXOffset = nXOffsetBase;
 		nYOffset = nYOffsetBase + nSize;
 		m_bmpVBotArrow[CPE::SBS_Normal] =
-			Util::CreateSubBitmap( pBitmap, nXOffset,nYOffset,nSize,nSize );
+			Util::CreateSubImage( pBitmap, nXOffset,nYOffset,nSize,nSize );
 		m_bmpVBotArrow[CPE::SBS_Hover] =
-			Util::CreateSubBitmap( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
+			Util::CreateSubImage( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
 		m_bmpVBotArrow[CPE::SBS_Pressed] =
-			Util::CreateSubBitmap( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
+			Util::CreateSubImage( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
 		m_bmpVBotArrow[CPE::SBS_Disabled] =
-			Util::CreateSubBitmap( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
+			Util::CreateSubImage( pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
 
 		//  垂直滑块
 		m_bmpVThumb[CPE::SBS_Normal] = m_bmpHThumb[CPE::SBS_Normal] ;
@@ -479,10 +478,10 @@ void CScrollBarCtrlSkin::LoadSkin( const CSkinConfig* pConfig )
 		m_bmpVThumb[CPE::SBS_Pressed] = m_bmpHThumb[CPE::SBS_Pressed] ;
 		m_bmpVThumb[CPE::SBS_Disabled] = m_bmpHThumb[CPE::SBS_Disabled] ;
 		// 水平背景
-		m_bmpVBk = Util::CreateSubBitmap( 
+		m_bmpVBk = Util::CreateSubImage( 
 			pBitmap, nXOffsetBase+nSize*4,nYOffsetBase/* + nSize*5*/,
 			nBkSmall, nBkLarge );
-		m_bmpSizing =  Util::CreateSubBitmap( 
+		m_bmpSizing =  Util::CreateSubImage( 
 			pBitmap, nXOffsetBase,nYOffsetBase + nSize*5,nSize,nSize );
 		return;
 	}
@@ -490,68 +489,68 @@ void CScrollBarCtrlSkin::LoadSkin( const CSkinConfig* pConfig )
 #ifdef USING_CONFIG_FILE
 	// <- 箭头
 	m_bmpHLeftArrow[CPE::SBS_Normal] = 
-		pConfig ->GetBitmap(TEXT("scrollbar/horizontal/arrow/left/normal"));
+		pConfig ->GetImage(TEXT("scrollbar/horizontal/arrow/left/normal"));
 	m_bmpHLeftArrow[CPE::SBS_Hover] =
-		pConfig ->GetBitmap(TEXT("scrollbar/horizontal/arrow/left/hover"));
+		pConfig ->GetImage(TEXT("scrollbar/horizontal/arrow/left/hover"));
 	m_bmpHLeftArrow[CPE::SBS_Pressed] =
-		pConfig ->GetBitmap(TEXT("scrollbar/horizontal/arrow/left/pressed"));
+		pConfig ->GetImage(TEXT("scrollbar/horizontal/arrow/left/pressed"));
 	m_bmpHLeftArrow[CPE::SBS_Disabled] =
-		pConfig ->GetBitmap(TEXT("scrollbar/horizontal/arrow/left/disabled"));
+		pConfig ->GetImage(TEXT("scrollbar/horizontal/arrow/left/disabled"));
 
 	// -> 箭头
 	m_bmpHRightArrow[CPE::SBS_Normal] =
-		pConfig ->GetBitmap(TEXT("scrollbar/horizontal/arrow/right/normal"));
+		pConfig ->GetImage(TEXT("scrollbar/horizontal/arrow/right/normal"));
 	m_bmpHRightArrow[CPE::SBS_Hover] =
-		pConfig ->GetBitmap(TEXT("scrollbar/horizontal/arrow/right/normal"));
+		pConfig ->GetImage(TEXT("scrollbar/horizontal/arrow/right/hover"));
 	m_bmpHRightArrow[CPE::SBS_Pressed] =
-		pConfig ->GetBitmap(TEXT("scrollbar/horizontal/arrow/right/normal"));
+		pConfig ->GetImage(TEXT("scrollbar/horizontal/arrow/right/pressed"));
 	m_bmpHRightArrow[CPE::SBS_Disabled] =
-		pConfig ->GetBitmap(TEXT("scrollbar/horizontal/arrow/right/normal"));
+		pConfig ->GetImage(TEXT("scrollbar/horizontal/arrow/right/disabled"));
 
 	//  水平滑块
 	m_bmpHThumb[CPE::SBS_Normal] =
-		pConfig ->GetBitmap(TEXT("scrollbar/horizontal/thumb/normal") );
+		pConfig ->GetImage(TEXT("scrollbar/horizontal/thumb/normal") );
 	m_bmpHThumb[CPE::SBS_Hover] =
-		pConfig ->GetBitmap(TEXT("scrollbar/horizontal/thumb/hover") );
+		pConfig ->GetImage(TEXT("scrollbar/horizontal/thumb/hover") );
 	m_bmpHThumb[CPE::SBS_Pressed] =
-		pConfig ->GetBitmap(TEXT("scrollbar/horizontal/thumb/pressed") );
+		pConfig ->GetImage(TEXT("scrollbar/horizontal/thumb/pressed") );
 	m_bmpHThumb[CPE::SBS_Disabled] =
-		pConfig ->GetBitmap(TEXT("scrollbar/horizontal/thumb/disabled") );
+		pConfig ->GetImage(TEXT("scrollbar/horizontal/thumb/disabled") );
 	// 水平背景
-	m_bmpHBk = pConfig ->GetBitmap(TEXT("scrollbar/horizontal/background") );
+	m_bmpHBk = pConfig ->GetImage(TEXT("scrollbar/horizontal/background") );
 
 	// Up箭头
 	m_bmpVTopArrow[CPE::SBS_Normal] =
-		pConfig ->GetBitmap(TEXT("scrollbar/vertical/arrow/top/normal"));
+		pConfig ->GetImage(TEXT("scrollbar/vertical/arrow/top/normal"));
 	m_bmpVTopArrow[CPE::SBS_Hover] =
-		pConfig ->GetBitmap(TEXT("scrollbar/vertical/arrow/top/hover"));
+		pConfig ->GetImage(TEXT("scrollbar/vertical/arrow/top/hover"));
 	m_bmpVTopArrow[CPE::SBS_Pressed] =
-		pConfig ->GetBitmap(TEXT("scrollbar/vertical/arrow/top/pressed"));
+		pConfig ->GetImage(TEXT("scrollbar/vertical/arrow/top/pressed"));
 	m_bmpVTopArrow[CPE::SBS_Disabled] =
-		pConfig ->GetBitmap(TEXT("scrollbar/vertical/arrow/top/disabled"));
+		pConfig ->GetImage(TEXT("scrollbar/vertical/arrow/top/disabled"));
 
 	// down 箭头
 	m_bmpVBotArrow[CPE::SBS_Normal] =
-		pConfig ->GetBitmap(TEXT("scrollbar/vertical/arrow/bottom/normal"));
+		pConfig ->GetImage(TEXT("scrollbar/vertical/arrow/bottom/normal"));
 	m_bmpVBotArrow[CPE::SBS_Hover] =
-		pConfig ->GetBitmap(TEXT("scrollbar/vertical/arrow/bottom/hover"));
+		pConfig ->GetImage(TEXT("scrollbar/vertical/arrow/bottom/hover"));
 	m_bmpVBotArrow[CPE::SBS_Pressed] =
-		pConfig ->GetBitmap(TEXT("scrollbar/vertical/arrow/bottom/pressed"));
+		pConfig ->GetImage(TEXT("scrollbar/vertical/arrow/bottom/pressed"));
 	m_bmpVBotArrow[CPE::SBS_Disabled] =
-		pConfig ->GetBitmap(TEXT("scrollbar/vertical/arrow/bottom/disabled"));
+		pConfig ->GetImage(TEXT("scrollbar/vertical/arrow/bottom/disabled"));
 
 	//  垂直滑块
 	m_bmpVThumb[CPE::SBS_Normal] = 
-		pConfig ->GetBitmap(TEXT("scrollbar/vertical/thumb/normal"));
+		pConfig ->GetImage(TEXT("scrollbar/vertical/thumb/normal"));
 	m_bmpVThumb[CPE::SBS_Hover] = 
-		pConfig ->GetBitmap(TEXT("scrollbar/vertical/thumb/hover"));
+		pConfig ->GetImage(TEXT("scrollbar/vertical/thumb/hover"));
 	m_bmpVThumb[CPE::SBS_Pressed] = 
-		pConfig ->GetBitmap(TEXT("scrollbar/vertical/thumb/pressed"));
+		pConfig ->GetImage(TEXT("scrollbar/vertical/thumb/pressed"));
 	m_bmpVThumb[CPE::SBS_Disabled] =
-		pConfig ->GetBitmap(TEXT("scrollbar/vertical/thumb/disabled"));
+		pConfig ->GetImage(TEXT("scrollbar/vertical/thumb/disabled"));
 	// 水平背景
-	m_bmpVBk = pConfig ->GetBitmap(TEXT("scrollbar/vertical/background") );
-	m_bmpSizing =  pConfig ->GetBitmap(TEXT("scrollbar/sizing") );
+	m_bmpVBk = pConfig ->GetImage(TEXT("scrollbar/vertical/background") );
+	m_bmpSizing =  pConfig ->GetImage(TEXT("scrollbar/sizing") );
 #endif
 
 }
@@ -602,7 +601,7 @@ bool GetScrollRect( HWND hWnd, UINT nBar, LPRECT lpRect,int *nArrowSize,int *nTh
         GetClientRect( hWnd, lpRect );
 		
 		/* 是否是垂直 */
-        vertical = (( GetWindowLong( hWnd, GWL_EXSTYLE ) & SBS_VERT) != 0);
+        vertical = (( GetWindowLong( hWnd, GWL_STYLE ) & SBS_VERT) != 0);
         break;
 
     default:
@@ -704,7 +703,7 @@ bool GetScrollRect( HWND hWnd, UINT nBar, LPRECT lpRect,int *nArrowSize,int *nTh
     }
     return 0 != vertical;
 }
-void CScrollBarCtrlSkin::DrawHScrollBar( HWND hWnd, CScrollBarCtrlParameterRefPtr pParam )
+void CScrollBarCtrlSkin::DrawHScrollBar( HWND hWnd, CScrollBarCtrlParameterRefPtr pParam, bool bIsControl  )
 {
     if( !pParam )
     {
@@ -721,34 +720,37 @@ void CScrollBarCtrlSkin::DrawHScrollBar( HWND hWnd, CScrollBarCtrlParameterRefPt
     int nThumbPos;
 	//获取滚动条的位置、箭头、滑块等信息
 
-    GetScrollRect(hWnd,SB_HORZ,&rtPos,&nArrowSize,&nThumbSize,&nThumbPos);
-    HDC hMemDc = hdc;//CreateCompatibleDC( hdc );
-    DrawHBackground( hMemDc, rtPos );
+    GetScrollRect(hWnd,bIsControl?SB_CTL:SB_HORZ,&rtPos,&nArrowSize,&nThumbSize,&nThumbPos);
+	{
+		Util::CTempCompatibleDC tcdc( hdc, rtPos.Width(), rtPos.Height() );
+		HDC hMemDc = tcdc;//hdc;//CreateCompatibleDC( hdc );
+		DrawHBackground( hMemDc, rtPos );
 
-	/* 绘制左侧箭头 */
-    DrawHLeftArrow(
-                hMemDc,
-                CRect(rtPos.left,rtPos.top,rtPos.left + nArrowSize,rtPos.bottom),
-                pParam ->m_hBar.nArrowState1 );
-	/* 绘制右侧箭头 */
-    DrawHRightArrow(
-                hMemDc,
-                CRect(rtPos.right - nArrowSize,rtPos.top,rtPos.right,rtPos.bottom),
-                pParam ->m_hBar.nArrowState2 );
+		/* 绘制左侧箭头 */
+		DrawHLeftArrow(
+					hMemDc,
+					CRect(rtPos.left,rtPos.top,rtPos.left + nArrowSize,rtPos.bottom),
+					pParam ->m_hBar.nArrowState1 );
+		/* 绘制右侧箭头 */
+		DrawHRightArrow(
+					hMemDc,
+					CRect(rtPos.right - nArrowSize,rtPos.top,rtPos.right,rtPos.bottom),
+					pParam ->m_hBar.nArrowState2 );
 
-	/* 绘制滑块 */
-    if( 0 != nThumbSize )
-    {
-        DrawHThumb(hMemDc,CRect(
-                       rtPos.left + nThumbPos,rtPos.top+1,
-                       rtPos.left +nThumbPos + nThumbSize,rtPos.bottom-1),
-                   pParam ->m_hBar.nThumbState );
-    }
+		/* 绘制滑块 */
+		if( 0 != nThumbSize )
+		{
+			DrawHThumb(hMemDc,CRect(
+						   rtPos.left + nThumbPos,rtPos.top+1,
+						   rtPos.left +nThumbPos + nThumbSize,rtPos.bottom-1),
+					   pParam ->m_hBar.nThumbState );
+		}
 
+	}
     ReleaseDC( hWnd, hdc );
 }
 
-void CScrollBarCtrlSkin::DrawVScrollBar( HWND hWnd, CScrollBarCtrlParameterRefPtr pParam )
+void CScrollBarCtrlSkin::DrawVScrollBar( HWND hWnd, CScrollBarCtrlParameterRefPtr pParam, bool bIsControl  )
 {
     if( !pParam )
     {
@@ -764,34 +766,36 @@ void CScrollBarCtrlSkin::DrawVScrollBar( HWND hWnd, CScrollBarCtrlParameterRefPt
     int nThumbPos;
 
 	/* 获取滚动条位置、尺寸等相关参数 */
-    GetScrollRect( hWnd, SB_VERT,&rtPos,&nArrowSize,&nThumbSize,&nThumbPos);
+    GetScrollRect( hWnd, bIsControl?SB_CTL:SB_VERT,&rtPos,&nArrowSize,&nThumbSize,&nThumbPos);
 
-    HDC hdc = GetWindowDC( hWnd );
-    HDC hMemDc = hdc;//CreateCompatibleDC( hdc );
+	HDC hdc = GetWindowDC( hWnd );
+	{
+		Util::CTempCompatibleDC tcdc( hdc, rtPos.Width(), rtPos.Height() );
+		HDC hMemDc = tcdc;//hdc;//CreateCompatibleDC( hdc );
 
-	/* 绘制背景 */
-    DrawVBackground( hMemDc,rtPos);
+		/* 绘制背景 */
+		DrawVBackground( hMemDc,rtPos);
 
-	/* 绘制顶部箭头 */
-    DrawVTopArrow(
-                hMemDc,
-                CRect(rtPos.left,rtPos.top,rtPos.right ,rtPos.top + nArrowSize),
-                pParam ->m_vBar.nArrowState1 );
-	/* 绘制底部箭头 */
-    DrawVBotArrow(
-                hMemDc,
-                CRect(rtPos.left,rtPos.bottom - nArrowSize,rtPos.right,rtPos.bottom),
-                pParam ->m_vBar.nArrowState2 );
+		/* 绘制顶部箭头 */
+		DrawVTopArrow(
+					hMemDc,
+					CRect(rtPos.left,rtPos.top,rtPos.right ,rtPos.top + nArrowSize),
+					pParam ->m_vBar.nArrowState1 );
+		/* 绘制底部箭头 */
+		DrawVBotArrow(
+					hMemDc,
+					CRect(rtPos.left,rtPos.bottom - nArrowSize,rtPos.right,rtPos.bottom),
+					pParam ->m_vBar.nArrowState2 );
 
-	/* 绘制滑块 */
-    if( 0 != nThumbSize)
-    {
-        DrawVThumb(
-                    hMemDc,
-                    CRect(rtPos.left+1,rtPos.top +nThumbPos,rtPos.right -1,rtPos.top + +nThumbPos + nThumbSize),
-                    pParam ->m_vBar.nThumbState );
-    }
-
+		/* 绘制滑块 */
+		if( 0 != nThumbSize)
+		{
+			DrawVThumb(
+						hMemDc,
+						CRect(rtPos.left+1,rtPos.top +nThumbPos,rtPos.right -1,rtPos.top + +nThumbPos + nThumbSize),
+						pParam ->m_vBar.nThumbState );
+		}
+	}
     ReleaseDC( hWnd, hdc );
 
 }
@@ -800,11 +804,11 @@ void CScrollBarCtrlSkin::DrawSizing( HWND hWnd, const CRect& r )
 {
     HDC hdc = GetWindowDC( hWnd );
 	/* 绘制bmp */
-    if( m_bmpSizing.valid() )
+    if( NULL != m_bmpSizing )
     {
         HDC hMemDC = CreateCompatibleDC( hdc );
-        HGDIOBJ hOldBitmap = SelectObject( hMemDC, m_bmpSizing );
-        const CSize& szBmp = GetBMPSize( *m_bmpSizing );
+		HGDIOBJ hOldBitmap = SelectObject( hMemDC, m_bmpSizing );
+		const CSize szBmp( m_bmpSizing->GetWidth(),m_bmpSizing->GetHeight());
         StretchBlt( hdc, r.left, r.top, r.Width(), r.Height(),
                     hMemDC, 0,0, szBmp.cx, szBmp.cy, SRCCOPY );
         SelectObject( hMemDC, hOldBitmap);
@@ -1005,7 +1009,7 @@ void CScrollBarCtrlSkin::HandleScrollEvent(
                         CPE::SBS_Normal;
                 pParam ->m_vBar.nThumbState =
                         CPE::SBS_Normal;
-                DrawVScrollBar( hWnd ,pParam);
+                DrawVScrollBar( hWnd ,pParam,nType == SB_CTL );
             }
             else
             {
@@ -1015,7 +1019,7 @@ void CScrollBarCtrlSkin::HandleScrollEvent(
                         CPE::SBS_Normal;
                 pParam ->m_hBar.nThumbState =
                         CPE::SBS_Normal;
-                DrawHScrollBar( hWnd, pParam );
+                DrawHScrollBar( hWnd, pParam,nType == SB_CTL  );
             }
             // 关闭监视
             KillTimer( m_hWnd, CPE::SBP_TimerID );
@@ -1024,9 +1028,9 @@ void CScrollBarCtrlSkin::HandleScrollEvent(
 
     case CPE::SBHT_TopRect:
         if( bIsTrackingVertical )
-            DrawVScrollBar( hWnd, pParam );
+            DrawVScrollBar( hWnd, pParam,nType == SB_CTL  );
         else
-            DrawHScrollBar( hWnd, pParam );
+            DrawHScrollBar( hWnd, pParam,nType == SB_CTL  );
         if ( hitTest == pParam ->m_hitTest )
         {
             if ((msg == WM_LBUTTONDOWN) || (msg == WM_TIMER))
@@ -1092,7 +1096,7 @@ void CScrollBarCtrlSkin::HandleScrollEvent(
                         CPE::SBS_Normal;
                 pParam->m_vBar.nThumbState =
                         CPE::SBS_Pressed;
-                DrawVScrollBar( hWnd, pParam );
+                DrawVScrollBar( hWnd, pParam ,nType == SB_CTL );
             }
             else
             {
@@ -1101,7 +1105,7 @@ void CScrollBarCtrlSkin::HandleScrollEvent(
                 pParam->m_hBar.nArrowState2 =
                         CPE::SBS_Normal;
                 CPE::SBS_Pressed;
-                DrawHScrollBar( hWnd, pParam );
+                DrawHScrollBar( hWnd, pParam,nType == SB_CTL  );
             }
 
             if ( 0 == pParam ->m_bDrawTrackingBar )
@@ -1189,11 +1193,11 @@ void CScrollBarCtrlSkin::HandleScrollEvent(
     case CPE::SBHT_BottomRect:
         if( bIsTrackingVertical )
         {
-            DrawVScrollBar(hWnd, pParam );
+            DrawVScrollBar(hWnd, pParam,nType == SB_CTL  );
         }
         else
         {
-            DrawHScrollBar(hWnd, pParam );
+            DrawHScrollBar(hWnd, pParam,nType == SB_CTL  );
         }
         if ( hitTest == pParam ->m_hitTest )
         {
@@ -1264,14 +1268,14 @@ void CScrollBarCtrlSkin::HandleScrollEvent(
                 pParam ->m_vBar.nArrowState1 = CPE::SBS_Normal;
                 pParam ->m_vBar.nArrowState2 = CPE::SBS_Normal;
                 pParam ->m_vBar.nThumbState = CPE::SBS_Normal;
-                DrawVScrollBar(hWnd,pParam);
+                DrawVScrollBar(hWnd,pParam,nType == SB_CTL );
             }
             else
             {
                 pParam ->m_hBar.nArrowState1 = CPE::SBS_Normal;
                 pParam ->m_hBar.nArrowState2 = CPE::SBS_Normal;
                 pParam ->m_hBar.nThumbState = CPE::SBS_Normal;
-                DrawHScrollBar(hWnd,pParam);
+                DrawHScrollBar(hWnd,pParam,nType == SB_CTL );
             }
             KillTimer( m_hWnd, CPE::SBP_TimerID );
         }
@@ -1303,14 +1307,14 @@ void CScrollBarCtrlSkin::HandleScrollEvent(
                         CPE::SBS_Normal;
                 pParam ->m_vBar.nThumbState =
                         CPE::SBS_Pressed;
-                DrawVScrollBar(hWnd, pParam );
+                DrawVScrollBar(hWnd, pParam,nType == SB_CTL  );
             }
             else
             {
                 pParam ->m_hBar.nArrowState1 = CPE::SBS_Normal;
                 pParam ->m_hBar.nArrowState2 = CPE::SBS_Normal;
                 pParam ->m_hBar.nThumbState = CPE::SBS_Pressed;
-                DrawHScrollBar(hWnd, pParam);
+                DrawHScrollBar(hWnd, pParam,nType == SB_CTL );
             }
 
         }
@@ -1371,6 +1375,7 @@ void CScrollBarCtrlSkin::HandleScrollEvent(
 
     //ReleaseDC( m_hWnd, hdc );
 }
+
 void CScrollBarCtrlSkin::TrackScrollBar(
         HWND hWnd,
         CScrollBarCtrlParameterRefPtr pParam,
@@ -1443,77 +1448,80 @@ void CScrollBarCtrlSkin::TrackScrollBar(
 
 void CScrollBarCtrlSkin::DrawHBackground( HDC hdc, const CRect& rtDest )
 {
-    DrawBmp(hdc,rtDest, m_bmpHBk );
+    Util::DrawImage(hdc,rtDest, m_bmpHBk );
 }
 
 void CScrollBarCtrlSkin::DrawHLeftArrow( HDC hdc, const CRect& rtDest,int nState )
-{
-    if( !DrawBmp(hdc,rtDest,m_bmpHLeftArrow[nState] ) )
+{ 
+    if( !Util::DrawImage(hdc,rtDest,m_bmpHLeftArrow[nState] ) )
     {
-        DrawBmp(hdc,rtDest,m_bmpHLeftArrow[0]);
+        Util::DrawImage(hdc,rtDest,m_bmpHLeftArrow[0]);
     }
 
 }
 void CScrollBarCtrlSkin::DrawHRightArrow( HDC hdc, const CRect& rtDest,int nState )
 {
-    if(!DrawBmp(hdc,rtDest,m_bmpHRightArrow[nState]))
+    if(!Util::DrawImage(hdc,rtDest,m_bmpHRightArrow[nState]))
     {
-        DrawBmp(hdc,rtDest,m_bmpHRightArrow[0]);
+        Util::DrawImage(hdc,rtDest,m_bmpHRightArrow[0]);
     }
 }
 void CScrollBarCtrlSkin::DrawHThumb( HDC hdc, const CRect& rtDest,int nState )
 {
-    if(!DrawBmp(hdc,rtDest,m_bmpHThumb[nState]))
+    if(!Util::DrawImage(hdc,rtDest,m_bmpHThumb[nState]))
     {
-        DrawBmp(hdc,rtDest,m_bmpHThumb[0]);
+        Util::DrawImage(hdc,rtDest,m_bmpHThumb[0]);
     }
 }
 
 void CScrollBarCtrlSkin::DrawVTopArrow( HDC hdc, const CRect& rtDest,int nState )
 {
-    if(!DrawBmp(hdc,rtDest,m_bmpVTopArrow[nState]))
+    if(!Util::DrawImage(hdc,rtDest,m_bmpVTopArrow[nState]))
     {
-        DrawBmp(hdc,rtDest,m_bmpVTopArrow[0]);
+        Util::DrawImage(hdc,rtDest,m_bmpVTopArrow[0]);
     }
 }
 void CScrollBarCtrlSkin::DrawVBotArrow( HDC hdc, const CRect& rtDest,int nState )
 {
-    if(!DrawBmp(hdc,rtDest,m_bmpVBotArrow[nState]))
+    if(!Util::DrawImage(hdc,rtDest,m_bmpVBotArrow[nState]))
     {
-        DrawBmp(hdc,rtDest,m_bmpVBotArrow[0]);
+        Util::DrawImage(hdc,rtDest,m_bmpVBotArrow[0]);
     }
 }
 void CScrollBarCtrlSkin::DrawVThumb( HDC hdc, const CRect& rtDest,int nState )
 {
-    if(!DrawBmp(hdc,rtDest,m_bmpVThumb[nState]))
+    if(!Util::DrawImage(hdc,rtDest,m_bmpVThumb[nState]))
     {
-        DrawBmp(hdc,rtDest,m_bmpVThumb[0]);
+        Util::DrawImage(hdc,rtDest,m_bmpVThumb[0]);
     }
 }
 void CScrollBarCtrlSkin::DrawVBackground( HDC hdc, const CRect& rtDest )
 {
-    DrawBmp(hdc,rtDest, m_bmpVBk );
+    Util::DrawImage(hdc,rtDest, m_bmpVBk );
 }
 void CScrollBarCtrlSkin::DrawHScroll( HDC hdc, const CRect& rtDest,int nState )
 {
     int nHeight = rtDest.Height();
 
+	Util::CTempCompatibleDC tdc( hdc, rtDest.Width(),rtDest.Height(), 
+		SRCCOPY, rtDest.left, rtDest.top );
     CRect rtArrowLeft = CRect(rtDest.left,rtDest.top,rtDest.left + nHeight,rtDest.bottom);
     CRect rtArrowRight = CRect(rtDest.right - nHeight,rtDest.top,rtDest.right,rtDest.bottom);
-    DrawHBackground(hdc,rtDest);
-    DrawHLeftArrow(hdc,rtArrowLeft,nState);
-    DrawHRightArrow(hdc,rtArrowRight,nState);
+    DrawHBackground(tdc,rtDest);
+    DrawHLeftArrow(tdc,rtArrowLeft,nState);
+    DrawHRightArrow(tdc,rtArrowRight,nState);
 
 }
 void CScrollBarCtrlSkin::DrawVScroll( HDC hdc, const CRect& rtDest,int nState )
 {
     int nWidth = rtDest.Width();
-
+	Util::CTempCompatibleDC tdc( hdc, rtDest.Width(),rtDest.Height(), 
+		SRCCOPY, rtDest.left, rtDest.top );
     CRect rtArrowTop = CRect(rtDest.left, rtDest.top,rtDest.right,rtDest.top + nWidth);
     CRect rtArrowBottom = CRect(rtDest.left,rtDest.bottom - nWidth,rtDest.right,rtDest.bottom);
-    DrawVBackground(hdc,rtDest);
-    DrawVTopArrow(hdc,rtArrowTop,nState);
-    DrawVBotArrow(hdc,rtArrowBottom,nState);
+    DrawVBackground(tdc,rtDest);
+    DrawVTopArrow(tdc,rtArrowTop,nState);
+    DrawVBotArrow(tdc,rtArrowBottom,nState);
 }
 
 void CScrollBarCtrlSkin::DrawMovingThumb(

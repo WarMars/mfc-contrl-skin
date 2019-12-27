@@ -386,7 +386,7 @@ struct CMenubarCtrlSkinParameter:public CCtrlParameter
      */
     CPoint					m_ptMouse;
 public:
-    ~CMenubarCtrlSkinParameter(){ int i=0; ++i;}
+    ~CMenubarCtrlSkinParameter(){ }
     CMenuItemParameterRef *GetHot() const;
     void SetHot(CMenuItemParameterRef *pHot);
     CMenuItemParameterRef *GetPressed() const;

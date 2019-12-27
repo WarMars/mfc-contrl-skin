@@ -2,8 +2,6 @@
 #include <Windows.h>
 #include <reference_ptr.hpp>
 #include <stack>
-#include "GlobalSkinUtil.h"
-
 #define USING_CONFIG_FILE
 namespace GlobalSkin
 {
@@ -89,7 +87,6 @@ namespace GlobalSkin
 		{ 
 			if( m_stackWnd.empty() )
 			{
-				ShowErrorMsg( );
 				return NULL;
 			}
 #ifdef _DEBUG

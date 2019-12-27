@@ -798,11 +798,8 @@ void CMenubarCtrlSkin::CancelMenuAndTrackNewOne(int nButton)
 }
 bool CMenubarCtrlSkin::OnMenuInput( const MSG& m)
 {
-    if( m_pParam ->GetMenuBarTrackingState() !=
-            CPE::MBTS_Popup )
-	{
-		return false;
-	}
+    ASSERT( m_pParam ->GetMenuBarTrackingState() ==
+            CPE::MBTS_Popup );
 
     int msg = m.message;
 

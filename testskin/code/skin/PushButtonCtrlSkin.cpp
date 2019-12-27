@@ -40,6 +40,11 @@ void CPushButtonCtrl::LoadSkin( const CSkinConfig* pConfig )
 	m_pBmpNormal = pConfig ->GetBitmap(TEXT("button/background/normal") );
 	m_pBmpPressed = pConfig ->GetBitmap(TEXT("button/background/pressed") );
 	m_pBmpDisabled = pConfig ->GetBitmap(TEXT("button/background/disabled") );
+	m_pBmpHover = pConfig ->GetBitmap(TEXT("button/background/hover") );
+	m_clrNormalText = pConfig ->GetRGBColor( TEXT("button/text/normal") );
+	m_clrHoverText = pConfig ->GetRGBColor( TEXT("button/text/hover") );
+	m_clrPressedText = pConfig ->GetRGBColor( TEXT("button/text/pressed") );
+	m_clrDisableText = pConfig ->GetRGBColor( TEXT("button/text/disabled") );
 #endif
 }
 
@@ -76,11 +81,9 @@ bool CPushButtonCtrl::OnHandleStyleType( UINT nStype, UINT nExStyle )
 
 void CPushButtonCtrl::OnDrawButton(CDC *pDC)
 {
-	CRect rectWindow;
 	HWND hWnd = GetCurHwnd( );
-	GetWindowRect(hWnd,&rectWindow);
-	rectWindow.OffsetRect( 
-		-rectWindow.left, -rectWindow.top );
+	CRect rectWindow = Util::CTempAbsoluteWindowRect(hWnd);
+	CButtonCtrlStatus* pParam = GetCurParam();
 	CDC dcMem;
 	dcMem.CreateCompatibleDC( pDC);
 	CBitmap bmp;
@@ -90,12 +93,43 @@ void CPushButtonCtrl::OnDrawButton(CDC *pDC)
 	/* 绘制背景 */
 	DrawBackground( &dcMem,rectWindow );
 	/* 绘制文本 */
+	
+	COLORREF clrOld = 0;
+
+	CButton *pButton = (CButton*)CWnd::FromHandle( hWnd );
+	bool bDisabled = ( FALSE == IsWindowEnabled( hWnd ) );
+	if ( bDisabled )
+	{
+		/* 禁用 */
+		clrOld = dcMem.SetTextColor( m_clrDisableText );
+		
+	}
+	else if ( i2b( pParam -> m_nButtonState & 
+		CButtonCtrlStatus::BUTTON_PRESSED) ||
+		i2b(  pParam -> m_nButtonState & 
+		CButtonCtrlStatus::BUTTON_CHECKED ) )
+	{	
+		/* 按下 */
+		clrOld = dcMem.SetTextColor( m_clrPressedText );
+	}
+	else if( 
+		i2b( GetCurParam( ) ->m_nButtonState & 
+		CButtonCtrlStatus::BUTTON_HOVER)  )
+	{
+		clrOld = dcMem.SetTextColor( m_clrHoverText );
+	}
+	else
+	{
+		/* 无操作 */
+		clrOld = dcMem.SetTextColor( m_clrNormalText );
+	}
 	DrawText( &dcMem, rectWindow );
 
 	pDC ->BitBlt( rectWindow.left,rectWindow.top,
 		rectWindow.Width(), rectWindow.Height(),
 		&dcMem, 0, 0, SRCCOPY );
 	dcMem.SelectObject( pOldBmp );
+
 }
 
 
@@ -109,22 +143,38 @@ void CPushButtonCtrl::DrawBackground(CDC *pDC,const CRect& destRect )
 	{
 		return;
 	}
+	HWND hWnd = GetCurHwnd();
+	CButton *pButton = (CButton*)CWnd::FromHandle( hWnd );
+	bool bDisabled = ( FALSE == IsWindowEnabled( hWnd ) );
+	if( !bDisabled )
+	{
+		HWND hWndParent = GetParent( hWnd );
+		if( NULL != hWndParent )
+		{
+			bDisabled = (FALSE == IsWindowEnabled( hWndParent) );
+		}
+	}
 
-	CButton *pButton = (CButton*)CWnd::FromHandle(GetCurHwnd( ));
-	bool bDisabled = ( 0 != ( GetCurParam( ) -> m_nButtonState & 
-		CButtonCtrlStatus::BUTTON_DISABLED ) );
+	CButtonCtrlStatus* pParam = GetCurParam();
+
 	if ( bDisabled )
 	{
 		/* 禁用 */
 		DrawBmp( pDC, destRect, m_pBmpDisabled );
 	}
-	else if ( 0!=( GetCurParam( ) -> m_nButtonState & 
-		CButtonCtrlStatus::BUTTON_PRESSED) ||
-		0!=( GetCurParam( ) ->m_nButtonState & 
-		CButtonCtrlStatus::BUTTON_HOVER) )
+	else if ( i2b( pParam -> m_nButtonState & 
+		CButtonCtrlStatus::BUTTON_PRESSED)  ||
+		i2b(  pParam -> m_nButtonState & 
+		CButtonCtrlStatus::BUTTON_CHECKED ) )
 	{	
 		/* 按下 */
 		DrawBmp( pDC, destRect, m_pBmpPressed );
+	}
+	else if( 
+		i2b( pParam ->m_nButtonState & 
+		CButtonCtrlStatus::BUTTON_HOVER)  )
+	{
+		DrawBmp( pDC, destRect, m_pBmpHover );
 	}
 	else
 	{

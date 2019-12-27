@@ -2,6 +2,7 @@
 #include "gdiobj_ptr.hpp"
 #include <map>
 #include <string>
+#include <GdiPlus.h>
 
 class CImageManager
 {
@@ -13,7 +14,8 @@ public:
 	CBitmapRefPtr	CreateBitmap( LPCTSTR lpszBmpFilePath );
 	CBitmapRefPtr	GetBitmap( LPCTSTR lpszBmpFilePath );
 
-	
+	Gdiplus::Image* GetImage( LPCTSTR lpszImgFilePath );
+	void			AddImage( LPCTSTR lpszImgFilePath, Gdiplus::Image* pImage );
 	/*!
 	 * @brief 整理：会将使用的资源删除。
 	 * @param 
@@ -41,6 +43,12 @@ private:
 	 */
 	std::map<Xstring,CBitmapRefPtr>			m_mapFileBmpPtr;
 
+	/** 
+	 * @brief 带透明度的图片
+	 */
+	std::map<Xstring,Gdiplus::Image*>		m_mapImage;
+
 };
 
 #define ImagePool( ) CImageManager::GetInst( )
+#define CImagePool ImagePool

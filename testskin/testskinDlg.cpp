@@ -46,17 +46,27 @@ END_MESSAGE_MAP()
 // CtestskinDlg 对话框
 
 
-
+#include <string>
 
 CtestskinDlg::CtestskinDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CtestskinDlg::IDD, pParent)
+	,m_staticGdiPlus( Gdiplus::Image::FromFile(
+	_T("E:\\printer\\PrintClient\\Debug\\ui\\image\\login\\prefix_password.png")) )
+	, m_bRadio1Checked(false)
+	, m_fTest(0)
+	, m_fTest1(0)
 {
+	std::string str = "iu37G+6O/dldLgxDQWZfld4yopCaS0fjdnl5PfUqUEW1i83WkevEPzK9PPRTkfQe/UQJvj8yktwBDEdXRn2d7QlFtXOCIR93a+i5EKiwdbAKJAkkqW/lSFgTZIWxBv6u+WetYOJTlntIRqOMQXcBFgQ19i0qF9ysRLXFPzctkz0o7MIwN3RghcjVNudty4Zw+VFh3eMKfJPNBoMenQI4V4er/nFv1FA6qhv4XgHZso5s5wapT5MJg6EnzA5xSydtc2qLB2VI9Y2vpur9kfKM20DBNfKzf9Av/b2EgYcLUxs9fbSGTOiyk6g3GRpaRCnAH/RBpZxeKP2vwbtf2fWlmg==";
+	std::size_t nSize = str.size();
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
 void CtestskinDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_STATIC_TEST_GDIPLUS, m_staticGdiPlus);
+	DDX_Text(pDX, IDC_EDIT2, m_fTest);
+	DDV_MinMaxFloat(pDX, m_fTest1, -9999999.9, 999999.9);
 }
 
 BEGIN_MESSAGE_MAP(CtestskinDlg, CDialogEx)
@@ -64,6 +74,8 @@ BEGIN_MESSAGE_MAP(CtestskinDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, &CtestskinDlg::OnBnClickedButton1)
+	ON_WM_LBUTTONDOWN()
+	ON_WM_LBUTTONUP()
 END_MESSAGE_MAP()
 
 
@@ -93,12 +105,19 @@ BOOL CtestskinDlg::OnInitDialog()
 			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
 		}
 	}
-
+	CWnd* pWnd = GetDlgItem( IDOK );
+	CRect rectClient,rectWindow;
+	pWnd ->GetClientRect( rectClient );
+	pWnd ->GetWindowRect( rectWindow );
 	// 设置此对话框的图标。当应用程序主窗口不是对话框时，框架将自动
 	//  执行此操作
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
-
+	m_wndToolTips.Create(this);
+	m_wndToolTips.AddTool((CTabCtrl*)GetDlgItem( IDC_TAB1 ), _T("你好,tooltips") );
+	m_wndToolTips.AddTool((CTabCtrl*)GetDlgItem( IDC_TAB1 ), _T("你好,xxtooltips") );
+	m_wndToolTips.SetTipBkColor(RGB(255,255,0) );
+	m_wndToolTips.SetTipTextColor( RGB(0,255,0) );
 	// TODO: 在此添加额外的初始化代码
 	CTabCtrl* pTabCtrl = (CTabCtrl*)GetDlgItem( IDC_TAB1 );
 	pTabCtrl ->InsertItem( 0,_T("项目0") );
@@ -174,7 +193,7 @@ BOOL CtestskinDlg::OnInitDialog()
 	//m_layout.AddChild( GetDlgItem(IDC_TAB1) );
 	//m_layout.AddChild( GetDlgItem(IDOK) );
 	//m_layout.AddChild( GetDlgItem(IDCANCEL) );
-
+	//m_staticGdiPlus
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -216,6 +235,11 @@ void CtestskinDlg::OnPaint()
 	}
 	else
 	{
+
+		CPaintDC dc(this); // 用于绘制的设备上下文
+
+		dc.DrawText( _T("好好学习，天天向上"), -1,
+			CRect(0,0,100,100 ), DT_VCENTER | DT_CENTER | DT_SINGLELINE |DT_NOCLIP);
 		CDialogEx::OnPaint();
 	}
 }
@@ -235,4 +259,51 @@ void CtestskinDlg::OnBnClickedButton1()
 	//dlg.DoModal();
 	ASSERT(false);
 	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CtestskinDlg::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+
+	CDialogEx::OnLButtonDown(nFlags, point);
+}
+
+
+void CtestskinDlg::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+
+	CDialogEx::OnLButtonUp(nFlags, point);
+}
+
+
+BOOL CtestskinDlg::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: 在此添加专用代码和/或调用基类
+	switch( pMsg ->message )
+	{
+	case WM_MOUSEMOVE:
+		m_wndToolTips.RelayEvent( pMsg );
+		break;
+	default:
+		break;
+	}
+	return CDialogEx::PreTranslateMessage(pMsg);
+}
+
+
+void CtestskinDlg::OnOK()
+{
+	// TODO: 在此添加专用代码和/或调用基类
+
+//	CDialogEx::OnOK();
+}
+
+
+void CtestskinDlg::OnCancel()
+{
+	// TODO: 在此添加专用代码和/或调用基类
+
+	CDialogEx::OnCancel();
 }

@@ -51,7 +51,8 @@ namespace GlobalSkin
 		 */
 		void OnPaint( );
 
-		~CEditCtrlSkin();
+		void UpdateTextCenter( );
+		~CEditCtrlSkin( );
 	private:
 		/* ±ß¿òÌùÍ¼ */
 		CBitmapRefPtr	m_pBorderBmp;

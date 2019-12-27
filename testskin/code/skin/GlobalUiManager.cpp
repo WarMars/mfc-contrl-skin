@@ -22,6 +22,7 @@
 #include "ProgressBarCtrlskin.h"
 #include "ScrollBarCtrlSkin.h"
 #include "MenuBarCtrlSkin.h"
+#include "ScrollCtrlSkin.h"
 
 namespace GlobalSkin
 {
@@ -129,7 +130,7 @@ void CGlobalUiManager::InstallSkin( const CSkinConfig* pConfig )
 	// 如果需要安装新的皮肤，请在这里添加新皮肤即可
 
 	m_vectorCtrlSkins.push_back( new CPushButtonCtrl );      // 按钮皮肤
-	//m_vectorCtrlSkins.push_back( new CEditCtrlSkin );        // 文本框皮肤
+	m_vectorCtrlSkins.push_back( new CEditCtrlSkin );        // 文本框皮肤
 	m_vectorCtrlSkins.push_back( new CComboBoxCtrlSkin );    // 组合框皮肤
 	m_vectorCtrlSkins.push_back( new CListBoxCtrlSkin );     // 列表框皮肤
 	m_vectorCtrlSkins.push_back( new CComboLBoxCtrlSkin );   // 组合框中的列表框
@@ -138,8 +139,8 @@ void CGlobalUiManager::InstallSkin( const CSkinConfig* pConfig )
 	m_vectorCtrlSkins.push_back( new CGroupBoxCtrlSkin );    // groupbox
 	m_vectorCtrlSkins.push_back( new CListCtrlSkin );		 // 表格
 	m_vectorCtrlSkins.push_back( new CSysHeaderSkin );		 // 标题
-	m_vectorCtrlSkins.push_back( new CDialogBoxSkin );		 // 对话框
-	m_vectorCtrlSkins.push_back( new CPopupMenuCtrlSkin );	 // 弹出菜单
+//	m_vectorCtrlSkins.push_back( new CDialogBoxSkin );		 // 对话框
+//	m_vectorCtrlSkins.push_back( new CPopupMenuCtrlSkin );	 // 弹出菜单
 	m_vectorCtrlSkins.push_back( new CTablCtrlSkin );		 // tab控件
 	m_vectorCtrlSkins.push_back( new CTreeCtrlSkin );		 // 树状控件
 	m_vectorCtrlSkins.push_back( new CStatusBarCtrlSkin );   // 状态栏
@@ -147,6 +148,7 @@ void CGlobalUiManager::InstallSkin( const CSkinConfig* pConfig )
 	m_vectorCtrlSkins.push_back( new CSpinCtrlSkin );		 // Spin
 	m_vectorCtrlSkins.push_back( new CSilderCtrlSkin );		 // 滑块
 	m_vectorCtrlSkins.push_back( new CProgressBarCtrlSkin ); // 进度条
+	//m_vectorCtrlSkins.push_back( new CScrollCtrlSkin );		 // 滚动条控件
 
 	m_pScrollBarCtrlSkin = new DynamicParam::CScrollBarCtrlSkin;
 	m_pMenuBarCtrlSkin = new DynamicParam::CMenubarCtrlSkin;

@@ -68,6 +68,38 @@ CBitmapRefPtr CImageManager::GetBitmap( LPCTSTR lpszBmpFilePath )
 	return CreateBitmap( lpszBmpFilePath );
 }
 
+Gdiplus::Image* CImageManager::GetImage( LPCTSTR lpszImgFilePath )
+{
+	const CString& strFilePath = GetFilePath( lpszImgFilePath );
+	ASSERT( !strFilePath.IsEmpty() );
+	for( std::map<Xstring,Gdiplus::Image*>::iterator it = 
+		m_mapImage.begin(); it != m_mapImage.end(); ++it )
+	{
+		if( 0 == _tcsicmp( it ->first.c_str(), lpszImgFilePath ) )
+		{
+			if( NULL == it ->second )
+			{ 
+
+				it ->second = Gdiplus::Image::FromFile( lpszImgFilePath );
+			}
+			return it ->second;
+		}
+	}
+	Gdiplus::Image* pImage = Gdiplus::Image::FromFile( strFilePath );
+	m_mapImage.insert( 
+		std::pair<Xstring, Gdiplus::Image*>( lpszImgFilePath, 
+		pImage
+		) );
+	return pImage;
+
+}
+
+void CImageManager::AddImage( LPCTSTR lpszImgFilePath, Gdiplus::Image* pImage )
+{
+	ASSERT( m_mapImage.find( lpszImgFilePath ) == m_mapImage.end() );
+	m_mapImage[lpszImgFilePath] = pImage;
+}
+
 void CImageManager::TidyUp( )
 {
 	for(std::map<UINT,CBitmapRefPtr>::iterator it = m_mapRcBmpPtr.begin();
@@ -109,4 +141,9 @@ void CImageManager::Reset( )
 	TidyUp( );
 	m_mapRcBmpPtr.clear();
 	m_mapFileBmpPtr.clear();
+	for( auto it = m_mapImage.begin(); it != m_mapImage.end();++it )
+	{
+		delete it ->second;
+	}
+	m_mapImage.clear();
 }

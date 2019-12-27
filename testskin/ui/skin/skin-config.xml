@@ -1,41 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <control-skins> <!-- 皮肤中的资源配置,如果删除某个控件的配置，则不会有它的皮肤 -->
 	<file rootpath="" /> 		<!-- 配置的根路径 -->
-	<button filename="Button.bmp"> 		<!-- 普通按钮 -->
+	<button filename="Button.png"> 		<!-- 普通按钮 -->
 		<background>
-			<normal  top=0 left=0 width=143 height=60 />				<!--无操作-->
-			<pressed top=0 left=143 width=143 height=60 /> 				<!--按下 -->
-			<disabled top=0 left=286 width=143 height=60 />				<!--禁用-->
+			<normal  top=75 left=0 width=406 height=75 />				<!--无操作-->
+			<hover top=0 left=0 width=406 height=75 /> 				<!--按下 -->
+			<disabled top=225 left=0 width=406 height=75 />				<!--禁用-->
+			<pressed top=150 left=0 width=406 height=75 />				<!--禁用-->
 		</background>
+		<text>
+			<pressed red=254 green=251 blue=234 />
+			<normal red=0 green=0 blue=0 />
+			<hover red=235 green=244 blue=250 />
+			<disabled red=200 green=200 blue=200 />
+		</text>
 	</button>
 	<edit filename="edit.bmp" >			<!-- 文本框 -->
 		<border>
 			<background top=0 left=0 width=48 height=48 />				<!-- 边框 -->
 		</border>
 	</edit>
-	<check filename="CheckBox.bmp" >		<!-- 复选框 -->
-		<background top=144 left=0 width=48 height=48 />
+	<check filename="CheckBox.png" >		<!-- 复选框 -->
+		<background top=152 left=0 width=48 height=48 />
 		<button>
 			<checked>
-				<normal top=0 left=0 width=48 height=48 />
-				<hover top=0 left=48 width=48 height=48 />
-				<focused top=0 left=96 width=48 height=48 />
-				<pressed top=0 left=144 width=48 height=48 />
-				<disabled top=0 left=192 width=48 height=48 />
+				<normal top=0 left=0 width=76 height=76 />
+				<hover top=0 left=0 width=76 height=76 />
+				<focused top=0 left=0 width=76 height=76 />
+				<pressed top=0 left=0 width=76 height=76 />
+				<disabled top=0 left=0 width=76 height=76 />
 			</checked>
 			<unchecked>
-				<normal top=96 left=0 width=48 height=48 />
-				<hover top=96 left=48 width=48 height=48 />
-				<focused top=96 left=96 width=48 height=48 />
-				<pressed top=96 left=144 width=48 height=48 />
-				<disabled top=96 left=192 width=48 height=48 />
+				<normal top=0 left=76 width=76 height=76 />
+				<hover top=0 left=76 width=76 height=76 />
+				<focused top=0 left=76 width=76 height=76 />
+				<pressed top=0 left=76 width=76 height=76 />
+				<disabled top=0 left=76 width=76 height=76 />
 			</unchecked>
 			<indetermined>
-				<normal top=48 left=0 width=48 height=48 />
-				<hover top=48 left=48 width=48 height=48 />
-				<focused top=48 left=96 width=48 height=48 />
-				<pressed top=48 left=144 width=48 height=48 />
-				<disabled top=48 left=192 width=48 height=48 />
+				<normal top=0 left=0 width=76 height=76 />
+				<hover top=0 left=0 width=76 height=76 />
+				<focused top=0 left=0 width=76 height=76 />
+				<pressed top=0 left=0 width=76 height=76 />
+				<disabled top=0 left=0 width=76 height=76 />
 			</indetermined>
 		</button>
 	</check>
@@ -62,22 +69,27 @@
 			</unchecked>
 		</button>
 	</radio>
-	<combobox filename="ComboBox.bmp">		<!-- 组合框 -->
+	<combobox filename="ComboBox.png">		<!-- 组合框 -->
 		<border top=48 left=0 width=48 height=48 />				<!--边框-->
 		<down-arrow>			<!--下拉箭头-->
-			<normal  top=0 left=0 width=48 height=48 />			<!--焦点不同状态不同-->
-			<hover  top=0 left=48 width=48 height=48 />
-			<pressed  top=0 left=96 width=48 height=48 />
-			<focused  top=0 left=144 width=48 height=48 />
-			<disabled  top=0 left=192 width=48 height=48 />
+			<!-- <normal  top=0 left=0 width=48 height=48 />			<!--焦点不同状态不同--> -->
+			<!-- <hover  top=0 left=48 width=48 height=48 /> -->
+			<!-- <pressed  top=0 left=96 width=48 height=48 /> -->
+			<!-- <focused  top=0 left=144 width=48 height=48 /> -->
+			<!-- <disabled  top=0 left=192 width=48 height=48 /> -->			
+			<normal  top=48 left=48 width=14 height=43 />
+			<hover  top=48 left=48 width=14 height=43 />
+			<pressed  top=48 left=48 width=14 height=43 />
+			<focused  top=48 left=48 width=14 height=43 />
+			<disabled  top=48 left=48 width=14 height=43 />
 		</down-arrow>
 	</combobox>
 	<listbox filename="">	<!--列表框 -->
 	</listbox>
 	
-	<group filename="GroupBox.bmp">		<!--分组框-->
+	<group filename="GroupBox.png">		<!--分组框-->
 		<border>					<!--边框-->
-			<background  top=48 left=0 width=48 height=48 />
+			<background  red=243 green=250 blue=250 />
 		</border>	
 		<caption>
 			<background top=0 left=0 width=48 height=48 />					<!--标题-->
@@ -348,18 +360,18 @@
 	
 	<popupmenu filename="PopupMenu.bmp">	<!-- 弹出菜单 -->
 		<color>
-			<parentbk red=0 green=161 blue=0 />
+			<parentbk red=255 green=0 blue=233 />
 			<text>
-				<normal  red=0 green=0 blue=0 />
+				<normal  red=255 green=255 blue=255 />
 				<disabled  red=60 green=60 blue=60 />
 				<focused  red=120 green=120 blue=120 />
 				<seperator  red=150 green=150 blue=150 />
-				<background  red=228 green=211 blue=205 />
+				<background  red=1 green=173 blue=255 />
 			</text>
 		</color>
 	</popupmenu>
 
-	<toolbar filename="ToolBar.bmp">	<!-- 弹出菜单 -->
+	<toolbar filename="ToolBar.bmp">	<!-- 工具栏 -->
 		<background top=40 left=0 width=160 height=40 />
 		<item>
 			<background>
@@ -370,17 +382,23 @@
 			</background>
 		</item>
 	</toolbar>
-	<tab filename="TabCtrl.bmp">	<!-- 弹出菜单 -->
-		<background top=40 left=0 width=3 height=40 />
+	<tab filename="TabCtrl.png">	<!-- Tab控件 -->
+		<background top=40 left=0 width=120 height=40 />
+		<tab-right-bk top=80 left=0 width=120 height=40 />
 		<item>
 			<background>
-				<normal top=0 left=80 width=40 height=40 />
+				<normal top=0 left=0 width=40 height=40 />
 				<hover top=0 left=40 width=40 height=40 />
-				<pressed top=0 left=0 width=40 height=40 />
+				<pressed top=0 left=40 width=40 height=40 />
 			</background>
+			<text>
+				<pressed red=254 green=251 blue=234 />
+				<normal red=0 green=79 blue=148 />
+				<hover red=254 green=251 blue=234 />
+			</text>
 		</item>
 	</tab>
-	<progress filename="ProgressBar.bmp">	<!-- 弹出菜单 -->
+	<progress filename="ProgressBar.bmp">	<!-- 进度条 -->
 		<horizontal>
 			<background top=0 left=0 width=40 height=40 />
 			<progress top=40 left=0 width=40 height=40 />

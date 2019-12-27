@@ -23,64 +23,66 @@ namespace GlobalSkin
 		if( NULL == pConfig )
 #endif
 		{
-			CBitmapRefPtr pBitmap = ImagePool( ).CreateBitmap(
+			ASSERT(false);
+			//*如果一定要用，请将下面的SubImage图片添加到CImagePool中进行管理
+			Gdiplus::Image* pBitmap = ImagePool( ).GetImage(
 				TEXT("ui\\skin\\CheckBox.bmp") );
 			int nXOffset = 0;
 			int nYOffset = 0;
 			int nSize = 48;
 			InitBmp( 
-				Util::CreateSubBitmap( pBitmap, 
+				Util::CreateSubImage( pBitmap, 
 				nXOffset, nYOffset+3*nSize,nSize,nSize), //bk
-				Util::CreateSubBitmap( pBitmap, 
+				Util::CreateSubImage( pBitmap, 
 				nXOffset, nYOffset+2*nSize,nSize,nSize),
-				Util::CreateSubBitmap( pBitmap, 
+				Util::CreateSubImage( pBitmap, 
 				nXOffset, nYOffset,nSize,nSize),
-				Util::CreateSubBitmap( pBitmap, 
+				Util::CreateSubImage( pBitmap, 
 				nXOffset, nYOffset+nSize,nSize,nSize),
-				Util::CreateSubBitmap( pBitmap, 
+				Util::CreateSubImage( pBitmap, 
 				nXOffset+nSize, nYOffset+2*nSize,nSize,nSize),
-				Util::CreateSubBitmap( pBitmap, 
+				Util::CreateSubImage( pBitmap, 
 				nXOffset+nSize, nYOffset,nSize,nSize),
-				Util::CreateSubBitmap( pBitmap, 
+				Util::CreateSubImage( pBitmap, 
 				nXOffset+nSize, nYOffset+nSize,nSize,nSize),
-				Util::CreateSubBitmap( pBitmap, 
+				Util::CreateSubImage( pBitmap, 
 				nXOffset+2*nSize, nYOffset+2*nSize,nSize,nSize),
-				Util::CreateSubBitmap( pBitmap, 
+				Util::CreateSubImage( pBitmap, 
 				nXOffset+2*nSize, nYOffset,nSize,nSize),
-				Util::CreateSubBitmap( pBitmap, 
+				Util::CreateSubImage( pBitmap, 
 				nXOffset+2*nSize, nYOffset+nSize,nSize,nSize),
-				Util::CreateSubBitmap( pBitmap, 
+				Util::CreateSubImage( pBitmap, 
 				nXOffset+3*nSize, nYOffset+2*nSize,nSize,nSize),
-				Util::CreateSubBitmap( pBitmap, 
+				Util::CreateSubImage( pBitmap, 
 				nXOffset+3*nSize, nYOffset,nSize,nSize),
-				Util::CreateSubBitmap( pBitmap, 
+				Util::CreateSubImage( pBitmap, 
 				nXOffset+3*nSize, nYOffset+nSize,nSize,nSize),
-				Util::CreateSubBitmap( pBitmap, 
+				Util::CreateSubImage( pBitmap, 
 				nXOffset+4*nSize, nYOffset+2*nSize,nSize,nSize),
-				Util::CreateSubBitmap( pBitmap, 
+				Util::CreateSubImage( pBitmap, 
 				nXOffset+4*nSize, nYOffset,nSize,nSize),
-				Util::CreateSubBitmap( pBitmap, 
+				Util::CreateSubImage( pBitmap, 
 				nXOffset+4*nSize, nYOffset+nSize,nSize,nSize) );
 			return;
 		}
 #ifdef USING_CONFIG_FILE
 		InitBmp(
-			pConfig ->GetBitmap(TEXT("check/background") ),
-			pConfig ->GetBitmap(TEXT("check/button/unchecked/normal") ),
-			pConfig ->GetBitmap(TEXT("check/button/checked/normal") ),
-			pConfig ->GetBitmap(TEXT("check/button/indetermined/normal") ),
-			pConfig ->GetBitmap(TEXT("check/button/unchecked/hover") ),
-			pConfig ->GetBitmap(TEXT("check/button/checked/hover") ),
-			pConfig ->GetBitmap(TEXT("check/button/indetermined/hover") ),
-			pConfig ->GetBitmap(TEXT("check/button/unchecked/pressed") ),
-			pConfig ->GetBitmap(TEXT("check/button/checked/pressed") ),
-			pConfig ->GetBitmap(TEXT("check/button/indetermined/pressed") ),
-			pConfig ->GetBitmap(TEXT("check/button/unchecked/focused") ),
-			pConfig ->GetBitmap(TEXT("check/button/checked/focused") ),
-			pConfig ->GetBitmap(TEXT("check/button/indetermined/focused") ),
-			pConfig ->GetBitmap(TEXT("check/button/unchecked/disabled") ),
-			pConfig ->GetBitmap(TEXT("check/button/checked/disabled") ),
-			pConfig ->GetBitmap(TEXT("check/button/indetermined/disabled") ) );
+			pConfig ->GetImage(TEXT("check/background") ),
+			pConfig ->GetImage(TEXT("check/button/unchecked/normal") ),
+			pConfig ->GetImage(TEXT("check/button/checked/normal") ),
+			pConfig ->GetImage(TEXT("check/button/indetermined/normal") ),
+			pConfig ->GetImage(TEXT("check/button/unchecked/hover") ),
+			pConfig ->GetImage(TEXT("check/button/checked/hover") ),
+			pConfig ->GetImage(TEXT("check/button/indetermined/hover") ),
+			pConfig ->GetImage(TEXT("check/button/unchecked/pressed") ),
+			pConfig ->GetImage(TEXT("check/button/checked/pressed") ),
+			pConfig ->GetImage(TEXT("check/button/indetermined/pressed") ),
+			pConfig ->GetImage(TEXT("check/button/unchecked/focused") ),
+			pConfig ->GetImage(TEXT("check/button/checked/focused") ),
+			pConfig ->GetImage(TEXT("check/button/indetermined/focused") ),
+			pConfig ->GetImage(TEXT("check/button/unchecked/disabled") ),
+			pConfig ->GetImage(TEXT("check/button/checked/disabled") ),
+			pConfig ->GetImage(TEXT("check/button/indetermined/disabled") ) );
 #endif
 	}
 
@@ -90,22 +92,22 @@ namespace GlobalSkin
 	}
 
 	void CCheckBoxCtrlSkin::InitBmp(
-		const CBitmapRefPtr& pBkImg,
-		const CBitmapRefPtr& pNormalImg, 
-		const CBitmapRefPtr& pNormalCheckedImg, 
-		const CBitmapRefPtr& pMormalIndeterminateImg,
-		const CBitmapRefPtr& pHoverImg, 
-		const CBitmapRefPtr& pHoverCheckedImg, 
-		const CBitmapRefPtr& pHoverIndeterminateImg,
-		const CBitmapRefPtr& pPressedImg, 
-		const CBitmapRefPtr& pPressedCheckedImg, 
-		const CBitmapRefPtr& pPressedIndeterminateImg,
-		const CBitmapRefPtr& pFocusedImg, 
-		const CBitmapRefPtr& pFocusedCheckedImg, 
-		const CBitmapRefPtr& pFocusedIndeterminateImg,
-		const CBitmapRefPtr& pDisabledImg, 
-		const CBitmapRefPtr& pDisabledCheckedImg, 
-		const CBitmapRefPtr& pDisabledIndeterminateImg   )
+		Gdiplus::Image* pBkImg,
+		Gdiplus::Image* pNormalImg, 
+		Gdiplus::Image* pNormalCheckedImg, 
+		Gdiplus::Image* pMormalIndeterminateImg,
+		Gdiplus::Image* pHoverImg, 
+		Gdiplus::Image* pHoverCheckedImg, 
+		Gdiplus::Image* pHoverIndeterminateImg,
+		Gdiplus::Image* pPressedImg, 
+		Gdiplus::Image* pPressedCheckedImg, 
+		Gdiplus::Image* pPressedIndeterminateImg,
+		Gdiplus::Image* pFocusedImg, 
+		Gdiplus::Image* pFocusedCheckedImg, 
+		Gdiplus::Image* pFocusedIndeterminateImg,
+		Gdiplus::Image* pDisabledImg, 
+		Gdiplus::Image* pDisabledCheckedImg, 
+		Gdiplus::Image* pDisabledIndeterminateImg   )
 	{
 		m_pBmpBk = pBkImg;
 #define LOAD_BUTTON_STATE_BOX_BMP(variable,pUncheck,pChceck,pInde) \
@@ -167,13 +169,11 @@ namespace GlobalSkin
 		bmpMem.CreateCompatibleBitmap( pDC, 
 			rtWindow.Width(), rtWindow.Height() );
 		CBitmap* pOldBitmap = dcMem.SelectObject( &bmpMem );
-
+		dcMem.BitBlt( 0,0, rtWindow.Width(),rtWindow.Height(), pDC, 0,0 ,SRCCOPY );
 		/* 计算图片的尺寸，作为后续绘制的依据。 
 		   保证资源配置时，同一类贴图的尺寸相同。 */
-		const CSize& bmpSize = GetBMPSize( 
-			*m_pBmpState[CBS_Normal].pBmpUnchecked );
-		int width = bmpSize.cx;
-		int height = bmpSize.cy;
+		int width = m_pBmpState[CBS_Normal].pBmpUnchecked ->GetWidth();
+		int height = m_pBmpState[CBS_Normal].pBmpUnchecked ->GetHeight();
 		/* 宽度 */
 		if( width > rtWindow.Width() )
 		{
@@ -189,16 +189,16 @@ namespace GlobalSkin
 
 		CRect rtRadio,rtText;
 		/* 计算radio的位置 */
-		rtRadio.left = rtWindow.left;
-		rtRadio.right = rtRadio.left + width;
+		rtRadio.right = rtWindow.right;
+		rtRadio.left = rtRadio.right - width;
 		rtRadio.top = (rtWindow.Height() - height)/2;
 		rtRadio.bottom = rtRadio.top + height;
 		/* 计算文本的位置 */
 		rtText = rtWindow;
-		rtText.left = rtRadio.right+2;
+		rtText.right = rtRadio.left-2;
 		
 		/* 绘制背景 */
-		DrawBmp( &dcMem, rtWindow, m_pBmpBk );
+		Util::DrawImage( dcMem.GetSafeHdc(), m_pBmpBk, rtWindow );
 
 		if ( i2b(GetCurParam( ) ->m_nButtonState & 
 			CButtonCtrlStatus::BUTTON_DISABLED ) )
@@ -210,18 +210,18 @@ namespace GlobalSkin
 			if ( i2b(GetCurParam( ) ->m_nButtonState &
 				CButtonCtrlStatus::BUTTON_CHECKED) )
 			{
-				DrawBmp( &dcMem, rtRadio,
+				Util::DrawImage( dcMem.GetSafeHdc(), rtRadio,
 					m_pBmpState[CBS_Disabled].pBmpChecked );
 			}
 			else if( i2b(GetCurParam( ) ->m_nButtonState &
 				CButtonCtrlStatus::BUTTON_INDETERMINATE ) )
 			{
-				DrawBmp( &dcMem, rtRadio, 
+				Util::DrawImage( dcMem.GetSafeHdc(), rtRadio, 
 					m_pBmpState[CBS_Disabled].pBmpIndeterminate );
 			}
 			else
 			{
-				DrawBmp( &dcMem, rtRadio, 
+				Util::DrawImage( dcMem.GetSafeHdc(), rtRadio, 
 					m_pBmpState[CBS_Disabled].pBmpUnchecked );
 			}
 		}
@@ -234,18 +234,18 @@ namespace GlobalSkin
 			if ( i2b(GetCurParam( ) ->m_nButtonState &
 				CButtonCtrlStatus::BUTTON_CHECKED) )
 			{
-				DrawBmp( &dcMem, rtRadio,
+				Util::DrawImage( dcMem.GetSafeHdc(), rtRadio,
 					m_pBmpState[CBS_Pressed].pBmpChecked );
 			}
 			else if( i2b(GetCurParam( ) ->m_nButtonState &
 				CButtonCtrlStatus::BUTTON_INDETERMINATE ) )
 			{
-				DrawBmp( &dcMem, rtRadio, 
+				Util::DrawImage( dcMem.GetSafeHdc(), rtRadio, 
 					m_pBmpState[CBS_Pressed].pBmpIndeterminate );
 			}
 			else
 			{
-				DrawBmp( &dcMem, rtRadio, 
+				Util::DrawImage( dcMem.GetSafeHdc(), rtRadio, 
 					m_pBmpState[CBS_Pressed].pBmpUnchecked );
 			}
 		}
@@ -258,18 +258,18 @@ namespace GlobalSkin
 			if ( i2b(GetCurParam( ) ->m_nButtonState &
 				CButtonCtrlStatus::BUTTON_CHECKED) )
 			{
-				DrawBmp( &dcMem, rtRadio,
+				Util::DrawImage( dcMem.GetSafeHdc(), rtRadio,
 					m_pBmpState[CBS_Hover].pBmpChecked );
 			}
 			else if( i2b(GetCurParam( ) ->m_nButtonState &
 				CButtonCtrlStatus::BUTTON_INDETERMINATE ) )
 			{
-				DrawBmp( &dcMem, rtRadio, 
+				Util::DrawImage( dcMem.GetSafeHdc(), rtRadio, 
 					m_pBmpState[CBS_Hover].pBmpIndeterminate );
 			}
 			else
 			{
-				DrawBmp( &dcMem, rtRadio, 
+				Util::DrawImage( dcMem.GetSafeHdc(), rtRadio, 
 					m_pBmpState[CBS_Hover].pBmpUnchecked );
 			}
 		}
@@ -282,18 +282,18 @@ namespace GlobalSkin
 			if ( i2b(GetCurParam( ) ->m_nButtonState &
 				CButtonCtrlStatus::BUTTON_CHECKED) )
 			{
-				DrawBmp( &dcMem, rtRadio,
+				Util::DrawImage( dcMem.GetSafeHdc(), rtRadio,
 					m_pBmpState[CBS_Focused].pBmpChecked );
 			}
 			else if( i2b(GetCurParam( ) ->m_nButtonState &
 				CButtonCtrlStatus::BUTTON_INDETERMINATE ) )
 			{
-				DrawBmp( &dcMem, rtRadio, 
+				Util::DrawImage( dcMem.GetSafeHdc(), rtRadio, 
 					m_pBmpState[CBS_Focused].pBmpIndeterminate );
 			}
 			else
 			{
-				DrawBmp( &dcMem, rtRadio, 
+				Util::DrawImage( dcMem.GetSafeHdc(), rtRadio, 
 					m_pBmpState[CBS_Focused].pBmpUnchecked );
 			}
 		}
@@ -305,18 +305,18 @@ namespace GlobalSkin
 			if ( i2b(GetCurParam( ) ->m_nButtonState &
 				CButtonCtrlStatus::BUTTON_CHECKED) )
 			{
-				DrawBmp( &dcMem, rtRadio,
+				Util::DrawImage( dcMem.GetSafeHdc(), rtRadio,
 					m_pBmpState[CBS_Normal].pBmpChecked );
 			}
 			else if( i2b(GetCurParam( ) ->m_nButtonState &
 				CButtonCtrlStatus::BUTTON_INDETERMINATE ) )
 			{
-				DrawBmp( &dcMem, rtRadio, 
+				Util::DrawImage( dcMem.GetSafeHdc(), rtRadio, 
 					m_pBmpState[CBS_Normal].pBmpIndeterminate );
 			}
 			else
 			{
-				DrawBmp( &dcMem, rtRadio, 
+				Util::DrawImage( dcMem.GetSafeHdc(), rtRadio, 
 					m_pBmpState[CBS_Normal].pBmpUnchecked );
 			}
 		}

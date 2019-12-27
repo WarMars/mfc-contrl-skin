@@ -28,9 +28,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
-    <None Include="res\testskin.rc2">
-      <Filter>资源文件</Filter>
-    </None>
     <None Include="res\testskin.ico">
       <Filter>资源文件</Filter>
     </None>
@@ -144,6 +141,21 @@
     <ClInclude Include="code\skin\CtrlWithScrollBar.h">
       <Filter>skin\include</Filter>
     </ClInclude>
+    <ClInclude Include="GDIPlus.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PictureStatic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TooltipsDialog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="resource1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ReportDialogEx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="testskin.cpp">
@@ -242,9 +254,27 @@
     <ClCompile Include="code\ImageManager.cpp">
       <Filter>skin\src</Filter>
     </ClCompile>
+    <ClCompile Include="GDIPlusWrapper.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PictureStatic.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TooltipsDialog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ReportDialogEx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="code\skin\ScrollCtrlSkin.cpp">
+      <Filter>skin\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="testskin.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="report.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>

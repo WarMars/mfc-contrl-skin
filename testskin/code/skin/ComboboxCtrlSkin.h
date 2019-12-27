@@ -124,6 +124,7 @@ namespace GlobalSkin
 		 * @note
 		 */
 		bool HitTestThumb( const CPoint& point );
+		void OnSize( int cx, int cy );
 	private:
 		void Redraw( bool bDrawBorder = false );
 

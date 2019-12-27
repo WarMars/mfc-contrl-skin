@@ -189,7 +189,6 @@
   <ItemGroup>
     <None Include="ReadMe.txt" />
     <None Include="res\testskin.ico" />
-    <None Include="res\testskin.rc2" />
     <None Include="res\toolbar1.bmp" />
   </ItemGroup>
   <ItemGroup>
@@ -222,12 +221,17 @@
     <ClInclude Include="code\skin\ToolBarCtrlSkin.h" />
     <ClInclude Include="code\skin\TreeCtrlSkin.h" />
     <ClInclude Include="code\skin\XmlReader.h" />
+    <ClInclude Include="GDIPlus.h" />
     <ClInclude Include="Markup.h" />
+    <ClInclude Include="PictureStatic.h" />
+    <ClInclude Include="ReportDialogEx.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="testskin.h" />
     <ClInclude Include="testskinDlg.h" />
+    <ClInclude Include="TooltipsDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="code\ImageManager.cpp" />
@@ -250,6 +254,7 @@
     <ClCompile Include="code\skin\PushButtonCtrlSkin.cpp" />
     <ClCompile Include="code\skin\RadioButtonCtrlSkin.cpp" />
     <ClCompile Include="code\skin\ScrollBarCtrlSkin.cpp" />
+    <ClCompile Include="code\skin\ScrollCtrlSkin.cpp" />
     <ClCompile Include="code\skin\SliderCtrlSkin.cpp" />
     <ClCompile Include="code\skin\SpinCtrlSkin.cpp" />
     <ClCompile Include="code\skin\StatusBarCtrlSkin.cpp" />
@@ -258,7 +263,10 @@
     <ClCompile Include="code\skin\ToolBarCtrlSkin.cpp" />
     <ClCompile Include="code\skin\TreeCtrlSkin.cpp" />
     <ClCompile Include="code\skin\XmlReader.cpp" />
+    <ClCompile Include="GDIPlusWrapper.cpp" />
     <ClCompile Include="Markup.cpp" />
+    <ClCompile Include="PictureStatic.cpp" />
+    <ClCompile Include="ReportDialogEx.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -267,8 +275,10 @@
     </ClCompile>
     <ClCompile Include="testskin.cpp" />
     <ClCompile Include="testskinDlg.cpp" />
+    <ClCompile Include="TooltipsDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ResourceCompile Include="report.rc" />
     <ResourceCompile Include="testskin.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -2,6 +2,7 @@
 #include "EditCtrlSkin.h"
 #include <Windows.h>
 #include "ImageManager.h"
+#include "GlobalSkinUtil.h"
 
 #ifdef USING_CONFIG_FILE
 # include "CtrlSkinConfig.h"
@@ -46,6 +47,24 @@ LRESULT	CEditCtrlSkin::OnWndProc( UINT nMsg, WPARAM wParam, LPARAM lParam )
 		OnPaint();
 		return 0;
 		break;
+	case WM_SIZE:
+	case WM_SETFONT:
+		{
+			LRESULT lResult =
+				OnPreviousWndProc( GetCurHwnd( ), nMsg, wParam, lParam );
+			UpdateTextCenter( );
+			return lResult;
+		}
+		break;
+	case WM_KILLFOCUS:
+		{
+			HWND hWnd = GetCurHwnd( );
+			LRESULT lResult =
+				OnPreviousWndProc( hWnd, nMsg, wParam, lParam );
+			InvalidateRect( hWnd, NULL, TRUE );
+			UpdateWindow( hWnd );
+			return lResult;
+		}
 	default:
 		break;
 	}
@@ -53,9 +72,67 @@ LRESULT	CEditCtrlSkin::OnWndProc( UINT nMsg, WPARAM wParam, LPARAM lParam )
 }
 		
 
+void CEditCtrlSkin::UpdateTextCenter( )
+{
+	HWND hWnd = GetCurHwnd();
+	CRect rc; 
+	GetClientRect(hWnd,&rc); 
+	Util::CTempWindowDC wdc(hWnd);
+
+	HFONT hWindowFont = (HFONT)SendMessage( hWnd, WM_GETFONT,0,0);
+	LOGFONT logFont;
+	GetObject( hWindowFont, sizeof(LOGFONT),&logFont);
+	HGDIOBJ hOldFont = SelectObject( wdc, hWindowFont );
+	SIZE size;
+	GetTextExtentPoint32W (wdc, L"f", 1, &size) ;
+	SelectObject( wdc, hOldFont );
+	int nFontHeight =size.cy; 
+	//
+	int nMargin = (rc.Height() - nFontHeight)/2; 
+	rc.DeflateRect(0, nMargin); 
+	SendMessage(hWnd, EM_SETRECT, 0, (LPARAM)&rc );
+}
+
 void CEditCtrlSkin::OnPaint( )
 {
+#if !0
+	
 	OnAutoDefaultWndProc();
+#else
+	HWND hWnd = GetCurHwnd();
+	Util::CTempPaintDC dcPaint( hWnd );
+	CRect Irect;
+	GetClientRect( hWnd,&Irect); 
+	CString strText;
+	HBRUSH hOldBrush = NULL;
+	bool bUseCtlColor = false;
+	HWND hParent = GetParent(hWnd );
+	if( NULL != hParent )
+	{
+		HBRUSH hBrush = (HBRUSH)SendMessage(
+			hParent,WM_CTLCOLOREDIT,
+			(WPARAM)(HDC)dcPaint, (LPARAM)hWnd );
+		if( NULL != hBrush )
+		{
+			bUseCtlColor = true;
+			hOldBrush =(HBRUSH) 
+			SelectObject( dcPaint, hBrush );
+		}
+	}
+	int nLen = ::GetWindowTextLength(hWnd);
+	::GetWindowText(hWnd, strText.GetBufferSetLength(nLen), nLen+1);
+	strText.ReleaseBuffer();
+	SIZE sizeText;
+	::GetTextExtentPoint32( dcPaint, strText, (int)strText.GetLength(), &sizeText);
+
+	::ExtTextOut( dcPaint,Irect.left + ((Irect.Width()+sizeText.cx)/2), Irect.top + 
+		((Irect.Height()-sizeText.cy)/2), 
+		ETO_CLIPPED | ETO_OPAQUE, &Irect, strText, strText.GetLength(), NULL); 
+	if( bUseCtlColor )
+	{
+		SelectObject( dcPaint, hOldBrush );
+	}
+#endif
 	if( IsNull() )
 	{
 		return;

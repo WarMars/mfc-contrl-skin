@@ -68,7 +68,7 @@ UINT CButtonCtrlSkin::ButtonStyle2Format(DWORD style)
 	// 在绘制文本之前，先确定文本绘制的flag.
 
 	// 不会有裁剪
-	UINT dtStyle = DT_NOCLIP;
+	UINT dtStyle = 0;//DT_NOCLIP;
 
 	// 是否是多行
 	if (!(style & BS_MULTILINE))
@@ -84,7 +84,7 @@ UINT CButtonCtrlSkin::ButtonStyle2Format(DWORD style)
 	{
 	case BS_LEFT:
 		{ //左对齐
-			dtStyle |= DT_LEFT;       
+			dtStyle |= DT_LEFT | DT_SINGLELINE | DT_VCENTER;       
 		}
 		break;
 	case BS_RIGHT:
@@ -263,7 +263,7 @@ void CButtonCtrlSkin::OnMouseMove( UINT nFlags, CPoint point )
 		tme.cbSize = sizeof(TRACKMOUSEEVENT);
 		tme.dwFlags = TME_LEAVE;
 		tme.hwndTrack = GetCurHwnd( );
-		CheckFunc( TrackMouseEvent(&tme) );
+		TrackMouseEvent(&tme);
 	}
 
 	if(( GetCurParam( ) ->m_CaptureState == 
@@ -285,9 +285,8 @@ void CButtonCtrlSkin::OnMouseMove( UINT nFlags, CPoint point )
 	}
 
 	RECT rect;
-	CheckFunc( GetWindowRect( GetCurHwnd( ), &rect ) );
-	CheckFunc( ClientToScreen( GetCurHwnd( ), &point ) );
-	
+	GetWindowRect( GetCurHwnd( ), &rect );
+	ClientToScreen( GetCurHwnd( ), &point );
 	if(!PtInRect(&rect, point))
 	{ // 鼠标离开按钮的状态，由MouseLeave处理
 		SendMessage(GetCurHwnd( ), WM_MOUSELEAVE, 0, 0);
@@ -314,7 +313,7 @@ void CButtonCtrlSkin::OnLButtonDown( UINT nFlags, const CPoint& point )
 
 	// 状态为按下按钮
 	bool b = SetState( GetCurParam( ) ->m_nButtonState, 
-		CButtonCtrlStatus::BUTTON_PRESSED, TRUE );
+		CButtonCtrlStatus::BUTTON_PRESSED, true );
 
 	// 默认的处理
 	OnAutoDefaultWndProc();
@@ -333,7 +332,7 @@ void CButtonCtrlSkin::OnMouseLeave()
 	if( GetCurParam( ) ->m_CaptureState == 
 		CButtonCtrlStatus::CAPTURE_IN_DOWN )
 	{ // 鼠标没有在按钮内移动，直接弹起
-		CheckFunc( ReleaseCapture() );
+		ReleaseCapture();
 		GetCurParam( ) ->m_CaptureState = 
 			CButtonCtrlStatus::RELEASE_IN_LEAVE;
 	}
@@ -397,7 +396,7 @@ void CButtonCtrlSkin::OnLButtonUp( UINT nFlags, const CPoint& point )
 {
 	OnAutoDefaultWndProc();
 
-	CheckFunc( ReleaseCapture() );
+	ReleaseCapture();
 	if( IsNull( ) )
 	{
 		return;
@@ -422,7 +421,7 @@ void CButtonCtrlSkin::Redraw( )
 	}
 	UpdateCheckStatus();
 	OnDrawButton(pDC);
-	CheckFunc( pWnd ->ReleaseDC( pDC ) );
+	pWnd ->ReleaseDC( pDC );
 
 }
 void CButtonCtrlSkin::OnPaint()
@@ -478,7 +477,7 @@ bool CButtonCtrlSkin::UpdateCheckStatus()
 	return ( bRet1 || bRet2 );
 }
 
-void CButtonCtrlSkin::DrawText(CDC *pDC, const CRect& rectDest)
+void CButtonCtrlSkin::DrawText(CDC *pDC, const CRect& rectDest, int nAlignment )
 {
 	if( IsNull( ) )
 	{
@@ -498,7 +497,7 @@ void CButtonCtrlSkin::DrawText(CDC *pDC, const CRect& rectDest)
 	rectText = rectDest;
 	if( 0 != GetCurParam( ) ->m_bIcon )
 	{
-		CheckFunc( GetIconInfo(hIcon,&piconinfo) ); //取图标信息
+		GetIconInfo(hIcon,&piconinfo); //取图标信息
 		rectIcon = rectDest;
 		if (dwStyle & BS_TOP) //文字置顶
 			rectIcon.top = rectDest.bottom - piconinfo.yHotspot*2 - 4;
@@ -513,22 +512,18 @@ void CButtonCtrlSkin::DrawText(CDC *pDC, const CRect& rectDest)
 			rectIcon.left = rectDest.right - (piconinfo.yHotspot*2 + 4);
 		else
 			rectIcon.left = (rectDest.right - rectDest.left)/2-piconinfo.yHotspot + 2;
-		CheckFunc( pDC->DrawIcon( rectIcon.left,rectIcon.top, hIcon) );
-		if( NULL != piconinfo.hbmColor )
-		{
-			CheckFunc( DeleteObject(piconinfo.hbmColor) );
-		}
-		if( NULL != piconinfo.hbmMask )
-		{
-			DeleteObject(piconinfo.hbmMask);
-		}
+		pDC->DrawIcon( rectIcon.left,rectIcon.top, hIcon);
+		piconinfo.hbmColor ? DeleteObject(piconinfo.hbmColor) : NULL;
+		piconinfo.hbmMask ? DeleteObject(piconinfo.hbmMask) : NULL;
 	}
 	else
 	{
 		CString strText;
 		int nOldMode = pDC->SetBkMode(TRANSPARENT);
-		UINT uFormat = ButtonStyle2Format(dwStyle);
 		pButton->GetWindowText(strText);
+
+		UINT uFormat =( -1 == nAlignment?
+			ButtonStyle2Format(dwStyle):(UINT)nAlignment);
 		HFONT hFont = (HFONT)SendMessage( hWnd, WM_GETFONT, 0,0);
 		bool bSystemFont = (0 == hFont);
 		if( bSystemFont )
@@ -541,12 +536,14 @@ void CButtonCtrlSkin::DrawText(CDC *pDC, const CRect& rectDest)
 			hFont = CreateFontIndirect(&metrics.lfCaptionFont);
 		}
 		HGDIOBJ hOldFont = SelectObject( pDC ->GetSafeHdc(),hFont);
-		pDC->DrawText(strText,rectText,uFormat);
+		pDC->DrawText(strText,rectText,
+			uFormat
+			);
 		pDC->SetBkMode(nOldMode);
 		SelectObject( pDC ->GetSafeHdc(), hOldFont );
 		if( bSystemFont )
 		{
-			CheckFunc( DeleteObject( hFont ) );
+			DeleteObject( hFont );
 		}
 	}
 

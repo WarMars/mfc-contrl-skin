@@ -4,6 +4,7 @@
 #include "ImageManager.h"
 #include "GlobalUiManager.h"
 #include "GlobalSkinUtil.h"
+#include "utils.hpp"
 
 #ifdef USING_CONFIG_FILE
 # include "CtrlSkinConfig.h"
@@ -111,6 +112,9 @@ LRESULT CComboBoxCtrlSkin::OnWndProc(
 	case WM_SETTEXT:
 		OnSetText(wParam, lParam );
 		break;
+	case WM_SIZE:
+		OnSize( LOWORD(lParam), HIWORD(wParam) );
+		return OnPreviousWndProc( GetCurHwnd( ), nMsg, wParam, lParam );
 	default:
 		return OnPreviousWndProc( GetCurHwnd( ), nMsg, wParam, lParam );
 		break;
@@ -253,6 +257,10 @@ void CComboBoxCtrlSkin::OnMouseMove( UINT nFlags, const CPoint& point )
 		/* 追踪后续操作 */
 		TrackMouseEvent(&tme);
 	}
+	else
+	{
+		OnAutoDefaultWndProc( );
+	}
 	Redraw( );
 }
 void CComboBoxCtrlSkin::OnLButtonDown( UINT nFlags , const CPoint& point )
@@ -321,7 +329,7 @@ bool CComboBoxCtrlSkin::HitTestThumb( const CPoint& point )
 	GetComboBoxInfo(GetCurHwnd( ),&comboInfo);
 
 	rtThumb = comboInfo.rcButton;
-
+	//rtThumb.left -= rtThumb.Width()*2;
 	return TRUE == rtThumb.PtInRect(point);
 }
 void CComboBoxCtrlSkin::DrawComboBox(CDC *pDC)
@@ -336,6 +344,7 @@ void CComboBoxCtrlSkin::DrawComboBox(CDC *pDC)
 	GetComboBoxInfo( GetCurHwnd( ),&ci );
 
 	CRect rectThumb(ci.rcButton);
+	//rectThumb.left -= rectThumb.Width()*2;
 
 	
 	/* 根据不同的状态，绘制不同的滑块 */
@@ -365,6 +374,39 @@ void CComboBoxCtrlSkin::DrawComboBox(CDC *pDC)
 		DrawBmp(pDC,rectThumb, m_pBmpThumb[ CComboboxCtrlParameter::CheckNormal ] );
 	}
 
+}
+
+void CComboBoxCtrlSkin::OnSize( int cx, int cy )
+{
+	return;
+	HWND hWnd = GetCurHwnd();
+	HWND hEdit = Util::GetChildWindow( hWnd, TEXT("Edit") );
+	if( NULL != hEdit )
+	{
+		CRect rectEdit;
+		CWnd * pWnd = CWnd::FromHandle(hEdit);
+		GetWindowGeometry( pWnd, rectEdit );
+		COMBOBOXINFO comboInfo;
+		comboInfo.cbSize = sizeof(comboInfo);
+		GetComboBoxInfo( hWnd,&comboInfo);
+
+		rectEdit.right -= 2*(comboInfo.rcButton.right - comboInfo.rcButton.left);
+		SetWindowGeometry( pWnd, rectEdit );
+	}
+	HWND hButton = Util::GetChildWindow( hWnd, TEXT("Button") );
+	if( NULL != hButton )
+	{
+		//LPMEASUREITEMSTRUCT ;DRAWITEMSTRUCT
+		CRect rectButton;
+		CWnd * pWnd = CWnd::FromHandle(hButton);
+		GetWindowGeometry( pWnd, rectButton );
+		COMBOBOXINFO comboInfo;
+		comboInfo.cbSize = sizeof(comboInfo);
+		GetComboBoxInfo( hWnd,&comboInfo);
+
+		rectButton.left -= 2*(comboInfo.rcButton.right - comboInfo.rcButton.left);
+		SetWindowGeometry( pWnd, rectButton );
+	}
 }
 
 }

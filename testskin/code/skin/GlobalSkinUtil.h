@@ -6,24 +6,14 @@ namespace GlobalSkin
 {
 	namespace Util
 	{
-
-#define ShowErrorMsg( ) \
-		{\
-		CHAR szBuffer[256] = {0}; \
-		sprintf_s(szBuffer, ("[%s:%04d] error-code:%d"), __FILE__, __LINE__, GetLastError() ); \
-		MessageBoxA( NULL, szBuffer, ("skin提示"), MB_OK ); \
-	}
-
-#define CheckFunc( sentence ) \
-	if( 0 == sentence ) ShowErrorMsg( )
 		/*
 		 * @brief  临时使用的HDC封装
 		 */
 		class CTempDC 
 		{
 		public:
-			CTempDC( HWND hWnd, HDC hdc):m_hWnd(hWnd),m_hdc(hdc){CheckFunc(hdc); }
-			inline ~CTempDC( ){ if( *this ){ CheckFunc( ReleaseDC(m_hWnd, m_hdc ));} }
+			CTempDC( HWND hWnd, HDC hdc):m_hWnd(hWnd),m_hdc(hdc){ }
+			inline ~CTempDC( ){ if( *this ){ ReleaseDC(m_hWnd, m_hdc );} }
 
 			
 			/*!
@@ -86,9 +76,8 @@ namespace GlobalSkin
 			{
 				m_hWnd = hWnd;
 				m_hdc = ( (NULL != m_hWnd)?BeginPaint(m_hWnd,&m_ps):NULL);
-				CheckFunc( m_hdc );
 			}
-			inline ~CTempPaintDC( ){ if( *this ){ CheckFunc( EndPaint(m_hWnd, &m_ps ));} }
+			inline ~CTempPaintDC( ){ if( *this ){ EndPaint(m_hWnd, &m_ps );} }
 			inline operator HDC( ){ return m_hdc; }
 			inline operator bool( ){ return NULL != m_hWnd && NULL != m_hdc; }
 		private:
@@ -104,7 +93,7 @@ namespace GlobalSkin
 		{
 		public:
 			inline CHFontWraper( ) { m_hFont = NULL; }
-			inline ~CHFontWraper( ) { if( *this ){ CheckFunc( DeleteObject( m_hFont) ); } }
+			inline ~CHFontWraper( ) { if( *this ){ DeleteObject( m_hFont); } }
 			inline HFONT Release( ){ HFONT tmp = m_hFont; m_hFont = NULL; return tmp; }
 			inline HFONT& HFontRef( ) { return m_hFont; }
 			inline operator HFONT&( ) {return m_hFont;}
@@ -122,8 +111,7 @@ namespace GlobalSkin
 		class CTempRelativeWindowRect
 		{
 		public:
-			inline CTempRelativeWindowRect(HWND hWnd )
-			{ CheckFunc(GetWindowRect(hWnd, &m_rect) ); }
+			inline CTempRelativeWindowRect(HWND hWnd ){ GetWindowRect(hWnd, &m_rect); }
 			inline operator CRect( ) { return m_rect;}
 		protected:
 			/*
@@ -153,7 +141,7 @@ namespace GlobalSkin
 		{
 		public:
 			inline CTempCompatibleDC( HDC hdc, int cx, int cy,
-				DWORD dwRop = SRCCOPY )
+				DWORD dwRop = SRCCOPY, int nLeft = 0, int nTop = 0 )
 			{
 				if( NULL == hdc || 0 == cx || 0 == cy )
 				{
@@ -164,21 +152,20 @@ namespace GlobalSkin
 				m_hDC = hdc;
 				/* 创建兼容dc以及它需要的资源 */
 				m_hMemDC = CreateCompatibleDC(hdc);
-				CheckFunc( m_hMemDC );
 				m_hMemBmp = CreateCompatibleBitmap( hdc, cx, cy );
-				CheckFunc( m_hMemBmp );
 				m_hOldBmp = SelectObject( m_hMemDC, m_hMemBmp );
-				CheckFunc( m_hOldBmp );
 				m_dwRop = dwRop;
 				m_nCX = cx;
 				m_nCY = cy;
+				m_nLeft = nLeft;
+				m_nTop = nTop;
 			}
 			~CTempCompatibleDC( )
 			{
 				/* 有效则释放 */
 				if( *this )
 				{
-					BitBlt( m_hDC, 0,0, m_nCX, m_nCY,
+					BitBlt( m_hDC, m_nLeft, m_nTop, m_nCX, m_nCY,
 						m_hMemDC, 0,0, m_dwRop );
 					Release( );
 				}
@@ -194,8 +181,8 @@ namespace GlobalSkin
 				if(*this)
 				{
 					SelectObject(m_hMemDC,m_hOldBmp);
-					CheckFunc( DeleteDC( m_hMemDC ) );
-					CheckFunc( DeleteObject( m_hMemBmp ) );
+					DeleteDC( m_hMemDC );
+					DeleteObject( m_hMemBmp );
 					m_hMemDC = NULL;
 					m_hMemBmp = NULL;
 					m_hOldBmp = NULL;
@@ -231,6 +218,10 @@ namespace GlobalSkin
 			int		m_nCX;
 			/* 兼容dc的高度 */
 			int		m_nCY;
+			/* 左上角x坐标 */
+			int		m_nLeft;
+			/* 左上角Y坐标 */
+			int		m_nTop;
 
 		};
 		/** 
@@ -356,17 +347,28 @@ namespace GlobalSkin
 		bool ReplaceColor( HDC hSrcDC, COLORREF clrSrc, HDC hDstDc,COLORREF crlDst,
 			const RECT& rect, LPRECT pRectClip = NULL );
 
+		
+		/*!
+		 * @brief 创建子image
+		 * @param 
+		 * @return 
+		 * @note
+		 */
+		Gdiplus::Image* CreateSubImage(
+			Gdiplus::Image *pSrcImg,int nLeft, int nTop, int Width, int Height);
+
+		bool DrawImage( HDC hdc, Gdiplus::Image* pImage, const RECT& rect );
+		bool DrawImage( HDC hdc, const RECT& rect, Gdiplus::Image* pImage );
+		bool FillColor( HDC hdc, const Gdiplus::Color& color = Gdiplus::Color::Transparent );
+
+		HWND GetChildWindow( HWND hParent, LPCTSTR lpszChildWindowClassName );
+
 		/** 
 		 * @brief 在剪切板上显示位图。
 		 * @note 调试时使用
 		 */
 		void ShowBitmapInClipboard( HBITMAP hBitmap );
 		void ShowCurBitmapInClipboard( HDC hdc );
-
-
-		
-		/* 错误调试 */
-
 	}
 }
 

@@ -26,9 +26,9 @@ namespace GlobalSkin
 		 */
 		struct StatePicture 
 		{
-			CBitmapRefPtr	pBmpChecked;		/* ¹´Ñ¡ */
-			CBitmapRefPtr	pBmpUnchecked;		/* Î´¹´Ñ¡ */
-			CBitmapRefPtr	pBmpIndeterminate;	/* ÖÐ¼ä×´Ì¬ */
+			Gdiplus::Image*	pBmpChecked;		/* ¹´Ñ¡ */
+			Gdiplus::Image*	pBmpUnchecked;		/* Î´¹´Ñ¡ */
+			Gdiplus::Image*	pBmpIndeterminate;	/* ÖÐ¼ä×´Ì¬ */
 		};
 	public:
 		CCheckBoxCtrlSkin( );
@@ -56,22 +56,22 @@ namespace GlobalSkin
 		 * @note
 		 */
 		void InitBmp(
-			const CBitmapRefPtr& pBkImg,
-			const CBitmapRefPtr& pNormalImg, 
-			const CBitmapRefPtr& pNormalCheckedImg, 
-			const CBitmapRefPtr& pMormalIndeterminateImg,
-			const CBitmapRefPtr& pHoverImg, 
-			const CBitmapRefPtr& pHoverCheckedImg, 
-			const CBitmapRefPtr& pHoverIndeterminateImg,
-			const CBitmapRefPtr& pPressedImg, 
-			const CBitmapRefPtr& pPressedCheckedImg, 
-			const CBitmapRefPtr& pPressedIndeterminateImg,
-			const CBitmapRefPtr& pFocusedImg, 
-			const CBitmapRefPtr& pFocusedCheckedImg, 
-			const CBitmapRefPtr& pFocusedIndeterminateImg,
-			const CBitmapRefPtr& pDisabledImg, 
-			const CBitmapRefPtr& pDisabledCheckedImg, 
-			const CBitmapRefPtr& pDisabledIndeterminateImg );
+			Gdiplus::Image* pBkImg,
+			Gdiplus::Image* pNormalImg, 
+			Gdiplus::Image* pNormalCheckedImg, 
+			Gdiplus::Image* pMormalIndeterminateImg,
+			Gdiplus::Image* pHoverImg, 
+			Gdiplus::Image* pHoverCheckedImg, 
+			Gdiplus::Image* pHoverIndeterminateImg,
+			Gdiplus::Image* pPressedImg, 
+			Gdiplus::Image* pPressedCheckedImg, 
+			Gdiplus::Image* pPressedIndeterminateImg,
+			Gdiplus::Image* pFocusedImg, 
+			Gdiplus::Image* pFocusedCheckedImg, 
+			Gdiplus::Image* pFocusedIndeterminateImg,
+			Gdiplus::Image* pDisabledImg, 
+			Gdiplus::Image* pDisabledCheckedImg, 
+			Gdiplus::Image* pDisabledIndeterminateImg );
 
 	protected:
 		~CCheckBoxCtrlSkin( );
@@ -92,7 +92,7 @@ namespace GlobalSkin
 		void OnDrawButton(CDC *pDC);
 
 		/* ±³¾°ÌùÍ¼ */
-		CBitmapRefPtr	m_pBmpBk;
+		Gdiplus::Image*	m_pBmpBk;
 
 		/* ×´Ì¬Î»Í¼ */
 		StatePicture	m_pBmpState[CBS_State];

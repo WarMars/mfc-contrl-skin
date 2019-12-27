@@ -140,10 +140,12 @@ namespace GlobalSkin
 	private:
 
 		/* 背景 */
-		CBitmapRefPtr		m_pBmkBk;
+		Gdiplus::Image*		m_pBmkBk;
 
 		/* 按下项的背景 */
-		CBitmapRefPtr		m_pBmpItem[CPE::TabIS_Size];
+		Gdiplus::Image*		m_pBmpItem[CPE::TabIS_Size];
+		COLORREF			m_clrText[CPE::TabIS_Size];
+		Gdiplus::Image*		m_pTabRightBk;
 	};
 }
 

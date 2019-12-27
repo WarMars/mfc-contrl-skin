@@ -51,6 +51,18 @@ namespace GlobalSkin
 			m_imgRect.Height() );
 	}
 
+	Gdiplus::Image* CConfigData::GetGdiplusImagePtr( ) const
+	{
+
+		Gdiplus::Image* pBitmap = ImagePool().GetImage(
+			m_filePath.c_str() );
+		return Util::CreateSubImage( pBitmap, 
+			m_imgRect.Left(),
+			m_imgRect.Top(),
+			m_imgRect.Width(),
+			m_imgRect.Height() );
+	}
+
 	void	CConfigData::SetRect( const CRecti& rect )
 	{
 		m_imgRect = rect;
@@ -113,5 +125,17 @@ namespace GlobalSkin
 		return configData ->GetImagePtr( );
 	}
 
+	Gdiplus::Image*	CSkinConfig::GetImage( const XPath& strPath ) const
+	{
+		CRefPtr<CConfigData> configData;
+		if( !GetConfigData( strPath,configData) )
+		{
+			AfxMessageBox( (_T("ÎÞ·¨ÕÒµ½:") + strPath ).c_str() );
+			return NULL;
+		}
+		Gdiplus::Image* pImage = configData ->GetGdiplusImagePtr( );
+		CImagePool( ).AddImage( strPath.c_str(), pImage );
+		return pImage;
+	}
 }
 

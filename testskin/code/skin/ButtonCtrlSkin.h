@@ -152,7 +152,7 @@ protected:
 	/** 
 		* @brief 绘制按钮的文本
 		*/
-	void	DrawText(CDC *pDC, const CRect& rectDest);
+	void	DrawText(CDC *pDC, const CRect& rectDest, int nAlignment = -1);
 protected:
 	// 保存按钮按下时的参数
 	WPARAM m_wParamOnDown;

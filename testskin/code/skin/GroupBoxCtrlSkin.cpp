@@ -22,22 +22,25 @@ namespace GlobalSkin
 		if( NULL == pConfig )
 #endif
 		{
-			CBitmapRefPtr pBitmap = ImagePool( ).CreateBitmap(
+			Gdiplus::Image* pBitmap = ImagePool( ).GetImage(
 				TEXT("ui\\skin\\GroupBox.bmp") );
 			int nXOffset = 0;
 			int nYOffset = 0;
 			int nSize = 48;
-			m_pBmpCaption = Util::CreateSubBitmap(pBitmap,
+			m_pBmpCaption = Util::CreateSubImage(pBitmap,
 				nXOffset,nYOffset,nSize,nSize );
-			m_pBmpBorder = Util::CreateSubBitmap(pBitmap,
-				nXOffset,nYOffset+nSize,nSize,nSize );
+			CImagePool( ).AddImage(TEXT("groupbox-caption"),m_pBmpCaption );
+			//m_clrBorder = Util::GetBitmapPixelColor( Util::CreateSubImage(pBitmap,
+			//	nXOffset,nYOffset+nSize,nSize,nSize );
+			//CImagePool( ).AddImage(TEXT("groupbox-caption"),m_pBmpCaption ),0,0);
 			return;
 		}
 #ifdef USING_CONFIG_FILE
 		m_pBmpCaption = 
-			pConfig ->GetBitmap(TEXT("group/caption/background") );
-		m_pBmpBorder = 
-			pConfig ->GetBitmap(TEXT("group/border/background") );
+			pConfig ->GetImage(TEXT("group/caption/background") );
+		m_clrBorder = 
+			pConfig ->GetRGBColor(TEXT("group/border/background") );
+		
 #endif
 	}
 
@@ -77,35 +80,74 @@ namespace GlobalSkin
 		/* 标题 */
 		TCHAR szCaption[MAX_PATH] = {0};
 		GetWindowText(GetCurHwnd( ), szCaption, sizeof(szCaption) );
-		CSize size =  pDC->GetTextExtent( szCaption );
 
+		/* 获取字体 */
+		HFONT hFont = (HFONT)SendMessage( hWnd, WM_GETFONT,0,0);
+		HWND hParent = GetParent( GetCurHwnd() );
+
+		HGDIOBJ hOldFont = SelectObject( pDC ->GetSafeHdc(), hFont );
+		CSize size =  pDC->GetTextExtent( szCaption );
+		
 		rtWindow.top += size.cy/2 ;
+#if 0
 		CBrush brushBk;
 		/* 边框 */
+
 		brushBk.CreatePatternBrush( m_pBmpBorder );
 		pDC ->FrameRect( &rtWindow, &brushBk );
+#else
+		//Util::DrawImage(pDC ->GetSafeHdc(), m_pBmpBorder, rtWindow );
+		if( !false )
+		{
+			CBrush brush( m_clrBorder );
+			::FrameRect( pDC ->GetSafeHdc(), 
+				CRect( rtWindow.left, rtWindow.top + 7,
+				rtWindow.right, rtWindow.bottom ), brush );
+		}
+#endif
 		CRect rtCaption;
 		rtCaption.left = 5;
 		rtCaption.right = rtCaption.left + size.cx + 5;
 		rtCaption.top = 0;
 		rtCaption.bottom = rtCaption.top + size.cy+2;
 
-		/* 绘制标题 */
-		DrawBmp( pDC, rtCaption, m_pBmpCaption );
+		
 
-		/* 获取字体 */
-		HFONT hFont = (HFONT)SendMessage( hWnd, WM_GETFONT,0,0);
-		HGDIOBJ hOldFont = SelectObject( pDC ->GetSafeHdc(), hFont );
-
-		int oldMode = pDC->SetBkMode(TRANSPARENT);
 		rtCaption.left += 2;
 
-		/* 加入居中对其 */
-		pDC->DrawText(szCaption,
-			rtCaption,
-			DT_LEFT|DT_VCENTER|DT_SINGLELINE);
+		if( NULL != hParent )
+		{ 
+			HBRUSH hBrush = (HBRUSH)SendMessage(hParent, WM_CTLCOLORSTATIC, (WPARAM)(pDC ->GetSafeHdc()),
+				(LPARAM)(GetCurHwnd()) );
+			HGDIOBJ hOldBrush = (NULL != hBrush?pDC ->SelectObject( hBrush):NULL);
+			/* 加入居中对其 */
+			pDC->DrawText(szCaption,
+				rtCaption,
+				DT_LEFT|DT_TOP|DT_SINGLELINE);
+			if( NULL != hOldBrush )
+			{
+				pDC ->SelectObject( hOldBrush );
+			}
+		}
+		else
+		{
+			/* 绘制标题 */
+#if 0
+			DrawBmp( pDC, rtCaption, m_pBmpCaption );
+#else
+			Util::DrawImage( pDC ->GetSafeHdc(), m_pBmpCaption, rtCaption );
+#endif
+
+			int oldMode = pDC->SetBkMode(TRANSPARENT);
+			/* 加入居中对其 */
+			pDC->DrawText(szCaption,
+				rtCaption,
+				DT_LEFT|DT_TOP|DT_SINGLELINE);
+			pDC->SetBkMode(oldMode);
+		}
+		
+		
 		SelectObject( pDC ->GetSafeHdc(), hFont );
-		pDC->SetBkMode(oldMode);
 
 	}
 }

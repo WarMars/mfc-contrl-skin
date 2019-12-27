@@ -3,8 +3,9 @@
 //
 
 #pragma once
+#include "afxwin.h"
 //#include "Layout.h"
-
+#include "PictureStatic.h"
 // CtestskinDlg ¶Ô»°¿ò
 class CtestskinDlg : public CDialogEx
 {
@@ -36,4 +37,15 @@ private:
 	CStatusBar   m_wndStatusBar; 
 	CToolBar	 m_wndToolBar;
 	//CVBoxLayout	 m_layout;
+public:
+	CPictureStatic m_staticGdiPlus;
+	bool m_bRadio1Checked;
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	float m_fTest;
+	float m_fTest1;
+	CToolTipCtrl	m_wndToolTips;
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual void OnOK();
+	virtual void OnCancel();
 };

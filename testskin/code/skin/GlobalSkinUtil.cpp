@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GlobalSkinUtil.h"
-
+#include <vector>
+#include <map>
 namespace GlobalSkin
 {
 	namespace Util
@@ -15,7 +16,7 @@ namespace GlobalSkin
 				return NULL;
 			}
 			BITMAP bmp = { 0 };
-			CheckFunc(::GetObject( hBitmap, sizeof(BITMAP), &bmp ) );
+			::GetObject( hBitmap, sizeof(BITMAP), &bmp );
 			LPBITMAPINFO bi = (LPBITMAPINFO) new BYTE[ sizeof(BITMAPINFO) + 8 ];
 
 			memset( bi, 0, sizeof(BITMAPINFO) + 8 );
@@ -42,12 +43,11 @@ namespace GlobalSkin
 			// 获取颜色表
 			LPDWORD clr_tbl = (LPDWORD)&bi->bmiColors;
 			res = GetDIBits( dc, hBitmap, 0, bih.biHeight, pBits, bi, DIB_RGB_COLORS );
-			CheckFunc(res);
-			CheckFunc( DeleteDC( dc ) );
+			DeleteDC( dc );
 
 			// 获取颜色信息
 			BITMAP bm;
-			CheckFunc( ::GetObject( hBitmap, sizeof(BITMAP), &bm ) );
+			::GetObject( hBitmap, sizeof(BITMAP), &bm );
 			LPBYTE pClr = (LPBYTE)&color;
 			BYTE tmp = pClr[0]; pClr[0] = pClr[2]; pClr[2] = tmp;
 			// 16位(5-6-5)转换
@@ -134,7 +134,7 @@ namespace GlobalSkin
 								// copy current region data to it
 								memcpy( pRgnDataNew, pRgnData, RGNDATAHEADER_SIZE + pRgnData->nCount * sizeof(RECT) );
 								// delte old region data buffer
-								delete []pRgnData;
+								delete pRgnData;
 								// set pointer to new regiondata buffer to current
 								pRgnData = (RGNDATAHEADER*)pRgnDataNew;
 								// correct pointer to RECT table
@@ -180,7 +180,6 @@ namespace GlobalSkin
 
 			// create region
 			HRGN hRgn = ExtCreateRegion( NULL, RGNDATAHEADER_SIZE + pRgnData->nCount * sizeof(RECT), (LPRGNDATA)pRgnData );
-			CheckFunc(hRgn);
 			// release region data
 			delete [] pRgnData;
 
@@ -189,10 +188,8 @@ namespace GlobalSkin
 
 		void FillSolid( HDC hdc, const CRect& rect, COLORREF clr )
 		{
-			int nOldBkColor = ::SetBkColor(hdc, clr);
-			CheckFunc( ::ExtTextOut(
-				hdc, 0, 0, ETO_OPAQUE, &rect, NULL, 0, NULL) );
-			SetBkColor( hdc, nOldBkColor );
+			::SetBkColor(hdc, clr);
+			::ExtTextOut(hdc, 0, 0, ETO_OPAQUE, &rect, NULL, 0, NULL);
 		}
 
 		void FillSolid( HDC hdc, LONG lLeft, LONG lTop, LONG lWidth, LONG lHeight,
@@ -221,9 +218,8 @@ namespace GlobalSkin
 		bool   FillColor( HDC hdc, const CRect& rect, COLORREF clr )
 		{
 			HBRUSH hBrush = CreateSolidBrush( clr );
-			CheckFunc(hBrush);
-			CheckFunc( FillRect( hdc, &rect, hBrush ) );
-			CheckFunc( DeleteObject( hBrush ) );
+			FillRect( hdc, &rect, hBrush );
+			DeleteObject( hBrush );
 			return true;
 		}
 		
@@ -266,10 +262,6 @@ namespace GlobalSkin
 			{
 				return true;
 			}
-			else
-			{
-				ShowErrorMsg( );
-			}
 
 			int nWidth = rect.right - rect.left;
 			int nHeight = rect.bottom - rect.top;
@@ -308,8 +300,7 @@ namespace GlobalSkin
 			HFONT hFont=(HFONT)(SendMessage(hWnd, WM_GETFONT, 0, 0));
 			HGDIOBJ hOldFont = SelectObject( wdc, hFont );
 			RECT rect = {0};
-			CheckFunc( DrawText( wdc, lpszText,-1, 
-				&rect, DT_SINGLELINE | DT_CALCRECT ) );
+			DrawText( wdc, lpszText,-1, &rect, DT_SINGLELINE | DT_CALCRECT );
 			
 			SelectObject( wdc, hOldFont);
 
@@ -331,10 +322,9 @@ namespace GlobalSkin
 			HBITMAP hBmp = (HBITMAP)(pBitmap ->GetSafeHandle());
 			HDC hdc = GetDC(NULL);
 			HDC hMemDC = CreateCompatibleDC(hdc);
-			CheckFunc( hdc );
-			CheckFunc( hMemDC );
+
 			BITMAP bitmap = {0};
-			CheckFunc( GetObject( hBmp, sizeof(bitmap), &bitmap ) );
+			GetObject( hBmp, sizeof(bitmap), &bitmap );
 			if( nLeft < 0 )
 			{
 				nLeft = 0;
@@ -355,13 +345,11 @@ namespace GlobalSkin
 			// 获取子位图
 			HBITMAP hBmp1 = CreateCompatibleBitmap(
 				hdc, nWidth, nHeight );
-			CheckFunc( hBmp1 );
 			HGDIOBJ hOldBmp1 =  SelectObject(hMemDC, hBmp1);
 			HDC hMemDC1 = CreateCompatibleDC(hdc);
-			CheckFunc( hMemDC1 );
 			HGDIOBJ hOldBmp2 = SelectObject(hMemDC1, hBmp);
-			CheckFunc( BitBlt(hMemDC, 0,0, nWidth, nHeight,
-				hMemDC1, nLeft, nTop, SRCCOPY ) );
+			BitBlt(hMemDC, 0,0, nWidth, nHeight,
+				hMemDC1, nLeft, nTop, SRCCOPY );
 
 			// 创建
 			CBitmapRef* pSubBmp = new CBitmapRef;
@@ -370,9 +358,9 @@ namespace GlobalSkin
 			//清理
 			SelectObject(hMemDC, hOldBmp1);
 			SelectObject(hMemDC1, hOldBmp2 );
-			CheckFunc( ReleaseDC(NULL, hdc) );
-			CheckFunc( DeleteDC(hMemDC) );
-			CheckFunc( DeleteDC(hMemDC1) );
+			ReleaseDC(NULL, hdc);
+			DeleteDC(hMemDC);
+			DeleteDC(hMemDC1);
 			return pSubBmp;
 		}
 
@@ -400,7 +388,7 @@ namespace GlobalSkin
 			HGDIOBJ hOldBmp = SelectObject( hDC, hBMP );
 			COLORREF clrRes = GetPixel( hDC, nX, nY );
 			SelectObject( hDC, hOldBmp );
-			CheckFunc( DeleteDC( hDC ) );
+			DeleteDC( hDC );
 			return clrRes;
 		}
 
@@ -444,7 +432,6 @@ namespace GlobalSkin
 		{
 			OSVERSIONINFO ovi = { sizeof(OSVERSIONINFO) };
 			BOOL bRet = ::GetVersionEx(&ovi);
-			CheckFunc( bRet );
 			return ((bRet != FALSE) && (ovi.dwMajorVersion >= 6));
 
 		}
@@ -483,73 +470,59 @@ namespace GlobalSkin
 			{
 				return true;
 			}
-			else
-			{
-				ShowErrorMsg( );
-			}
 			HDC hMemDC = CreateCompatibleDC( hDstDC );
-			CheckFunc( hMemDC);
 			HDC hMaskDC = CreateCompatibleDC( hDstDC );
-			CheckFunc( hMaskDC);
 			// 创建掩码图
 			HBITMAP hMaskBmp = CreateBitmap( nSrcWidth, nSrcHeight, 1, 1, NULL) ;
-			CheckFunc( hMaskBmp);
 			HBITMAP hMemBmp = CreateCompatibleBitmap( hDstDC, nSrcWidth, nSrcHeight );
-			CheckFunc( hMemBmp);
 
 
 			HGDIOBJ hOldMeMDcBmp = SelectObject(hMemDC,hMemBmp);
 			// 复制
-			CheckFunc( BitBlt(hMemDC,0, 0, 
-				nSrcWidth, nSrcHeight, hSrcDC, nSrcX, nSrcY, SRCCOPY ) );
+			BitBlt(hMemDC,0, 0, nSrcWidth, nSrcHeight, hSrcDC, nSrcX, nSrcY, SRCCOPY );
 
 			HGDIOBJ pOldMaskDcBmp = SelectObject(hMaskDC,hMaskBmp);
-			
 			SetBkColor(hMemDC,clrTransparent );
 
 			// 创建掩码图
-			CheckFunc( BitBlt(hMaskDC,0,
-				0, nSrcWidth, nSrcHeight, hMemDC, 0, 0, SRCCOPY) );
+			BitBlt(hMaskDC,0, 0, nSrcWidth, nSrcHeight, hMemDC, 0, 0, SRCCOPY);
 
 			SetBkColor(hMemDC,RGB(0,0,0));
 			SetTextColor(hMemDC,RGB(255,255,255));
 			// 原图与掩码图进行与操作。这样掩码图中为1的像素保留（不透明),为0的会被清除
-			CheckFunc( BitBlt(hMemDC,0, 0, 
-				nSrcWidth, nSrcHeight, hMaskDC, 0, 0, SRCAND) );
+			BitBlt(hMemDC,0, 0, nSrcWidth, nSrcHeight, hMaskDC, 0, 0, SRCAND);
 
-			CheckFunc( SetStretchBltMode( hDstDC, HALFTONE ) );
+			SetStretchBltMode( hDstDC, HALFTONE );
 			SetBkColor( hDstDC, RGB(255,255,255) );
 			SetTextColor( hDstDC, RGB(0,0,0) );
 
 			if ( nDstWidth == nSrcWidth && nDstHeight == nSrcHeight)
 			{
-				CheckFunc( BitBlt( hDstDC, nDstX, nDstY,
-					nDstWidth, nDstHeight, hMaskDC, 0, 0, SRCAND ) );
+				BitBlt( hDstDC, nDstX, nDstY,
+					nDstWidth, nDstHeight, hMaskDC, 0, 0, SRCAND );
 
 				// 与原始图像素进行或操作。hMemDC中已经是经过掩码过滤的颜色了。
 				// 此操作，会将目标颜色置为白色（掩码已经把其它颜色设置为0了）。
-				CheckFunc( BitBlt( hDstDC,nDstX, nDstY, nDstWidth, nDstHeight, 
-					hMemDC, 0, 0, SRCPAINT ) );
+				BitBlt( hDstDC,nDstX, nDstY, nDstWidth, nDstHeight, 
+					hMemDC, 0, 0, SRCPAINT );
 
 			}
 			else
 			{
-				CheckFunc( 
-					StretchBlt( hDstDC, nDstX, nDstY,
+				StretchBlt( hDstDC, nDstX, nDstY,
 					nDstWidth, nDstHeight, hMaskDC, 
-					0, 0, nSrcWidth, nSrcHeight,SRCAND ) );
-				CheckFunc( 
-					StretchBlt( hDstDC, nDstX, nDstY,
+					0, 0, nSrcWidth, nSrcHeight,SRCAND );
+				StretchBlt( hDstDC, nDstX, nDstY,
 					nDstWidth, nDstHeight, hMemDC, 
-					0, 0, nSrcWidth, nSrcHeight,SRCPAINT ) );
+					0, 0, nSrcWidth, nSrcHeight,SRCPAINT );
 			}
 
 			SelectObject( hMaskDC,pOldMaskDcBmp);
 			SelectObject(hMemDC, hOldMeMDcBmp );
-			CheckFunc( DeleteObject( hMemBmp ) );
-			CheckFunc( DeleteObject( hMaskBmp ) );
-			CheckFunc( DeleteDC( hMemDC ) );
-			CheckFunc( DeleteDC( hMaskDC ) );
+			DeleteObject( hMemBmp );
+			DeleteObject( hMaskBmp );
+			DeleteDC( hMemDC );
+			DeleteDC( hMaskDC );
 			return TRUE;
 		}
 
@@ -577,6 +550,143 @@ namespace GlobalSkin
 				pRectClip->right - pRectClip->left, 
 				pRectClip->bottom - pRectClip->top, 
 				hSrcDC, pRectClip->left, pRectClip->top, clrSrc );
+		}
+		Gdiplus::Image* CreateSubImage(Gdiplus::Image *pSrcImg,int nLeft, int nTop, int Width, int Height)
+		{
+			if( NULL == pSrcImg )
+			{
+				return NULL;
+			}
+			int w, h;
+			w = pSrcImg->GetWidth();
+			h = pSrcImg->GetHeight();
+
+			Gdiplus::Bitmap *pDstImg = new Gdiplus::Bitmap(Width, Height);
+			pDstImg->SetResolution(pSrcImg->GetHorizontalResolution(), 
+				pSrcImg->GetVerticalResolution());
+			Gdiplus::Graphics grPhoto(pDstImg);
+			grPhoto.Clear((Gdiplus::ARGB)Gdiplus::Color::Transparent );
+			grPhoto.SetInterpolationMode(Gdiplus::InterpolationModeHighQualityBicubic);
+			grPhoto.DrawImage(pSrcImg, Gdiplus::RectF(0,0,Width,Height),
+				nLeft, nTop, Width,Height, Gdiplus::UnitPixel,NULL);//实现裁剪
+			return pDstImg;
+
+		}
+
+		bool DrawImage( HDC hdc, Gdiplus::Image* pImage, const RECT& rect )
+		{
+
+			ASSERT( NULL != hdc && NULL != pImage );
+			if( NULL == hdc || NULL == pImage )
+			{
+				return false;
+			}
+			int nWidth = rect.right - rect.left;
+			if( nWidth < (int)pImage ->GetWidth() )
+			{
+				nWidth = (int)pImage ->GetWidth( );
+			}
+			int nHeight = rect.bottom - rect.top;
+			if( nHeight < (int)pImage ->GetHeight() )
+			{
+				nHeight = (int)pImage ->GetHeight();
+			}
+			Gdiplus::Graphics graph( hdc );
+#if !0
+			graph.SetPageUnit(Gdiplus::UnitPixel);
+			Gdiplus::Bitmap bmpScale(nWidth, nHeight);
+			{
+				Gdiplus::Graphics graphicsScale(&bmpScale);
+				graphicsScale.Clear(Gdiplus::Color::Transparent ); //背景透明
+				Gdiplus::TextureBrush brush( pImage );
+
+				Gdiplus::REAL fHScale =(Gdiplus::REAL)nWidth /pImage->GetWidth() ;
+				Gdiplus::REAL fVScale = (Gdiplus::REAL)nHeight / pImage->GetHeight();
+				graphicsScale.ScaleTransform(fHScale, fVScale);
+				graphicsScale.FillRectangle(&brush,
+					Gdiplus::RectF(0,0,nWidth,nHeight));
+			}
+			graph.DrawImage(
+				&bmpScale, 
+				rect.left, rect.top,
+				rect.right - rect.left, 
+				rect.bottom - rect.top );
+#else
+			graph.DrawImage(
+				pImage,
+				rect.left,rect.top,nWidth,nHeight );
+#endif
+			graph.ReleaseHDC( hdc );
+			return true;
+		}
+
+		bool DrawImage( HDC hdc, const RECT& rect, Gdiplus::Image* pImage )
+		{
+			return DrawImage( hdc, pImage, rect );
+		}
+
+		bool FillColor( HDC hdc, const Gdiplus::Color& color)
+		{
+
+			Gdiplus::Graphics graphics(hdc);
+			graphics.Clear(color); //背景透明
+
+			graphics.ReleaseHDC( hdc );
+			return true;
+		}
+
+/** 
+ * @brief 当前子窗口中列举其中的按钮
+ */
+static BOOL CALLBACK ChildWndEnumProc(HWND hWnd, LPARAM lParam)
+{
+	std::pair<LPCTSTR, std::vector<HWND> >* paramPair = 
+		(std::pair<LPCTSTR, std::vector<HWND> >*)lParam;
+	if( NULL != paramPair  )
+	{
+		TCHAR szClassName[MAX_CLASS_NAME];
+		GetClassName( hWnd, szClassName, MAX_CLASS_NAME );
+		if( 0 == _tcsicmp( szClassName, paramPair ->first) )
+		{
+			paramPair ->second.push_back( hWnd );
+		}
+	}
+	EnumChildWindows(hWnd, ChildWndEnumProc, lParam );
+	return TRUE;
+}
+
+/** 
+ * @brief 查找当前窗口
+ */
+static BOOL CALLBACK  WndEnumProc(HWND hWnd, LPARAM lParam)
+{
+	std::pair<LPCTSTR, std::vector<HWND> >* paramPair = 
+		(std::pair<LPCTSTR, std::vector<HWND> >*)lParam;
+	if( NULL != paramPair  )
+	{
+		TCHAR szClassName[MAX_CLASS_NAME];
+		GetClassName( hWnd, szClassName, MAX_CLASS_NAME );
+		if( 0 == _tcsicmp( szClassName, paramPair ->first) )
+		{
+			paramPair ->second.push_back( hWnd );
+		}
+	}
+	EnumChildWindows(hWnd, ChildWndEnumProc, lParam );
+	return TRUE;
+}
+
+
+
+		HWND GetChildWindow( HWND hParent, LPCTSTR lpszChildWindowClassName )
+		{
+			std::pair<LPCTSTR, std::vector<HWND> > paramPair;
+			paramPair.first = lpszChildWindowClassName;
+			EnumChildWindows( hParent,WndEnumProc, (LPARAM)&paramPair );
+			if( paramPair.second.empty() )
+			{
+				return NULL;
+			}
+			return paramPair.second.front();
 		}
 
 		void ShowBitmapInClipboard( HBITMAP hBitmap )

@@ -175,7 +175,6 @@ namespace GlobalSkin
 		{
 			if( IsNull() )
 			{
-				ShowErrorMsg( );
 				static CParamReferencePtr tmpPtr = NULL;
 				return tmpPtr;
 			}
@@ -185,7 +184,6 @@ namespace GlobalSkin
 		{ 
 			if( IsNull() )
 			{
-				ShowErrorMsg( );
 				static CParamReferencePtr tmpPtr = NULL;
 				return tmpPtr;
 			}

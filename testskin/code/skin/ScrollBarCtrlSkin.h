@@ -1,6 +1,7 @@
 #pragma  once
 #include "GlobalUiManager.h"
 #include "gdiobj_ptr.hpp"
+#include <GdiPlus.h>
 namespace GlobalSkin
 {
 namespace CPE /* Control Parameter Enumeration */
@@ -45,6 +46,8 @@ enum ScrollBarHitTest
 }
 namespace DynamicParam
 {
+
+bool GetScrollRect( HWND hWnd, UINT nBar, LPRECT lpRect,int *nArrowSize,int *nThumbSize,int *nThumbPos);
 struct CScrollBarBasic
 {
 	///
@@ -221,6 +224,7 @@ public:
 };
 
 DECLARE_REF_PTR_NC( CScrollBarCtrlParameter );
+
 class CScrollBarCtrlSkin
 {
 public:
@@ -241,7 +245,7 @@ public:
 	 * @return 
 	 * @note 
 	 */
-    void DrawHScrollBar( HWND hWnd, CScrollBarCtrlParameterRefPtr pParam );
+    void DrawHScrollBar( HWND hWnd, CScrollBarCtrlParameterRefPtr pParam, bool bIsControl = false  );
 
 	/*!
 	 * @brief 绘制垂直滚动条
@@ -250,7 +254,7 @@ public:
 	 * @return 
 	 * @note
 	 */
-    void DrawVScrollBar( HWND hWnd, CScrollBarCtrlParameterRefPtr pParam );
+    void DrawVScrollBar( HWND hWnd, CScrollBarCtrlParameterRefPtr pParam, bool bIsControl = false );
 
 	/*!
 	 * @brief 绘制sizing块
@@ -289,7 +293,6 @@ public:
 
 	CScrollBarCtrlSkin( );
 
-protected:
 	
 	/*!
 	 * @brief 绘制水平背景
@@ -412,31 +415,31 @@ private:
     HWND							m_hWnd;
 	
 	/* 水平滚动条左向箭头贴图 */
-    CBitmapRefPtr					m_bmpHLeftArrow[CPE::SBS_Size];
+    Gdiplus::Image*					m_bmpHLeftArrow[CPE::SBS_Size];
 	
 	/* 水平滚动条右向箭头贴图 */
-    CBitmapRefPtr					m_bmpHRightArrow[CPE::SBS_Size];
+    Gdiplus::Image*					m_bmpHRightArrow[CPE::SBS_Size];
 	
 	/* 水平滚动条滑块贴图 */
-    CBitmapRefPtr					m_bmpHThumb[CPE::SBS_Size];
+    Gdiplus::Image*					m_bmpHThumb[CPE::SBS_Size];
 	
 	/*  水平滚动条背景图 */
-    CBitmapRefPtr					m_bmpHBk;
+    Gdiplus::Image*					m_bmpHBk;
 
 	/* 垂直滚动条向上箭头背景图 */
-	CBitmapRefPtr					m_bmpVTopArrow[CPE::SBS_Size];
+	Gdiplus::Image*					m_bmpVTopArrow[CPE::SBS_Size];
 
 	/* 垂直滚动条向下箭头背景图 */
-	CBitmapRefPtr					m_bmpVBotArrow[CPE::SBS_Size];
+	Gdiplus::Image*					m_bmpVBotArrow[CPE::SBS_Size];
 
 	/* 垂直滚动条滑块背景图 */
-	CBitmapRefPtr					m_bmpVThumb[CPE::SBS_Size];
+	Gdiplus::Image*					m_bmpVThumb[CPE::SBS_Size];
 
 	/* 垂直滚动条背景图 */
-	CBitmapRefPtr					m_bmpVBk;
+	Gdiplus::Image*					m_bmpVBk;
 
 	/* 垂直滚动条sizing箭头背景图 */
-    CBitmapRefPtr					m_bmpSizing;
+    Gdiplus::Image*					m_bmpSizing;
 
 };
 

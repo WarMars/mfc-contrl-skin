@@ -21,32 +21,50 @@ void CTablCtrlSkin::LoadSkin( const CSkinConfig* pConfig )
 	if( NULL == pConfig )
 #endif
 	{
-		CBitmapRef* pBitmap = ImagePool( ).GetBitmap( 
+		Gdiplus::Image* pBitmap = ImagePool( ).GetImage( 
 			TEXT("ui\\skin\\TabCtrl.bmp") );
 		const int nStartPosX = 0;
 		const int nStartPosY = 0;
 		int nXOffset = nStartPosX;
 		int nYOffset = nStartPosY;
 		int nSize = 40;
-		m_pBmpItem[CPE::TabIS_Normal] = Util::CreateSubBitmap(
+		m_pBmpItem[CPE::TabIS_Normal] = Util::CreateSubImage(
 			pBitmap, nXOffset,nYOffset,nSize,nSize );
-		m_pBmpItem[CPE::TabIs_Hover] = Util::CreateSubBitmap(
+		CImagePool( ).AddImage( _T("tab-item-normal"),
+			m_pBmpItem[CPE::TabIS_Normal] );
+		m_pBmpItem[CPE::TabIs_Hover] = Util::CreateSubImage(
 			pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
-		m_pBmpItem[CPE::TabIS_Pressed] = Util::CreateSubBitmap(
+		CImagePool( ).AddImage( _T("tab-item-hover"),
+			m_pBmpItem[CPE::TabIs_Hover] );
+		m_pBmpItem[CPE::TabIS_Pressed] = Util::CreateSubImage(
 			pBitmap, nXOffset+=nSize,nYOffset,nSize,nSize );
-		m_pBmkBk = Util::CreateSubBitmap( 
+		CImagePool( ).AddImage( _T("tab-item-pressed"),
+			m_pBmpItem[CPE::TabIS_Pressed] );
+		m_pBmkBk = Util::CreateSubImage( 
 			pBitmap, nXOffset = nStartPosX,nYOffset+= nSize,
 			nSize*3,nSize );
+		CImagePool( ).AddImage( _T("tab-bk"), m_pBmkBk );
+		m_clrText[CPE::TabIS_Normal]  = RGB(0,0,0);
+		m_clrText[CPE::TabIs_Hover]  = RGB(0,0,0);
+		m_clrText[CPE::TabIS_Pressed] = RGB(0,0,0);
 		return;
 	}
 #ifdef USING_CONFIG_FILE
 	m_pBmpItem[CPE::TabIS_Normal]  =
-		pConfig ->GetBitmap(TEXT("tab/item/background/normal") );
+		pConfig ->GetImage(TEXT("tab/item/background/normal") );
 	m_pBmpItem[CPE::TabIs_Hover] = 
-		pConfig ->GetBitmap(TEXT("tab/item/background/hover") );
+		pConfig ->GetImage(TEXT("tab/item/background/hover") );
 	m_pBmpItem[CPE::TabIS_Pressed] = 
-		pConfig ->GetBitmap(TEXT("tab/item/background/pressed") ) ;
-	m_pBmkBk = pConfig ->GetBitmap(TEXT("tab/background") ) ;
+		pConfig ->GetImage(TEXT("tab/item/background/pressed") ) ;
+	m_pBmkBk = pConfig ->GetImage(TEXT("tab/background") ) ;
+
+	m_pTabRightBk = pConfig ->GetImage(TEXT("tab/tab-right-bk") ) ;
+	m_clrText[CPE::TabIS_Normal]  =
+		pConfig ->GetRGBColor(TEXT("tab/item/text/normal") );
+	m_clrText[CPE::TabIs_Hover]  =
+		pConfig ->GetRGBColor(TEXT("tab/item/text/hover") );
+	m_clrText[CPE::TabIS_Pressed]  =
+		pConfig ->GetRGBColor(TEXT("tab/item/text/pressed") );
 #endif
 }
 
@@ -218,7 +236,7 @@ int CTablCtrlSkin::HitTest( const POINT& point)
 		TCM_HITTEST, 0, (LPARAM)&hti );
 }
 
-void CTablCtrlSkin::DrawTab( HDC hdc )
+void CTablCtrlSkin::DrawTab( HDC hdcSrc )
 {
 	if( IsNull() )
 	{
@@ -227,20 +245,24 @@ void CTablCtrlSkin::DrawTab( HDC hdc )
 	
 	CParamReference* p = GetCurParam( );
 	HWND hWnd = GetCurHwnd();
-	CRect rtClient;
-	GetClientRect( hWnd,rtClient);
+	CRect rtClient = Util::CTempAbsoluteWindowRect(hWnd);
+	//GetClientRect( hWnd,rtClient);
 
+
+	Util::CTempCompatibleDC tdc( hdcSrc, rtClient.Width(), rtClient.Height() );
+	HDC hdc = tdc;
+
+	CBrush brush( RGB(255,255,0) );
+	FillRect( tdc, &rtClient, (HBRUSH)brush.GetSafeHandle() );
+	// 绘制背景
+	Util::DrawImage( tdc, m_pBmkBk, rtClient );
 	/* 获取tab数目 */
 	int nItemCount = (int)SendMessage( hWnd, TCM_GETITEMCOUNT, 0, 0L);
 	if(nItemCount <= 0)
 	{ 
 		return;
 	} 
-	Util::CTempCompatibleDC tdc( hdc, rtClient.Width(),rtClient.Height());
-	// 绘制背景
-	DrawBmp( tdc, rtClient, m_pBmkBk );
 	CRect rcItem;
-	DWORD dwStyle = GetWindowLong( hWnd, GWL_STYLE );
 	int nOldBkMode = SetBkMode( tdc, TRANSPARENT);
 	
 	/* 获取字体 */
@@ -250,26 +272,65 @@ void CTablCtrlSkin::DrawTab( HDC hdc )
 	const int nPressedIndex = p ->GetPressedIndex();
 	const int nHotIndex = p ->GetHotIndex();
 	int nSelected = (int)::SendMessage(hWnd, TCM_GETCURSEL, 0, 0L);
+	const int nSpace = 5;
 	for(int i = 0 ; i < nItemCount ; i++)
 	{
-		
+		COLORREF clrOldColor = 0;
 		/* 获取tab的尺寸信息 */
 		SendMessage( hWnd, TCM_GETITEMRECT, i, (LPARAM)&rcItem );
+		//rcItem.left += ( 0==i?0:nSpace);
+		//rcItem.right += ( 0==i?0:nSpace);
+		const int nXOffset = 0;//i * nSpace;
+		rcItem.left += nXOffset;
+		rcItem.right += nXOffset;
 		if(nPressedIndex == i || nSelected == i )
 		{
 			
 			/* 按下 */
-			DrawItemEntry(tdc,i,rcItem,CPE::TabIS_Pressed);
+	//		if( 0 != i )
+			{ 
+				DrawItemEntry(tdc,i,rcItem,CPE::TabIS_Pressed);
+			}
+			int nLeft = rcItem.CenterPoint().x;
+			int nTop = rcItem.bottom-2;
+			const int nWidth = 5;
+			CPoint ptTriangle[] = 
+			{
+				CPoint( nLeft+nWidth*2, nTop ),
+				CPoint( nLeft, nTop + nWidth * 17 /10 ),
+				CPoint( nLeft - nWidth*2, nTop ),
+				CPoint(  nLeft+nWidth*2, nTop )
+			};
+
+			HBRUSH hBrush = CreateSolidBrush(RGB(1,173,255) );
+			HPEN hPen = (HPEN)GetStockObject( NULL_PEN );
+			HGDIOBJ hOldPen = SelectObject( tdc, hPen );
+			HGDIOBJ hOldBrush = SelectObject( tdc, hBrush );
+			Polygon( tdc,ptTriangle, sizeof(ptTriangle)/sizeof(CPoint)  );
+			SelectObject( tdc, hOldPen );
+			SelectObject( tdc, hOldBrush );
+			DeleteObject( hBrush );
+			DeleteObject( hPen );
+			
+			clrOldColor = SetTextColor( tdc, m_clrText[CPE::TabIS_Pressed] );
 		}
 		else if(nHotIndex == i)
 		{
 			/* 鼠标经过 */
-			DrawItemEntry(tdc,i,rcItem,CPE::TabIs_Hover);
+	//		if( 0 != i )
+			{ 
+				DrawItemEntry(tdc,i,rcItem,CPE::TabIs_Hover);
+			}
+			clrOldColor = SetTextColor( tdc, m_clrText[CPE::TabIs_Hover] );
 		}
 		else
 		{
 			/* 无操作 */
-			DrawItemEntry(tdc,i,rcItem,CPE::TabIS_Normal );
+	//		if( 0 != i )
+			{ 
+				DrawItemEntry(tdc,i,rcItem,CPE::TabIS_Normal );
+			}
+			clrOldColor = SetTextColor( tdc, m_clrText[CPE::TabIS_Normal] );
 		}
 		TCHAR szItemText[256] = {0};
 		TCITEM tim;
@@ -281,13 +342,19 @@ void CTablCtrlSkin::DrawTab( HDC hdc )
 		SendMessage(hWnd, TCM_GETITEM, i, (LPARAM)&tim);
 
 		CRect rtText = rcItem;
-		rtText.left = rtText.left +3;
-		
+		rtText.left = rtText.left/* +10*/;
 		/* 绘制文本 */
 		DrawText( tdc, szItemText,
 			(int)_tcslen(szItemText),&rtText,
-			DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS );
+			DT_CENTER
+			/*DT_RIGHT*/ | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS );
+		SetTextColor( tdc, clrOldColor );
 	}
+
+	ASSERT(rcItem.right < rtClient.right && rcItem.bottom > rcItem.top );
+	Util::DrawImage( tdc, m_pTabRightBk,
+		CRect(rcItem.right,rcItem.top, rtClient.right,
+		rcItem.bottom ) );
 	SetBkMode( tdc, nOldBkMode );
 	SelectObject( tdc, hOldFont );
 }
@@ -298,7 +365,8 @@ void CTablCtrlSkin::DrawItemEntry( HDC hdc, int nIndex, const CRect& rcItem, CPE
 	/* 根据状态绘制不同的背景图 */
 	ASSERT( nState >= CPE::TabIS_Normal &&
 		nState < CPE::TabIS_Size );
-	DrawBmp( hdc, rcItem, m_pBmpItem[nState] );
+
+	Util::DrawImage( hdc, m_pBmpItem[nState], rcItem );
 }
 
 int	CTabCtrlSkinParameter::GetPressedIndex( ) const

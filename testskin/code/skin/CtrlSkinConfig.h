@@ -68,6 +68,7 @@ namespace GlobalSkin
 		void	SetRect( int nLeft, int nTop, int nWidth, int nHeight );
 		void	SetRect( const CRecti& rect );
 		CBitmapRefPtr	GetImagePtr( ) const;
+		Gdiplus::Image* GetGdiplusImagePtr( ) const;
 #if defined(_WINDEF_) || defined( __wtypes_h__)
 		void	SetColor( COLORREF color );
 		COLORREF GetColor( ) const;
@@ -88,6 +89,7 @@ namespace GlobalSkin
 #endif
 		CRecti GetColor( const XPath& strPath ) const;
 		CBitmapRefPtr	GetBitmap( const XPath& strPath ) const;
+		Gdiplus::Image*	GetImage( const XPath& strPath ) const;
 
 	protected:
 		

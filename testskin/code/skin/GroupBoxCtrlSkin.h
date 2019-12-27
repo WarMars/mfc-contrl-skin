@@ -36,12 +36,12 @@ namespace GlobalSkin
 		///
 		/// @brief ±ß¿òÌùÍ¼
 		///
-		CBitmapRefPtr	m_pBmpBorder;
-
+		//Gdiplus::Image*	m_pBmpBorder;
+		COLORREF			m_clrBorder;
 		///
 		/// @brief ±êÌâÑÕÉ«
 		///
-		CBitmapRefPtr	m_pBmpCaption;
+		Gdiplus::Image*	m_pBmpCaption;
 	};
 }
 

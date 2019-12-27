@@ -119,9 +119,9 @@ void CRadioButtonCtrlSkin::OnDrawButton(CDC *pDC)
     {
         return;
     }
-
+	HWND hWnd = GetCurHwnd( );
     CRect rtWindow;
-    GetWindowRect( GetCurHwnd( ), &rtWindow);
+    GetWindowRect( hWnd, &rtWindow);
     rtWindow.OffsetRect(-rtWindow.left,-rtWindow.top);
 
     CDC dcMem;
@@ -161,7 +161,6 @@ void CRadioButtonCtrlSkin::OnDrawButton(CDC *pDC)
 
     /* ±³¾° */
     DrawBmp( &dcMem, rtWindow, m_pBmpBk );
-
     if ( i2b(GetCurParam( ) ->m_nButtonState &
              CButtonCtrlStatus::BUTTON_DISABLED ) )
     {
@@ -181,12 +180,12 @@ void CRadioButtonCtrlSkin::OnDrawButton(CDC *pDC)
         }
     }
     else if ( i2b(GetCurParam( ) ->m_nButtonState &
-                  CButtonCtrlStatus::BUTTON_PRESSED) )
+                  CButtonCtrlStatus::BUTTON_PRESSED)  )
     {
         /* °´ÏÂ */
-        if (i2b(GetCurParam( ) ->m_nButtonState &
-                CButtonCtrlStatus::BUTTON_CHECKED) )
-        {
+		if (i2b(GetCurParam( ) ->m_nButtonState &
+			CButtonCtrlStatus::BUTTON_CHECKED) )
+		{
             /* ¹´Ñ¡ */
             DrawBmp( &dcMem, rtRadio,
                      m_pBmpState[RS_Pressed].pBmpChecked );
