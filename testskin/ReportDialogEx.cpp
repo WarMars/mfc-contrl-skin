@@ -44,7 +44,7 @@ BOOL CReportDialogEx::OnInitDialog()
 		_T("%Y-%M-%d %H:%M:%S ±¨¸æ")));
 	if (NULL != pTable)
 	{
-		m_tableImgList.Create(1, 48, TRUE | ILC_COLOR32, 1, 0);
+		m_tableImgList.Create(1, 48, ILC_MASK | ILC_COLOR32, 1, 0);
 		pTable ->SetImageList(&m_tableImgList, LVSIL_SMALL);
 		pTable->SetExtendedStyle(
 			pTable ->GetExtendedStyle()| LVS_EX_GRIDLINES );
